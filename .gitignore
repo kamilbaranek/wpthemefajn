@@ -1,5 +1,6 @@
 *
 !/.gitignore
+!/.gitattributes
 !/docs/
 !/docs/theme-staging-deploy.md
 !/scripts/

@@ -28,6 +28,7 @@ fi
 cd "$ROOT_DIR"
 
 git add \
+  .gitattributes \
   .gitignore \
   docs/theme-staging-deploy.md \
   scripts/deploy-theme-staging.sh \

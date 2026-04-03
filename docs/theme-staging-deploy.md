@@ -10,6 +10,7 @@ Tento workspace je schválně zúžený jen na deploy šablony `themes/fajntabor
 ## Jak deploy funguje
 
 1. Lokální repo trackuje jen:
+   - `.gitattributes`
    - `themes/fajntabory`
    - `scripts/deploy-theme-staging.sh`
    - `docs/theme-staging-deploy.md`
