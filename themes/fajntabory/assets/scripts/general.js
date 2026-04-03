@@ -1,0 +1,370 @@
+jQuery(document).ready(function($) {
+
+	$("select#koureni option:first").attr('disabled', 'disabled');// Disable the first value/label ---
+
+	$('.mobile_nav').on('click', function() {
+		$('header#header ul.menu').slideToggle();
+	});
+
+	// Výběr dopravy :o
+
+	$(document).on('click', '.disabled', function(e){
+		e.preventDefault();
+	});
+
+	$('.p_chose').on('change', function() {
+
+		var canDo = true;
+		var tr = $(this).closest('tr');
+		var id = $('input[name=id]').val();
+		var post = [];
+		var item = {};
+		tr.find('select.p_chose').each(function() {
+			if( ! $(this).val() ) { canDo = false; }
+			var name = $(this).attr('name');
+			var value = ($(this).val());
+				item[name] = value;
+		});
+
+		if( canDo ) {
+
+			$('.heywait').fadeIn( 'slow' );
+			post.push(item);
+			var data = { 'action' : 'pchose', 'id' : id, 'post' : post };
+
+			jQuery.post(ajax_object.ajax_url, data, function(response) {
+				console.log(response);
+				var t = JSON.parse(response);
+				if( t.variation_price != 0 && t.variation_qty != 0 ) {
+					
+					if( t.variation_discount < t.variation_price ) {
+						tr.find('.variation_price').html( t.variation_price + ' Kč' );
+						tr.find('.variation_discount').html( t.variation_discount  + ' Kč' );
+					} else {
+						tr.find('.variation_price').html( null );
+						tr.find('.variation_discount').html( t.variation_price  + ' Kč' );
+					}
+					// tr.find('.variation_qty').html( 'Zbývá ' + t.variation_qty + ' ks' );
+					tr.find('a').attr('href', '?add_to_cart=' + t.id);
+					tr.find('a').removeClass('disabled');
+					$('.heywait').fadeOut( 'slow' );
+
+				} else {
+
+					tr.find('.variation_price').html( null );
+					tr.find('.variation_discount').html( null  );
+					// tr.find('.variation_qty').html('Není k dispozici');
+					tr.find('a').attr('href', '?add_to_cart=0');	
+					tr.find('a').addClass('disabled');
+					$('.heywait').fadeOut( 'slow' );
+
+				}
+
+				$('.heywait').fadeOut( 'slow' );
+			});
+
+		}
+
+	});
+	
+	$('.d_chose').on('change', function() {
+		if( $(this).closest('tr').find('.n_chose').val() &&
+			$(this).closest('tr').find('.v_chose').val() &&
+			$(this).closest('tr').find('.t_chose').val() &&
+			$(this).closest('tr').find('.z_chose').val() ) {
+
+			$('.heywait').fadeIn( 'slow' );
+		
+			var tr = $(this).closest('tr');
+			var data = {
+				'action': 'dchose',
+				'n_chose': tr.find('.n_chose').val(),
+				'v_chose': tr.find('.v_chose').val(),
+				't_chose': tr.find('.t_chose').val(),
+				'z_chose': tr.find('.z_chose').val()
+			};
+
+			jQuery.post(ajax_object.ajax_url, data, function(response) {
+				var t = JSON.parse(response);
+				// console.log( t );
+				if( t.price != 0 && t.capacity != 0 ) {
+					if( t.sale_bool == true ) {
+						tr.find('.variation_price').html( t.price + ' Kč' );
+						tr.find('.variation_discount').html( t.sale_price  + ' Kč' + t.sale_to );
+					} else {
+						tr.find('.variation_price').html( null );
+						tr.find('.variation_discount').html( t.price  + ' Kč'  );
+					}
+
+					tr.find('.variation_qty').html( 'Zbývá ' + t.capacity + ' míst' );
+					tr.find('a').attr('href', '?add_to_cart=' + t.id);
+					tr.find('a').removeClass('disabled');
+					$('.heywait').fadeOut( 'slow' );
+				} else {
+					tr.find('.variation_price').html( null );
+					tr.find('.variation_discount').html( null  );
+					tr.find('.variation_qty').html('Není k dispozici');
+					tr.find('a').attr('href', '?add_to_cart=0');	
+					tr.find('a').addClass('disabled');
+					$('.heywait').fadeOut( 'slow' );
+				}
+			});
+
+		}
+	});
+
+	if(window.location.hash) {
+		
+		var hashtag = window.location.hash;
+
+		if( $(hashtag).length != 0 ) {
+
+			var top = $('#tabory-vypis').offset().top;
+				top = top - 110;
+			$('.tabory_cat').each( function () {
+				$(this).stop().fadeOut();
+			});
+			$('#tabory-vypis ' + hashtag).stop().fadeIn();
+			// $(window).animate({scrollTop: top}, 500 );
+			$("html, body").animate({ scrollTop: top }, "slow");
+
+		}
+	}
+
+	$('.slidelink a').on('click', function(e) {
+		e.preventDefault();
+		var elem = $(this).attr('href');
+		var top = $(elem).offset().top;
+		$("html, body").animate({ scrollTop: top }, "slow");
+	});
+
+	$('.show_cat').on('click', function(e) {
+		e.preventDefault();
+		var hashtag = $(this).attr('href');
+		location.hash = hashtag;
+		var top = $('#tabory-vypis').offset().top;
+			top = top - 110;
+		$('.tabory_cat').each( function () {
+			$(this).stop().fadeOut();
+		});
+		var $href = $(this).attr('href');
+		if( $($href).css("display") == 'none' ) {
+			$($href).stop().fadeIn();
+		} else {
+			$($href).stop().fadeOut();
+		}
+		// $(window).animate({scrollTop: top}, 500 );
+		$("html, body").animate({ scrollTop: top }, "slow");
+	});
+
+	/**$('#promo').vide(
+		{
+ 			mp4: 'http://www.fajntabory.cz/wp-content/themes/fajntabory/assets/demo/video.mp4',
+  			webm: 'http://www.fajntabory.cz/wp-content/themes/fajntabory/assets/demo/video.webm',
+  			ogv: 'http://www.fajntabory.cz/wp-content/themes/fajntabory/assets/demo/video.ogv',
+  			poster: 'http://www.fajntabory.cz/wp-content/themes/fajntabory/assets/demo/ocean.jpg'
+		} );
+	**/
+
+	if ($(window).width() < 960) {
+
+		var width = $(window).width() / 3;
+		$('#gallery').bxSlider({
+			minSlides: 3,
+	  		maxSlides: 3,
+	  		slideWidth: width,
+	  		slideMargin: 0,
+	  		moveSlides: 1,
+	  		pager: false,
+	  		touchEnabled: false
+		});
+
+	} else {
+
+		var width = $(window).width() / 6;
+		$('#gallery').bxSlider({
+			minSlides: 6,
+	  		maxSlides: 6,
+	  		slideWidth: width,
+	  		slideMargin: 0,
+	  		moveSlides: 1,
+	  		pager: false,
+	  		touchEnabled: false
+		});
+	}
+
+	$('#slider ul').bxSlider({
+  		pager: false,
+  		infiniteLoop: false,
+  		touchEnabled: false
+	});
+
+	// $("#defaultOpen").click();
+
+
+	if ($("body").hasClass("single-product")) {
+		if($(".tabcontent").length != 0) {
+			if( $('#pobytovy').length > 0 ) {
+				openCard('js', 'pobytovy');
+			} else if( $('#primestsky').length > 0 ) {
+				openCard('js', 'primestsky');
+			}
+		}
+	}
+
+	$(window).on('scroll', function() {
+		if ($("body").hasClass("home")) {
+			
+		}
+	});
+
+	$('input[data-mask]').each(function () {
+		$(this).mask($(this).attr('data-mask'), { });
+	});
+
+	$('form.objednavka').on( 'submit', function() {
+		
+		var $valid = true;
+
+		// Validace jestli bylo zatrhnuto TOC
+
+		if( $('#toc').prop('checked') == true) {
+			$(this).parent('div').removeClass('not-valid');
+			$('.tocdiv').removeClass('not-valid');
+		} else {
+			$valid = false;
+			$(this).parent('div').addClass('not-valid');
+			$('.tocdiv').addClass('not-valid');
+		}
+
+		// Validace povinných polí
+
+		$('form.objednavka .required').each( function() {
+			if( $(this).val().length === 0 || $(this).val() == 0 ) {
+				$(this).parent('div').addClass('not-valid');
+				$valid = false;
+			} else {
+				$(this).parent('div').removeClass('not-valid');
+			}
+		});
+
+		// Validace, jestli emaily odpovídají
+
+		if( $("input[name='email']").val() != $("input[name='email-check']").val() ) {
+			$("input[name='email']").parent('div').addClass('not-valid');
+			$("input[name='email-check']").parent('div').addClass('not-valid');
+			$valid = false;
+		} else if( !$("input[name='email']").length ) {
+			$("input[name='email']").parent('div').removeClass('not-valid');
+			$("input[name='email-check']").parent('div').removeClass('not-valid');
+		}
+
+		if ( $('form.objednavka .checkit').length ) {
+
+			var checkit = false;
+
+			$('form.objednavka .checkit').each( function() {
+
+				if( $(this).prop('checked') == true ) {
+					checkit = true;
+				}
+
+			});
+
+			if( checkit == false ) {
+				$('.checkitdiv').addClass('not-valid');
+				$valid = false;
+			} else {
+				$('.checkitdiv').removeClass('not-valid');
+			}
+
+		}
+
+		if( $valid == false ) {
+			$('html,body').animate({ scrollTop: 0 }, 'slow');
+			$('.form-validation-error').show();
+			console.log( 'invalid' );
+			return false;
+		} else {
+			$('.form-validation-error').hide();
+			console.log( 'valid' );
+			return true;
+		}
+
+	});
+
+	$('.accordion h3 a').on( 'click', function(e) {
+
+		e.preventDefault();
+		var $this = $(this).closest('div.accordion');
+
+		if( ! $this.hasClass('active') ) {
+
+			$('.accordion').each( function() {
+				$(this).removeClass('active');
+				$(this).find('h3 a em').text('+');
+			});
+
+			$this.addClass( 'active' );
+			$this.find('h3 a em').text('-');
+
+		} else {
+
+			$('.accordion').each( function() {
+				$(this).removeClass('active');
+				$(this).find('h3 a em').text('+');
+			});
+
+		}
+
+	} );
+
+	$('.event').each( function() {
+		var start_position = $(this).data('start-position');
+			start_position = (start_position * 60) - 25;
+		var end_position = $(this).data('end-position');
+			end_position = (end_position * 60) - 35;
+		var width = end_position - start_position;
+		var top_position = $(this).data('top-position');
+		$(this).css({width: width, left: start_position, right: end_position, top: top_position, position:'absolute'});
+	});
+
+	$('document .single-product #defaultOpen').on('create', function(){
+		var href= $(this).attr('href');
+		alert('href');
+	});
+
+	$('input#proplaceni_tabora_zamestnavatelem').on('click', function() {
+		if($(this).prop('checked')) {
+			$(".zamestnavatel_hidden").show();
+		} else {
+			$(".zamestnavatel_hidden").hide();
+		}
+	} );
+
+});
+
+function openCard(evt, cardName) {
+    // Declare all variables
+    var i, tabcontent, tablinks;
+
+    // Get all elements with class="tabcontent" and hide them
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+
+    // Get all elements with class="tablinks" and remove the class "active"
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+
+    // Show the current tab, and add an "active" class to the button that opened the tab
+    document.getElementById(cardName).style.display = "block";
+    if( evt == 'js' ) {
+    	tablinks[0].className += " active";
+    } else {
+    	evt.currentTarget.className += " active";
+    }
+}

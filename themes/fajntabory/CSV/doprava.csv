@@ -1,0 +1,218 @@
+INFORMATIVNÍ ČÁST,,INFORMATIVNÍ ČÁST,,,,,,EDITOVATELNÁ ČÁST,,,,
+id,,místo odjezdu / příjezdu,směr,termín,lokalita ,volná místa,,aktuální cena,základní cena,počáteční cena,týdenní navýšení,celková kapacita
+#22625,SPOLEČNÁ DOPRAVA,Zábřeh,Tam i zpět,1. týden (2. 7. 2023 - 8. 7. 2023),RC Lanwood - Lanškroun,100,,346,346,346,0,100
+#22626,SPOLEČNÁ DOPRAVA,Zábřeh,Tam i zpět,2. týden (9. 7. 2023 - 15. 7. 2023),RC Lanwood - Lanškroun,100,,346,346,346,0,100
+#22627,SPOLEČNÁ DOPRAVA,Zábřeh,Tam i zpět,3. týden (16. 7. 2023 - 22. 7. 2023),RC Lanwood - Lanškroun,100,,346,346,346,0,100
+#22628,SPOLEČNÁ DOPRAVA,Zábřeh,Tam i zpět,4. týden (23. 7. 2023 - 29. 7. 2023),RC Lanwood - Lanškroun,100,,346,346,346,0,100
+#22629,SPOLEČNÁ DOPRAVA,Zábřeh,Tam i zpět,5. týden (30. 7. 2023 - 5. 8. 2023),RC Lanwood - Lanškroun,100,,346,346,346,0,100
+#22630,SPOLEČNÁ DOPRAVA,Zábřeh,Tam i zpět,6. týden (6. 8. 2023 - 12. 8. 2023),RC Lanwood - Lanškroun,100,,346,346,346,0,100
+#22631,SPOLEČNÁ DOPRAVA,Zábřeh,Tam i zpět,7. týden (13. 8. 2023 - 19. 8. 2023),RC Lanwood - Lanškroun,100,,346,346,346,0,100
+#22632,SPOLEČNÁ DOPRAVA,Zábřeh,Tam i zpět,8. týden (20. 8. 2023 - 26. 8. 2023),RC Lanwood - Lanškroun,100,,346,346,346,0,100
+#22615,SPOLEČNÁ DOPRAVA,Zábřeh,Z tábora,1. týden (2. 7. 2023 - 8. 7. 2023),RC Lanwood - Lanškroun,100,,173,173,173,0,100
+#22616,SPOLEČNÁ DOPRAVA,Zábřeh,Z tábora,2. týden (9. 7. 2023 - 15. 7. 2023),RC Lanwood - Lanškroun,100,,173,173,173,0,100
+#22617,SPOLEČNÁ DOPRAVA,Zábřeh,Z tábora,3. týden (16. 7. 2023 - 22. 7. 2023),RC Lanwood - Lanškroun,100,,173,173,173,0,100
+#22618,SPOLEČNÁ DOPRAVA,Zábřeh,Z tábora,4. týden (23. 7. 2023 - 29. 7. 2023),RC Lanwood - Lanškroun,100,,173,173,173,0,100
+#22619,SPOLEČNÁ DOPRAVA,Zábřeh,Z tábora,5. týden (30. 7. 2023 - 5. 8. 2023),RC Lanwood - Lanškroun,100,,173,173,173,0,100
+#22621,SPOLEČNÁ DOPRAVA,Zábřeh,Z tábora,6. týden (6. 8. 2023 - 12. 8. 2023),RC Lanwood - Lanškroun,100,,173,173,173,0,100
+#22622,SPOLEČNÁ DOPRAVA,Zábřeh,Z tábora,7. týden (13. 8. 2023 - 19. 8. 2023),RC Lanwood - Lanškroun,100,,173,173,173,0,100
+#22623,SPOLEČNÁ DOPRAVA,Zábřeh,Z tábora,8. týden (20. 8. 2023 - 26. 8. 2023),RC Lanwood - Lanškroun,100,,173,173,173,0,100
+#22624,SPOLEČNÁ DOPRAVA,Zábřeh,Z tábora,9. týden (27. 8. 2023 - 1. 9. 2023),RC Lanwood - Lanškroun,100,,173,173,173,0,100
+#22605,SPOLEČNÁ DOPRAVA,Zábřeh,Do tábora,1. týden (2. 7. 2023 - 8. 7. 2023),RC Lanwood - Lanškroun,100,,173,173,173,0,100
+#22606,SPOLEČNÁ DOPRAVA,Zábřeh,Do tábora,2. týden (9. 7. 2023 - 15. 7. 2023),RC Lanwood - Lanškroun,100,,173,173,173,0,100
+#22607,SPOLEČNÁ DOPRAVA,Zábřeh,Do tábora,3. týden (16. 7. 2023 - 22. 7. 2023),RC Lanwood - Lanškroun,100,,173,173,173,0,100
+#22608,SPOLEČNÁ DOPRAVA,Zábřeh,Do tábora,4. týden (23. 7. 2023 - 29. 7. 2023),RC Lanwood - Lanškroun,100,,173,173,173,0,100
+#22609,SPOLEČNÁ DOPRAVA,Zábřeh,Do tábora,5. týden (30. 7. 2023 - 5. 8. 2023),RC Lanwood - Lanškroun,100,,173,173,173,0,100
+#22610,SPOLEČNÁ DOPRAVA,Zábřeh,Do tábora,6. týden (6. 8. 2023 - 12. 8. 2023),RC Lanwood - Lanškroun,100,,173,173,173,0,100
+#22611,SPOLEČNÁ DOPRAVA,Zábřeh,Do tábora,7. týden (13. 8. 2023 - 19. 8. 2023),RC Lanwood - Lanškroun,100,,173,173,173,0,100
+#22612,SPOLEČNÁ DOPRAVA,Zábřeh,Do tábora,8. týden (20. 8. 2023 - 26. 8. 2023),RC Lanwood - Lanškroun,100,,173,173,173,0,100
+#22613,SPOLEČNÁ DOPRAVA,Zábřeh,Do tábora,9. týden (27. 8. 2023 - 1. 9. 2023),RC Lanwood - Lanškroun,100,,173,173,173,0,100
+#14507,SPOLEČNÁ DOPRAVA,Hranice na Moravě,Z tábora,3. týden (16. 7. 2023 - 22. 7. 2023),RC Lanwood - Lanškroun,100,,280,280,280,0,100
+#14508,SPOLEČNÁ DOPRAVA,Hranice na Moravě,Z tábora,4. týden (23. 7. 2023 - 29. 7. 2023),RC Lanwood - Lanškroun,100,,280,280,280,0,100
+#14509,SPOLEČNÁ DOPRAVA,Hranice na Moravě,Z tábora,5. týden (30. 7. 2023 - 5. 8. 2023),RC Lanwood - Lanškroun,100,,280,280,280,0,100
+#14510,SPOLEČNÁ DOPRAVA,Hranice na Moravě,Z tábora,6. týden (6. 8. 2023 - 12. 8. 2023),RC Lanwood - Lanškroun,100,,280,280,280,0,100
+#14511,SPOLEČNÁ DOPRAVA,Hranice na Moravě,Z tábora,7. týden (13. 8. 2023 - 19. 8. 2023),RC Lanwood - Lanškroun,100,,280,280,280,0,100
+#14512,SPOLEČNÁ DOPRAVA,Hranice na Moravě,Z tábora,8. týden (20. 8. 2023 - 26. 8. 2023),RC Lanwood - Lanškroun,100,,280,280,280,0,100
+#14513,SPOLEČNÁ DOPRAVA,Hranice na Moravě,Z tábora,9. týden (27. 8. 2023 - 1. 9. 2023),RC Lanwood - Lanškroun,100,,280,280,280,0,100
+#14514,SPOLEČNÁ DOPRAVA,Hranice na Moravě,Tam i zpět,1. týden (2. 7. 2023 - 8. 7. 2023),RC Lanwood - Lanškroun,100,,560,560,560,0,100
+#14515,SPOLEČNÁ DOPRAVA,Hranice na Moravě,Tam i zpět,2. týden (9. 7. 2023 - 15. 7. 2023),RC Lanwood - Lanškroun,100,,560,560,560,0,100
+#14516,SPOLEČNÁ DOPRAVA,Hranice na Moravě,Tam i zpět,3. týden (16. 7. 2023 - 22. 7. 2023),RC Lanwood - Lanškroun,100,,560,560,560,0,100
+#14517,SPOLEČNÁ DOPRAVA,Hranice na Moravě,Tam i zpět,4. týden (23. 7. 2023 - 29. 7. 2023),RC Lanwood - Lanškroun,100,,560,560,560,0,100
+#14518,SPOLEČNÁ DOPRAVA,Hranice na Moravě,Tam i zpět,5. týden (30. 7. 2023 - 5. 8. 2023),RC Lanwood - Lanškroun,100,,560,560,560,0,100
+#14519,SPOLEČNÁ DOPRAVA,Hranice na Moravě,Tam i zpět,6. týden (6. 8. 2023 - 12. 8. 2023),RC Lanwood - Lanškroun,100,,560,560,560,0,100
+#14520,SPOLEČNÁ DOPRAVA,Hranice na Moravě,Tam i zpět,7. týden (13. 8. 2023 - 19. 8. 2023),RC Lanwood - Lanškroun,100,,560,560,560,0,100
+#14521,SPOLEČNÁ DOPRAVA,Hranice na Moravě,Tam i zpět,8. týden (20. 8. 2023 - 26. 8. 2023),RC Lanwood - Lanškroun,100,,560,560,560,0,100
+#14522,SPOLEČNÁ DOPRAVA,Hranice na Moravě,Tam i zpět,9. týden (27. 8. 2023 - 1. 9. 2023),RC Lanwood - Lanškroun,100,,560,560,560,0,100
+#14523,SPOLEČNÁ DOPRAVA,Kolín,Do tábora,1. týden (2. 7. 2023 - 8. 7. 2023),RC Lanwood - Lanškroun,100,,242,242,242,0,100
+#14524,SPOLEČNÁ DOPRAVA,Kolín,Do tábora,2. týden (9. 7. 2023 - 15. 7. 2023),RC Lanwood - Lanškroun,100,,242,242,242,0,100
+#14525,SPOLEČNÁ DOPRAVA,Kolín,Do tábora,3. týden (16. 7. 2023 - 22. 7. 2023),RC Lanwood - Lanškroun,100,,242,242,242,0,100
+#14526,SPOLEČNÁ DOPRAVA,Kolín,Do tábora,4. týden (23. 7. 2023 - 29. 7. 2023),RC Lanwood - Lanškroun,100,,242,242,242,0,100
+#14527,SPOLEČNÁ DOPRAVA,Kolín,Do tábora,5. týden (30. 7. 2023 - 5. 8. 2023),RC Lanwood - Lanškroun,100,,242,242,242,0,100
+#14528,SPOLEČNÁ DOPRAVA,Kolín,Do tábora,6. týden (6. 8. 2023 - 12. 8. 2023),RC Lanwood - Lanškroun,100,,242,242,242,0,100
+#14529,SPOLEČNÁ DOPRAVA,Kolín,Do tábora,7. týden (13. 8. 2023 - 19. 8. 2023),RC Lanwood - Lanškroun,100,,242,242,242,0,100
+#14530,SPOLEČNÁ DOPRAVA,Kolín,Do tábora,8. týden (20. 8. 2023 - 26. 8. 2023),RC Lanwood - Lanškroun,100,,242,242,242,0,100
+#14531,SPOLEČNÁ DOPRAVA,Kolín,Do tábora,9. týden (27. 8. 2023 - 1. 9. 2023),RC Lanwood - Lanškroun,100,,242,242,242,0,100
+#14532,SPOLEČNÁ DOPRAVA,Kolín,Z tábora,1. týden (2. 7. 2023 - 8. 7. 2023),RC Lanwood - Lanškroun,100,,242,242,242,0,100
+#14533,SPOLEČNÁ DOPRAVA,Kolín,Z tábora,2. týden (9. 7. 2023 - 15. 7. 2023),RC Lanwood - Lanškroun,100,,242,242,242,0,100
+#14534,SPOLEČNÁ DOPRAVA,Kolín,Z tábora,3. týden (16. 7. 2023 - 22. 7. 2023),RC Lanwood - Lanškroun,100,,242,242,242,0,100
+#14535,SPOLEČNÁ DOPRAVA,Kolín,Z tábora,4. týden (23. 7. 2023 - 29. 7. 2023),RC Lanwood - Lanškroun,100,,242,242,242,0,100
+#14536,SPOLEČNÁ DOPRAVA,Kolín,Z tábora,5. týden (30. 7. 2023 - 5. 8. 2023),RC Lanwood - Lanškroun,100,,242,242,242,0,100
+#14537,SPOLEČNÁ DOPRAVA,Kolín,Z tábora,6. týden (6. 8. 2023 - 12. 8. 2023),RC Lanwood - Lanškroun,100,,242,242,242,0,100
+#14538,SPOLEČNÁ DOPRAVA,Kolín,Z tábora,7. týden (13. 8. 2023 - 19. 8. 2023),RC Lanwood - Lanškroun,100,,242,242,242,0,100
+#14539,SPOLEČNÁ DOPRAVA,Kolín,Z tábora,8. týden (20. 8. 2023 - 26. 8. 2023),RC Lanwood - Lanškroun,100,,242,242,242,0,100
+#22633,SPOLEČNÁ DOPRAVA,Zábřeh,Tam i zpět,9. týden (27. 8. 2023 - 1. 9. 2023),RC Lanwood - Lanškroun,100,,346,346,346,0,100
+#14540,SPOLEČNÁ DOPRAVA,Kolín,Z tábora,9. týden (27. 8. 2023 - 1. 9. 2023),RC Lanwood - Lanškroun,100,,242,242,242,0,100
+#14541,SPOLEČNÁ DOPRAVA,Kolín,Tam i zpět,1. týden (2. 7. 2023 - 8. 7. 2023),RC Lanwood - Lanškroun,100,,484,484,484,0,100
+#14542,SPOLEČNÁ DOPRAVA,Kolín,Tam i zpět,2. týden (9. 7. 2023 - 15. 7. 2023),RC Lanwood - Lanškroun,98,,484,484,484,0,100
+#14543,SPOLEČNÁ DOPRAVA,Kolín,Tam i zpět,3. týden (16. 7. 2023 - 22. 7. 2023),RC Lanwood - Lanškroun,100,,484,484,484,0,100
+#14544,SPOLEČNÁ DOPRAVA,Kolín,Tam i zpět,4. týden (23. 7. 2023 - 29. 7. 2023),RC Lanwood - Lanškroun,100,,484,484,484,0,100
+#14545,SPOLEČNÁ DOPRAVA,Kolín,Tam i zpět,5. týden (30. 7. 2023 - 5. 8. 2023),RC Lanwood - Lanškroun,100,,484,484,484,0,100
+#14546,SPOLEČNÁ DOPRAVA,Kolín,Tam i zpět,6. týden (6. 8. 2023 - 12. 8. 2023),RC Lanwood - Lanškroun,100,,484,484,484,0,100
+#14547,SPOLEČNÁ DOPRAVA,Kolín,Tam i zpět,7. týden (13. 8. 2023 - 19. 8. 2023),RC Lanwood - Lanškroun,100,,484,484,484,0,100
+#14548,SPOLEČNÁ DOPRAVA,Kolín,Tam i zpět,8. týden (20. 8. 2023 - 26. 8. 2023),RC Lanwood - Lanškroun,100,,484,484,484,0,100
+#14549,SPOLEČNÁ DOPRAVA,Kolín,Tam i zpět,9. týden (27. 8. 2023 - 1. 9. 2023),RC Lanwood - Lanškroun,100,,484,484,484,0,100
+#14457,SPOLEČNÁ DOPRAVA,Olomouc,Z tábora,7. týden (13. 8. 2023 - 19. 8. 2023),RC Lanwood - Lanškroun,100,,224,224,224,0,100
+#14458,SPOLEČNÁ DOPRAVA,Olomouc,Z tábora,8. týden (20. 8. 2023 - 26. 8. 2023),RC Lanwood - Lanškroun,100,,224,224,224,0,100
+#14459,SPOLEČNÁ DOPRAVA,Olomouc,Z tábora,9. týden (27. 8. 2023 - 1. 9. 2023),RC Lanwood - Lanškroun,100,,224,224,224,0,100
+#14460,SPOLEČNÁ DOPRAVA,Olomouc,Tam i zpět,1. týden (2. 7. 2023 - 8. 7. 2023),RC Lanwood - Lanškroun,100,,448,448,448,0,100
+#14461,SPOLEČNÁ DOPRAVA,Olomouc,Tam i zpět,2. týden (9. 7. 2023 - 15. 7. 2023),RC Lanwood - Lanškroun,100,,448,448,448,0,100
+#14462,SPOLEČNÁ DOPRAVA,Olomouc,Tam i zpět,3. týden (16. 7. 2023 - 22. 7. 2023),RC Lanwood - Lanškroun,100,,448,448,448,0,100
+#14463,SPOLEČNÁ DOPRAVA,Olomouc,Tam i zpět,4. týden (23. 7. 2023 - 29. 7. 2023),RC Lanwood - Lanškroun,100,,448,448,448,0,100
+#14464,SPOLEČNÁ DOPRAVA,Olomouc,Tam i zpět,5. týden (30. 7. 2023 - 5. 8. 2023),RC Lanwood - Lanškroun,100,,448,448,448,0,100
+#14465,SPOLEČNÁ DOPRAVA,Olomouc,Tam i zpět,6. týden (6. 8. 2023 - 12. 8. 2023),RC Lanwood - Lanškroun,98,,448,448,448,0,100
+#14466,SPOLEČNÁ DOPRAVA,Olomouc,Tam i zpět,7. týden (13. 8. 2023 - 19. 8. 2023),RC Lanwood - Lanškroun,99,,448,448,448,0,100
+#14467,SPOLEČNÁ DOPRAVA,Olomouc,Tam i zpět,8. týden (20. 8. 2023 - 26. 8. 2023),RC Lanwood - Lanškroun,100,,448,448,448,0,100
+#14468,SPOLEČNÁ DOPRAVA,Olomouc,Tam i zpět,9. týden (27. 8. 2023 - 1. 9. 2023),RC Lanwood - Lanškroun,100,,448,448,448,0,100
+#14469,SPOLEČNÁ DOPRAVA,Pardubice,Do tábora,1. týden (2. 7. 2023 - 8. 7. 2023),RC Lanwood - Lanškroun,100,,195,195,195,0,100
+#14470,SPOLEČNÁ DOPRAVA,Pardubice,Do tábora,2. týden (9. 7. 2023 - 15. 7. 2023),RC Lanwood - Lanškroun,100,,195,195,195,0,100
+#14471,SPOLEČNÁ DOPRAVA,Pardubice,Do tábora,3. týden (16. 7. 2023 - 22. 7. 2023),RC Lanwood - Lanškroun,98,,195,195,195,0,100
+#14472,SPOLEČNÁ DOPRAVA,Pardubice,Do tábora,4. týden (23. 7. 2023 - 29. 7. 2023),RC Lanwood - Lanškroun,100,,195,195,195,0,100
+#14473,SPOLEČNÁ DOPRAVA,Pardubice,Do tábora,5. týden (30. 7. 2023 - 5. 8. 2023),RC Lanwood - Lanškroun,100,,195,195,195,0,100
+#14474,SPOLEČNÁ DOPRAVA,Pardubice,Do tábora,6. týden (6. 8. 2023 - 12. 8. 2023),RC Lanwood - Lanškroun,100,,195,195,195,0,100
+#14475,SPOLEČNÁ DOPRAVA,Pardubice,Do tábora,7. týden (13. 8. 2023 - 19. 8. 2023),RC Lanwood - Lanškroun,100,,195,195,195,0,100
+#14476,SPOLEČNÁ DOPRAVA,Pardubice,Do tábora,8. týden (20. 8. 2023 - 26. 8. 2023),RC Lanwood - Lanškroun,100,,195,195,195,0,100
+#14477,SPOLEČNÁ DOPRAVA,Pardubice,Do tábora,9. týden (27. 8. 2023 - 1. 9. 2023),RC Lanwood - Lanškroun,100,,195,195,195,0,100
+#14478,SPOLEČNÁ DOPRAVA,Pardubice,Z tábora,1. týden (2. 7. 2023 - 8. 7. 2023),RC Lanwood - Lanškroun,100,,195,195,195,0,100
+#14479,SPOLEČNÁ DOPRAVA,Pardubice,Z tábora,2. týden (9. 7. 2023 - 15. 7. 2023),RC Lanwood - Lanškroun,100,,195,195,195,0,100
+#14480,SPOLEČNÁ DOPRAVA,Pardubice,Z tábora,3. týden (16. 7. 2023 - 22. 7. 2023),RC Lanwood - Lanškroun,100,,195,195,195,0,100
+#14481,SPOLEČNÁ DOPRAVA,Pardubice,Z tábora,4. týden (23. 7. 2023 - 29. 7. 2023),RC Lanwood - Lanškroun,100,,195,195,195,0,100
+#14482,SPOLEČNÁ DOPRAVA,Pardubice,Z tábora,5. týden (30. 7. 2023 - 5. 8. 2023),RC Lanwood - Lanškroun,100,,195,195,195,0,100
+#14483,SPOLEČNÁ DOPRAVA,Pardubice,Z tábora,6. týden (6. 8. 2023 - 12. 8. 2023),RC Lanwood - Lanškroun,100,,195,195,195,0,100
+#14484,SPOLEČNÁ DOPRAVA,Pardubice,Z tábora,7. týden (13. 8. 2023 - 19. 8. 2023),RC Lanwood - Lanškroun,100,,195,195,195,0,100
+#14485,SPOLEČNÁ DOPRAVA,Pardubice,Z tábora,8. týden (20. 8. 2023 - 26. 8. 2023),RC Lanwood - Lanškroun,100,,195,195,195,0,100
+#14486,SPOLEČNÁ DOPRAVA,Pardubice,Z tábora,9. týden (27. 8. 2023 - 1. 9. 2023),RC Lanwood - Lanškroun,100,,195,195,195,0,100
+#14487,SPOLEČNÁ DOPRAVA,Pardubice,Tam i zpět,1. týden (2. 7. 2023 - 8. 7. 2023),RC Lanwood - Lanškroun,100,,390,390,390,0,100
+#14488,SPOLEČNÁ DOPRAVA,Pardubice,Tam i zpět,2. týden (9. 7. 2023 - 15. 7. 2023),RC Lanwood - Lanškroun,99,,390,390,390,0,100
+#14489,SPOLEČNÁ DOPRAVA,Pardubice,Tam i zpět,3. týden (16. 7. 2023 - 22. 7. 2023),RC Lanwood - Lanškroun,99,,390,390,390,0,100
+#14490,SPOLEČNÁ DOPRAVA,Pardubice,Tam i zpět,4. týden (23. 7. 2023 - 29. 7. 2023),RC Lanwood - Lanškroun,99,,390,390,390,0,100
+#14491,SPOLEČNÁ DOPRAVA,Pardubice,Tam i zpět,5. týden (30. 7. 2023 - 5. 8. 2023),RC Lanwood - Lanškroun,100,,390,390,390,0,100
+#14492,SPOLEČNÁ DOPRAVA,Pardubice,Tam i zpět,6. týden (6. 8. 2023 - 12. 8. 2023),RC Lanwood - Lanškroun,99,,390,390,390,0,100
+#14493,SPOLEČNÁ DOPRAVA,Pardubice,Tam i zpět,7. týden (13. 8. 2023 - 19. 8. 2023),RC Lanwood - Lanškroun,100,,390,390,390,0,100
+#14494,SPOLEČNÁ DOPRAVA,Pardubice,Tam i zpět,8. týden (20. 8. 2023 - 26. 8. 2023),RC Lanwood - Lanškroun,100,,390,390,390,0,100
+#14495,SPOLEČNÁ DOPRAVA,Pardubice,Tam i zpět,9. týden (27. 8. 2023 - 1. 9. 2023),RC Lanwood - Lanškroun,100,,390,390,390,0,100
+#14496,SPOLEČNÁ DOPRAVA,Hranice na Moravě,Do tábora,1. týden (2. 7. 2023 - 8. 7. 2023),RC Lanwood - Lanškroun,100,,280,280,280,0,100
+#14497,SPOLEČNÁ DOPRAVA,Hranice na Moravě,Do tábora,2. týden (9. 7. 2023 - 15. 7. 2023),RC Lanwood - Lanškroun,100,,280,280,280,0,100
+#14498,SPOLEČNÁ DOPRAVA,Hranice na Moravě,Do tábora,3. týden (16. 7. 2023 - 22. 7. 2023),RC Lanwood - Lanškroun,100,,280,280,280,0,100
+#14499,SPOLEČNÁ DOPRAVA,Hranice na Moravě,Do tábora,4. týden (23. 7. 2023 - 29. 7. 2023),RC Lanwood - Lanškroun,100,,280,280,280,0,100
+#14500,SPOLEČNÁ DOPRAVA,Hranice na Moravě,Do tábora,5. týden (30. 7. 2023 - 5. 8. 2023),RC Lanwood - Lanškroun,100,,280,280,280,0,100
+#14501,SPOLEČNÁ DOPRAVA,Hranice na Moravě,Do tábora,6. týden (6. 8. 2023 - 12. 8. 2023),RC Lanwood - Lanškroun,100,,280,280,280,0,100
+#14502,SPOLEČNÁ DOPRAVA,Hranice na Moravě,Do tábora,7. týden (13. 8. 2023 - 19. 8. 2023),RC Lanwood - Lanškroun,100,,280,280,280,0,100
+#14503,SPOLEČNÁ DOPRAVA,Hranice na Moravě,Do tábora,8. týden (20. 8. 2023 - 26. 8. 2023),RC Lanwood - Lanškroun,100,,280,280,280,0,100
+#14504,SPOLEČNÁ DOPRAVA,Hranice na Moravě,Do tábora,9. týden (27. 8. 2023 - 1. 9. 2023),RC Lanwood - Lanškroun,100,,280,280,280,0,100
+#14505,SPOLEČNÁ DOPRAVA,Hranice na Moravě,Z tábora,1. týden (2. 7. 2023 - 8. 7. 2023),RC Lanwood - Lanškroun,100,,280,280,280,0,100
+#14506,SPOLEČNÁ DOPRAVA,Hranice na Moravě,Z tábora,2. týden (9. 7. 2023 - 15. 7. 2023),RC Lanwood - Lanškroun,100,,280,280,280,0,100
+#14415,SPOLEČNÁ DOPRAVA,Ostrava,Do tábora,1. týden (2. 7. 2023 - 8. 7. 2023),RC Lanwood - Lanškroun,100,,335,335,335,0,100
+#14416,SPOLEČNÁ DOPRAVA,Ostrava,Do tábora,2. týden (9. 7. 2023 - 15. 7. 2023),RC Lanwood - Lanškroun,100,,335,335,335,0,100
+#14417,SPOLEČNÁ DOPRAVA,Ostrava,Do tábora,3. týden (16. 7. 2023 - 22. 7. 2023),RC Lanwood - Lanškroun,100,,335,335,335,0,100
+#14418,SPOLEČNÁ DOPRAVA,Ostrava,Do tábora,4. týden (23. 7. 2023 - 29. 7. 2023),RC Lanwood - Lanškroun,100,,335,335,335,0,100
+#14419,SPOLEČNÁ DOPRAVA,Ostrava,Do tábora,5. týden (30. 7. 2023 - 5. 8. 2023),RC Lanwood - Lanškroun,100,,335,335,335,0,100
+#14420,SPOLEČNÁ DOPRAVA,Ostrava,Do tábora,6. týden (6. 8. 2023 - 12. 8. 2023),RC Lanwood - Lanškroun,100,,335,335,335,0,100
+#14421,SPOLEČNÁ DOPRAVA,Ostrava,Do tábora,7. týden (13. 8. 2023 - 19. 8. 2023),RC Lanwood - Lanškroun,100,,335,335,335,0,100
+#14422,SPOLEČNÁ DOPRAVA,Ostrava,Do tábora,8. týden (20. 8. 2023 - 26. 8. 2023),RC Lanwood - Lanškroun,100,,335,335,335,0,100
+#14423,SPOLEČNÁ DOPRAVA,Ostrava,Do tábora,9. týden (27. 8. 2023 - 1. 9. 2023),RC Lanwood - Lanškroun,100,,335,335,335,0,100
+#14424,SPOLEČNÁ DOPRAVA,Ostrava,Z tábora,1. týden (2. 7. 2023 - 8. 7. 2023),RC Lanwood - Lanškroun,100,,335,335,335,0,100
+#14425,SPOLEČNÁ DOPRAVA,Ostrava,Z tábora,2. týden (9. 7. 2023 - 15. 7. 2023),RC Lanwood - Lanškroun,100,,335,335,335,0,100
+#14426,SPOLEČNÁ DOPRAVA,Ostrava,Z tábora,3. týden (16. 7. 2023 - 22. 7. 2023),RC Lanwood - Lanškroun,100,,335,335,335,0,100
+#14427,SPOLEČNÁ DOPRAVA,Ostrava,Z tábora,4. týden (23. 7. 2023 - 29. 7. 2023),RC Lanwood - Lanškroun,100,,335,335,335,0,100
+#14428,SPOLEČNÁ DOPRAVA,Ostrava,Z tábora,5. týden (30. 7. 2023 - 5. 8. 2023),RC Lanwood - Lanškroun,100,,335,335,335,0,100
+#14429,SPOLEČNÁ DOPRAVA,Ostrava,Z tábora,6. týden (6. 8. 2023 - 12. 8. 2023),RC Lanwood - Lanškroun,100,,335,335,335,0,100
+#14430,SPOLEČNÁ DOPRAVA,Ostrava,Z tábora,7. týden (13. 8. 2023 - 19. 8. 2023),RC Lanwood - Lanškroun,100,,335,335,335,0,100
+#14431,SPOLEČNÁ DOPRAVA,Ostrava,Z tábora,8. týden (20. 8. 2023 - 26. 8. 2023),RC Lanwood - Lanškroun,100,,335,335,335,0,100
+#14432,SPOLEČNÁ DOPRAVA,Ostrava,Z tábora,9. týden (27. 8. 2023 - 1. 9. 2023),RC Lanwood - Lanškroun,100,,335,335,335,0,100
+#14433,SPOLEČNÁ DOPRAVA,Ostrava,Tam i zpět,1. týden (2. 7. 2023 - 8. 7. 2023),RC Lanwood - Lanškroun,100,,670,670,670,0,100
+#14434,SPOLEČNÁ DOPRAVA,Ostrava,Tam i zpět,2. týden (9. 7. 2023 - 15. 7. 2023),RC Lanwood - Lanškroun,100,,670,670,670,0,100
+#14435,SPOLEČNÁ DOPRAVA,Ostrava,Tam i zpět,3. týden (16. 7. 2023 - 22. 7. 2023),RC Lanwood - Lanškroun,97,,670,670,670,0,100
+#14436,SPOLEČNÁ DOPRAVA,Ostrava,Tam i zpět,4. týden (23. 7. 2023 - 29. 7. 2023),RC Lanwood - Lanškroun,100,,670,670,670,0,100
+#14437,SPOLEČNÁ DOPRAVA,Ostrava,Tam i zpět,5. týden (30. 7. 2023 - 5. 8. 2023),RC Lanwood - Lanškroun,98,,670,670,670,0,100
+#14438,SPOLEČNÁ DOPRAVA,Ostrava,Tam i zpět,6. týden (6. 8. 2023 - 12. 8. 2023),RC Lanwood - Lanškroun,98,,670,670,670,0,100
+#14439,SPOLEČNÁ DOPRAVA,Ostrava,Tam i zpět,7. týden (13. 8. 2023 - 19. 8. 2023),RC Lanwood - Lanškroun,100,,670,670,670,0,100
+#14440,SPOLEČNÁ DOPRAVA,Ostrava,Tam i zpět,8. týden (20. 8. 2023 - 26. 8. 2023),RC Lanwood - Lanškroun,100,,670,670,670,0,100
+#14441,SPOLEČNÁ DOPRAVA,Ostrava,Tam i zpět,9. týden (27. 8. 2023 - 1. 9. 2023),RC Lanwood - Lanškroun,100,,670,670,670,0,100
+#14442,SPOLEČNÁ DOPRAVA,Olomouc,Do tábora,1. týden (2. 7. 2023 - 8. 7. 2023),RC Lanwood - Lanškroun,100,,224,224,224,0,100
+#14443,SPOLEČNÁ DOPRAVA,Olomouc,Do tábora,2. týden (9. 7. 2023 - 15. 7. 2023),RC Lanwood - Lanškroun,100,,224,224,224,0,100
+#14444,SPOLEČNÁ DOPRAVA,Olomouc,Do tábora,3. týden (16. 7. 2023 - 22. 7. 2023),RC Lanwood - Lanškroun,100,,224,224,224,0,100
+#14445,SPOLEČNÁ DOPRAVA,Olomouc,Do tábora,4. týden (23. 7. 2023 - 29. 7. 2023),RC Lanwood - Lanškroun,100,,224,224,224,0,100
+#14446,SPOLEČNÁ DOPRAVA,Olomouc,Do tábora,5. týden (30. 7. 2023 - 5. 8. 2023),RC Lanwood - Lanškroun,100,,224,224,224,0,100
+#14447,SPOLEČNÁ DOPRAVA,Olomouc,Do tábora,6. týden (6. 8. 2023 - 12. 8. 2023),RC Lanwood - Lanškroun,100,,224,224,224,0,100
+#14448,SPOLEČNÁ DOPRAVA,Olomouc,Do tábora,7. týden (13. 8. 2023 - 19. 8. 2023),RC Lanwood - Lanškroun,100,,224,224,224,0,100
+#14449,SPOLEČNÁ DOPRAVA,Olomouc,Do tábora,8. týden (20. 8. 2023 - 26. 8. 2023),RC Lanwood - Lanškroun,100,,224,224,224,0,100
+#14450,SPOLEČNÁ DOPRAVA,Olomouc,Do tábora,9. týden (27. 8. 2023 - 1. 9. 2023),RC Lanwood - Lanškroun,100,,224,224,224,0,100
+#14451,SPOLEČNÁ DOPRAVA,Olomouc,Z tábora,1. týden (2. 7. 2023 - 8. 7. 2023),RC Lanwood - Lanškroun,100,,224,224,224,0,100
+#14452,SPOLEČNÁ DOPRAVA,Olomouc,Z tábora,2. týden (9. 7. 2023 - 15. 7. 2023),RC Lanwood - Lanškroun,100,,224,224,224,0,100
+#14453,SPOLEČNÁ DOPRAVA,Olomouc,Z tábora,3. týden (16. 7. 2023 - 22. 7. 2023),RC Lanwood - Lanškroun,100,,224,224,224,0,100
+#14454,SPOLEČNÁ DOPRAVA,Olomouc,Z tábora,4. týden (23. 7. 2023 - 29. 7. 2023),RC Lanwood - Lanškroun,100,,224,224,224,0,100
+#14455,SPOLEČNÁ DOPRAVA,Olomouc,Z tábora,5. týden (30. 7. 2023 - 5. 8. 2023),RC Lanwood - Lanškroun,100,,224,224,224,0,100
+#14456,SPOLEČNÁ DOPRAVA,Olomouc,Z tábora,6. týden (6. 8. 2023 - 12. 8. 2023),RC Lanwood - Lanškroun,100,,224,224,224,0,100
+#14361,SPOLEČNÁ DOPRAVA,Praha,Do tábora,1. týden (2. 7. 2023 - 8. 7. 2023),RC Lanwood - Lanškroun,99,,310,310,310,0,100
+#14362,SPOLEČNÁ DOPRAVA,Praha,Do tábora,2. týden (9. 7. 2023 - 15. 7. 2023),RC Lanwood - Lanškroun,100,,310,310,310,0,100
+#14363,SPOLEČNÁ DOPRAVA,Praha,Do tábora,3. týden (16. 7. 2023 - 22. 7. 2023),RC Lanwood - Lanškroun,100,,310,310,310,0,100
+#14364,SPOLEČNÁ DOPRAVA,Praha,Do tábora,4. týden (23. 7. 2023 - 29. 7. 2023),RC Lanwood - Lanškroun,100,,310,310,310,0,100
+#14365,SPOLEČNÁ DOPRAVA,Praha,Do tábora,5. týden (30. 7. 2023 - 5. 8. 2023),RC Lanwood - Lanškroun,100,,310,310,310,0,100
+#14366,SPOLEČNÁ DOPRAVA,Praha,Do tábora,6. týden (6. 8. 2023 - 12. 8. 2023),RC Lanwood - Lanškroun,99,,310,310,310,0,100
+#14367,SPOLEČNÁ DOPRAVA,Praha,Do tábora,7. týden (13. 8. 2023 - 19. 8. 2023),RC Lanwood - Lanškroun,100,,310,310,310,0,100
+#14368,SPOLEČNÁ DOPRAVA,Praha,Do tábora,8. týden (20. 8. 2023 - 26. 8. 2023),RC Lanwood - Lanškroun,100,,310,310,310,0,100
+#14369,SPOLEČNÁ DOPRAVA,Praha,Do tábora,9. týden (27. 8. 2023 - 1. 9. 2023),RC Lanwood - Lanškroun,100,,310,310,310,0,100
+#14370,SPOLEČNÁ DOPRAVA,Praha,Z tábora,1. týden (2. 7. 2023 - 8. 7. 2023),RC Lanwood - Lanškroun,100,,310,310,310,0,100
+#14371,SPOLEČNÁ DOPRAVA,Praha,Z tábora,2. týden (9. 7. 2023 - 15. 7. 2023),RC Lanwood - Lanškroun,99,,310,310,310,0,100
+#14372,SPOLEČNÁ DOPRAVA,Praha,Z tábora,3. týden (16. 7. 2023 - 22. 7. 2023),RC Lanwood - Lanškroun,100,,310,310,310,0,100
+#14373,SPOLEČNÁ DOPRAVA,Praha,Z tábora,4. týden (23. 7. 2023 - 29. 7. 2023),RC Lanwood - Lanškroun,100,,310,310,310,0,100
+#14374,SPOLEČNÁ DOPRAVA,Praha,Z tábora,5. týden (30. 7. 2023 - 5. 8. 2023),RC Lanwood - Lanškroun,100,,310,310,310,0,100
+#14407,SPOLEČNÁ DOPRAVA,Brno,Tam i zpět,2. týden (9. 7. 2023 - 15. 7. 2023),RC Lanwood - Lanškroun,99,,498,498,498,0,100
+#14375,SPOLEČNÁ DOPRAVA,Praha,Z tábora,6. týden (6. 8. 2023 - 12. 8. 2023),RC Lanwood - Lanškroun,100,,310,310,310,0,100
+#14408,SPOLEČNÁ DOPRAVA,Brno,Tam i zpět,3. týden (16. 7. 2023 - 22. 7. 2023),RC Lanwood - Lanškroun,100,,498,498,498,0,100
+#14376,SPOLEČNÁ DOPRAVA,Praha,Z tábora,7. týden (13. 8. 2023 - 19. 8. 2023),RC Lanwood - Lanškroun,100,,310,310,310,0,100
+#14409,SPOLEČNÁ DOPRAVA,Brno,Tam i zpět,4. týden (23. 7. 2023 - 29. 7. 2023),RC Lanwood - Lanškroun,97,,498,498,498,0,100
+#14377,SPOLEČNÁ DOPRAVA,Praha,Z tábora,8. týden (20. 8. 2023 - 26. 8. 2023),RC Lanwood - Lanškroun,100,,310,310,310,0,100
+#14410,SPOLEČNÁ DOPRAVA,Brno,Tam i zpět,5. týden (30. 7. 2023 - 5. 8. 2023),RC Lanwood - Lanškroun,100,,498,498,498,0,100
+#14378,SPOLEČNÁ DOPRAVA,Praha,Z tábora,9. týden (27. 8. 2023 - 1. 9. 2023),RC Lanwood - Lanškroun,100,,310,310,310,0,100
+#14411,SPOLEČNÁ DOPRAVA,Brno,Tam i zpět,6. týden (6. 8. 2023 - 12. 8. 2023),RC Lanwood - Lanškroun,99,,498,498,498,0,100
+#14379,SPOLEČNÁ DOPRAVA,Praha,Tam i zpět,1. týden (2. 7. 2023 - 8. 7. 2023),RC Lanwood - Lanškroun,97,,620,620,620,0,100
+#14412,SPOLEČNÁ DOPRAVA,Brno,Tam i zpět,7. týden (13. 8. 2023 - 19. 8. 2023),RC Lanwood - Lanškroun,100,,498,498,498,0,100
+#14380,SPOLEČNÁ DOPRAVA,Praha,Tam i zpět,2. týden (9. 7. 2023 - 15. 7. 2023),RC Lanwood - Lanškroun,96,,620,620,620,0,100
+#14413,SPOLEČNÁ DOPRAVA,Brno,Tam i zpět,8. týden (20. 8. 2023 - 26. 8. 2023),RC Lanwood - Lanškroun,98,,498,498,498,0,100
+#14381,SPOLEČNÁ DOPRAVA,Praha,Tam i zpět,3. týden (16. 7. 2023 - 22. 7. 2023),RC Lanwood - Lanškroun,94,,620,620,620,0,100
+#14414,SPOLEČNÁ DOPRAVA,Brno,Tam i zpět,9. týden (27. 8. 2023 - 1. 9. 2023),RC Lanwood - Lanškroun,100,,498,498,498,0,100
+#14382,SPOLEČNÁ DOPRAVA,Praha,Tam i zpět,4. týden (23. 7. 2023 - 29. 7. 2023),RC Lanwood - Lanškroun,96,,620,620,620,0,100
+#14383,SPOLEČNÁ DOPRAVA,Praha,Tam i zpět,5. týden (30. 7. 2023 - 5. 8. 2023),RC Lanwood - Lanškroun,95,,620,620,620,0,100
+#14384,SPOLEČNÁ DOPRAVA,Praha,Tam i zpět,6. týden (6. 8. 2023 - 12. 8. 2023),RC Lanwood - Lanškroun,96,,620,620,620,0,100
+#14385,SPOLEČNÁ DOPRAVA,Praha,Tam i zpět,7. týden (13. 8. 2023 - 19. 8. 2023),RC Lanwood - Lanškroun,92,,620,620,620,0,100
+#14386,SPOLEČNÁ DOPRAVA,Praha,Tam i zpět,8. týden (20. 8. 2023 - 26. 8. 2023),RC Lanwood - Lanškroun,97,,620,620,620,0,100
+#14387,SPOLEČNÁ DOPRAVA,Praha,Tam i zpět,9. týden (27. 8. 2023 - 1. 9. 2023),RC Lanwood - Lanškroun,96,,620,620,620,0,100
+#14391,SPOLEČNÁ DOPRAVA,Brno,Do tábora,4. týden (23. 7. 2023 - 29. 7. 2023),RC Lanwood - Lanškroun,100,,249,249,249,0,100
+#14392,SPOLEČNÁ DOPRAVA,Brno,Do tábora,5. týden (30. 7. 2023 - 5. 8. 2023),RC Lanwood - Lanškroun,100,,249,249,249,0,100
+#14393,SPOLEČNÁ DOPRAVA,Brno,Do tábora,6. týden (6. 8. 2023 - 12. 8. 2023),RC Lanwood - Lanškroun,100,,249,249,249,0,100
+#14394,SPOLEČNÁ DOPRAVA,Brno,Do tábora,7. týden (13. 8. 2023 - 19. 8. 2023),RC Lanwood - Lanškroun,100,,249,249,249,0,100
+#14395,SPOLEČNÁ DOPRAVA,Brno,Do tábora,8. týden (20. 8. 2023 - 26. 8. 2023),RC Lanwood - Lanškroun,100,,249,249,249,0,100
+#14396,SPOLEČNÁ DOPRAVA,Brno,Do tábora,9. týden (27. 8. 2023 - 1. 9. 2023),RC Lanwood - Lanškroun,100,,249,249,249,0,100
+#14397,SPOLEČNÁ DOPRAVA,Brno,Z tábora,1. týden (2. 7. 2023 - 8. 7. 2023),RC Lanwood - Lanškroun,100,,249,249,249,0,100
+#14398,SPOLEČNÁ DOPRAVA,Brno,Z tábora,2. týden (9. 7. 2023 - 15. 7. 2023),RC Lanwood - Lanškroun,100,,249,249,249,0,100
+#14399,SPOLEČNÁ DOPRAVA,Brno,Z tábora,3. týden (16. 7. 2023 - 22. 7. 2023),RC Lanwood - Lanškroun,100,,249,249,249,0,100
+#14400,SPOLEČNÁ DOPRAVA,Brno,Z tábora,4. týden (23. 7. 2023 - 29. 7. 2023),RC Lanwood - Lanškroun,100,,249,249,249,0,100
+#14401,SPOLEČNÁ DOPRAVA,Brno,Z tábora,5. týden (30. 7. 2023 - 5. 8. 2023),RC Lanwood - Lanškroun,100,,249,249,249,0,100
+#14402,SPOLEČNÁ DOPRAVA,Brno,Z tábora,6. týden (6. 8. 2023 - 12. 8. 2023),RC Lanwood - Lanškroun,100,,249,249,249,0,100
+#14403,SPOLEČNÁ DOPRAVA,Brno,Z tábora,7. týden (13. 8. 2023 - 19. 8. 2023),RC Lanwood - Lanškroun,100,,249,249,249,0,100
+#14404,SPOLEČNÁ DOPRAVA,Brno,Z tábora,8. týden (20. 8. 2023 - 26. 8. 2023),RC Lanwood - Lanškroun,100,,249,249,249,0,100
+#14405,SPOLEČNÁ DOPRAVA,Brno,Z tábora,9. týden (27. 8. 2023 - 1. 9. 2023),RC Lanwood - Lanškroun,100,,249,249,249,0,100
+#14406,SPOLEČNÁ DOPRAVA,Brno,Tam i zpět,1. týden (2. 7. 2023 - 8. 7. 2023),RC Lanwood - Lanškroun,100,,498,498,498,0,100
+#14388,SPOLEČNÁ DOPRAVA,Brno,Do tábora,1. týden (2. 7. 2023 - 8. 7. 2023),RC Lanwood - Lanškroun,100,,249,249,249,0,100
+#14389,SPOLEČNÁ DOPRAVA,Brno,Do tábora,2. týden (9. 7. 2023 - 15. 7. 2023),RC Lanwood - Lanškroun,100,,249,249,249,0,100
+#14390,SPOLEČNÁ DOPRAVA,Brno,Do tábora,3. týden (16. 7. 2023 - 22. 7. 2023),RC Lanwood - Lanškroun,99,,249,249,249,0,100

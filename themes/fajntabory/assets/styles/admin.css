@@ -1,0 +1,30 @@
+.themepanel {
+
+}
+
+.themepanel .option_box {
+	background: #fff;
+	border: 1px solid #ddd;
+	padding: 15px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.themepanel .option_box h2 {
+	margin-top: 0;
+	padding-top: 0; 
+}
+
+.themepanel .option_box label {
+	display: block;
+	padding-bottom: 5px;
+}
+
+.themepanel .option_box input[type=text] {
+	padding: 10px 15px;
+	width: 100%;
+}
+
+.themepanel .option_box .logopicker {
+	display: inline-block;
+}

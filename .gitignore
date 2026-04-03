@@ -1,0 +1,12 @@
+*
+!/.gitignore
+!/docs/
+!/docs/theme-staging-deploy.md
+!/scripts/
+!/scripts/deploy-theme-staging.sh
+!/themes/
+!/themes/fajntabory/
+!/themes/fajntabory/**
+
+**/.DS_Store
+**/._*

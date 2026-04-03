@@ -1,0 +1,324 @@
+@media only screen and (max-width: 1380px) {
+	#tabory-vypis ul.buttons li {
+		width: 25%;
+	}
+
+	#tabory-vypis ul.buttons li li {
+		width: 100%;
+	}
+}
+
+@media only screen and (max-width: 1160px) {
+	#tabory-vypis ul.buttons li {
+		width: 33.33%;
+	}
+
+	#tabory-vypis ul.buttons li li {
+		width: 100%;
+	}
+}
+
+
+@media only screen and (max-width: 940px) {
+	#tabory-vypis ul.buttons li {
+		width: 50%;
+	}
+
+	#tabory-vypis ul.buttons li li {
+		width: 100%;
+	}
+}
+
+@media only screen and (max-width: 640px) {
+
+	header#header {
+		position: static;
+		height: auto;
+	}
+
+	header#header .logo {
+		float: none;
+		display: block;
+	}
+
+	header#header #social {
+		float: none;
+		display: block;
+		text-align: center;
+	}
+
+	.mobile_nav {
+		display: block !important;
+		height: 50px;
+		line-height: 50px;
+		padding: 0 15px;
+		text-decoration: none;
+		font-weight: 600;
+		color: #fff;
+		background: #7CAB31;
+	}
+
+	header#header ul.menu {
+		display: none;
+		margin: 0;
+		background: #222;
+	}
+
+	header#header #social ul li {
+		float: none;
+	}
+
+	header#header ul.menu li {
+		float: none;
+		width: 100%;
+		display: block;
+		height: auto;
+		border-bottom: 1px solid rgba( 0, 0, 0, 0.25 );
+		border-top: 1px solid rgba( 255, 255, 255, 0.15 );
+
+	}
+
+	header#header ul.menu li a {
+		display: block;
+		padding: 10px;
+		height: auto;
+		color: #fff;
+	}
+
+	#content {
+		margin-top: 0;
+	}
+
+	#promo {
+		padding: 75px 20%;
+		height: 300px;
+	}
+
+	#promo .flyer {
+		position: relative;
+	    line-height: 110%;
+	    width: 250px;
+	    margin-left: -125px;
+	    font-size: 32px;
+	    top: 0;
+	}
+
+	#about,
+	#tabory,
+	#tabory-vypis,
+	#hp_vedouci,
+	#hp_bannery,
+	#hp_galerie,
+	#footer,
+	.content,
+	.page-template-page-tabory-vypis #main .content {
+		padding: 40px 0 0;
+	}
+
+	#about,
+	#hp_vedouci,
+	#hp_bannery,
+	#hp_galerie,
+	#footer,
+	.home #tabory,
+	.home #tabory-vypis {
+		padding: 40px 25px 0;
+	}
+	
+	.single-galerie ul.listing li {
+		width: 100%;
+	}
+
+	.page-template-page-tabory-vypis #main #tabory {
+		padding: 20px 0 0;
+	}
+
+	.hp-section-title span {
+		font-size: 18px;
+	}
+
+	#tabory-vypis {
+		padding-top: 0;
+	}
+
+	#about div.about,
+	#about div.news {
+		width: 100%;
+		float: none;
+		margin: 0;
+	}
+
+	#tabory ul.buttons li {
+		width: 100%;
+		display: inline-block;
+		margin: 0;
+		vertical-align: top;
+	}
+
+	#tabory ul.buttons li span {
+		height: 84px;
+	}
+
+	#tabory-vypis ul.buttons li {
+		width: 100%;
+		display: block;
+	}
+
+	ul.buttons li a {
+		margin: 5px 0;
+	}
+
+	#hp_bannery div .banner {
+		height: auto;
+		width: 100%;
+		float: none;
+	}
+
+	#hp_bannery div .banner:first-child {
+		height: auto;
+	    padding: 30px 30px;
+	}
+	
+	#hp_bannery div .banner:first-child span {
+	    font-size: 24px;
+	}
+	
+	#hp_bannery div .banner:nth-child(2) {
+		height: auto;
+	}
+	
+	#hp_bannery div .banner:nth-child(2) span {
+		font-size: 24px;
+	}
+	
+	#hp_bannery div .banner:nth-child(3) {
+		height: auto;
+	    width: 100%;
+	}
+	
+	#hp_bannery div .banner:nth-child(3) span {
+	    font-size: 24px;
+	}
+	
+	#hp_bannery div .banner:nth-child(4) {
+		height: auto;
+	    width: 100%;
+	}
+	
+	#hp_bannery div .banner:nth-child(4) span {
+	    font-size: 24px;
+	}
+
+	#hp_galerie ul.buttons li {
+		width: 100%;
+		float: none;
+	}
+
+	#footer .widget-area {
+		width: 100%;
+	}
+
+	.page #sidebar,
+	.page #main,
+	.page-template-page-galerie #sidebar,
+	.page-template-page-galerie #main {
+		width: 100%;
+		float: none;
+		margin: 0;
+	}
+
+	.page #sidebar,
+	.page #main {
+		padding: 25px;
+	}
+
+	.page-template-page-galerie ul.buttons li {
+		width: 100%;
+		display: inline-block;
+		float: none;
+	}
+
+	.objednavka div.col-2,
+	.objednavka div.col-3 {
+		width: 100%;
+		display: block;
+		float: none;
+	}
+
+	.cross-sells ul li span.image, .cross-sells ul li span.summary, .cross-sells ul li span.excerpt, .cross-sells ul li span.action {
+		width: 100%;
+		display: block;
+		float: none;
+		max-height: 100%;
+	}
+
+	.cross-sells ul li {
+		margin: 0 !important;
+	}
+
+	.confirm {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		padding: 20px;
+		margin: 0;
+	}
+
+	#tabory-obsah {
+		padding: 20px;
+	}
+
+	#tabory-obsah img {
+		width: 100%;
+		height: auto;
+	}
+
+	.page-template-page-vedouci ul.listing li {
+		width: 100%;
+	}
+
+	.single-vedouci #main {
+		float: none;
+		width: 100%;
+		display: block;
+	}
+
+	.single-vedouci #sidebar {
+		float: none;
+		width: calc(100% - 100px);
+		display: block;
+	}
+
+	.single-vedouci #sidebar img {
+		width: 100%;
+		height: auto;
+	}
+
+	body.home #hp_vedouci ul.buttons li {
+		display: block;
+		width: 100%;
+		text-align: center;
+	}
+
+	body.product-template-default .offer {
+		padding: 0;
+	}
+
+	body.product-template-default table td {
+		display: block;
+	}
+
+	ul.product-listing li {
+		width: 100%;
+	}
+
+	.popup_window {
+		width: 90%;
+		left: 5%;
+		right: 5%;
+		top: 5%;
+	}
+
+}

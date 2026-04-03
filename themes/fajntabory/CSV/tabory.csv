@@ -1,0 +1,94 @@
+,,,,,,,,,,,,,,,,,,
+,INFORMATIVNÍ ČÁST,,INFORMATIVNÍ ČÁST,,INFORMATIVNÍ ČÁST,,,,MĚNITELNÁ ČÁST,,,,,,OBSAZENOST,CELKEM,vzorec pro navyšování,P4*S4+L4+R4
+,id,zaměření,lokalita,typ tábora,termín,stav,volná místa,,aktuální cena,základní cena,počáteční cena,týdenní navýšení,celková kapacita,,objednávky,505,"hodnota týdenního navýšení do
+8.4.2026","hodnota navýšení za objednávku tábora (klasika + příměstský 30 Kč, ostatní 50 Kč)"
+,#9433,KLASICKÝ TÁBOR,RC Lanwood - Lanškroun,Pobytový tábor,1. týden (28. 6. 2026 - 4. 7. 2026),aktivní,3,,5960,6100,4900,20,19,,16,5960,580,30
+,#9432,KLASICKÝ TÁBOR,RC Lanwood - Lanškroun,Pobytový tábor,2. týden (5. 7. 2026 - 11. 7. 2026),aktivní,2,,5870,6100,4900,20,15,,13,5870,580,30
+,#9431,KLASICKÝ TÁBOR,RC Lanwood - Lanškroun,Pobytový tábor,3. týden (12. 7. 2026 - 18. 7. 2026),aktivní,3,,5690,6100,4900,20,10,,7,5690,580,30
+,#9430,KLASICKÝ TÁBOR,RC Lanwood - Lanškroun,Pobytový tábor,4. týden (19. 7. 2026 - 25. 7. 2026),aktivní,3,,5780,6100,4900,20,13,,10,5780,580,30
+,#9429,KLASICKÝ TÁBOR,RC Lanwood - Lanškroun,Pobytový tábor,5. týden (26. 7. 2026 - 1. 8. 2026),aktivní,2,,5930,6100,4900,20,17,,15,5930,580,30
+,#9428,KLASICKÝ TÁBOR,RC Lanwood - Lanškroun,Pobytový tábor,6. týden (2. 8. 2026 - 8. 8. 2026),aktivní,5,,5780,6100,4900,20,15,,10,5780,580,30
+,#9427,KLASICKÝ TÁBOR,RC Lanwood - Lanškroun,Pobytový tábor,7. týden (9. 8. 2026 - 15. 8. 2026),aktivní,1,,5960,6100,4900,20,17,,16,5960,580,30
+,#28376,KLASICKÝ TÁBOR,RC Lanwood - Lanškroun,Pobytový tábor,8. týden (16. 8. 2026 - 22. 8. 2026),aktivní,2,,5690,6100,4900,20,9,,7,5690,580,30
+,#30760,KLASICKÝ TÁBOR,RC Lanwood - Lanškroun,Pobytový tábor,9. týden (23. 8. 2026 - 29. 8. 2026),aktivní,6,,5540,6100,4900,20,8,,2,5540,580,30
+,#40690,PŘÍMĚSTSKÝ TÁBOR,RC Lanwood - Lanškroun,Příměstský tábor,1.týden (29.06 - 03.07.2026),aktivní,3,,3440,4100,2800,20,5,,2,3440,580,30
+,#40691,PŘÍMĚSTSKÝ TÁBOR,RC Lanwood - Lanškroun,Příměstský tábor,2.týden (06.07. - 10.07.2026),aktivní,4,,3380,4100,2800,20,4,,0,3380,580,30
+,#40692,PŘÍMĚSTSKÝ TÁBOR,RC Lanwood - Lanškroun,Příměstský tábor,3.týden (13.07. - 17.07.2026),aktivní,4,,3470,4100,2800,20,7,,3,3470,580,30
+,#40693,PŘÍMĚSTSKÝ TÁBOR,RC Lanwood - Lanškroun,Příměstský tábor,4.týden (20.07. - 24.07.2026),aktivní,4,,3380,4100,2800,20,4,,0,3380,580,30
+,#40694,PŘÍMĚSTSKÝ TÁBOR,RC Lanwood - Lanškroun,Příměstský tábor,5.týden (27.07. - 31.7.2026),aktivní,4,,3380,4100,2800,20,4,,0,3380,580,30
+,#40695,PŘÍMĚSTSKÝ TÁBOR,RC Lanwood - Lanškroun,Příměstský tábor,6.týden (03.08. - 07.08.2026),aktivní,3,,3410,4100,2800,20,4,,1,3410,580,30
+,#40696,PŘÍMĚSTSKÝ TÁBOR,RC Lanwood - Lanškroun,Příměstský tábor,7.týden (10.08. - 14.08.2026),aktivní,4,,3380,4100,2800,20,4,,0,3380,580,30
+,#40697,PŘÍMĚSTSKÝ TÁBOR,RC Lanwood - Lanškroun,Příměstský tábor,8.týden (17.08. - 21.08.2026),aktivní,4,,3380,4100,2800,20,4,,0,3380,580,30
+,#40698,PŘÍMĚSTSKÝ TÁBOR,RC Lanwood - Lanškroun,Příměstský tábor,9.týden (24.08. - 28.08.2026),aktivní,2,,3470,4100,2800,20,5,,3,3470,580,30
+,#2330,PARKOUR CAMP,RC Lanwood - Lanškroun,Pobytový tábor,1. týden (28. 6. 2026 - 4. 7. 2026),aktivní,2,,6430,7100,5700,20,5,,3,6430,580,50
+,#2321,PARKOUR CAMP,RC Lanwood - Lanškroun,Pobytový tábor,3. týden (12. 7. 2026 - 18. 7. 2026),aktivní,1,,6580,7100,5700,20,7,,6,6580,580,50
+,#2317,PARKOUR CAMP,RC Lanwood - Lanškroun,Pobytový tábor,5. týden (26. 7. 2026 - 1. 8. 2026),aktivní,2,,6330,7100,5700,20,3,,1,6330,580,50
+,#30754,PARKOUR CAMP,RC Lanwood - Lanškroun,Pobytový tábor,7. týden (9. 8. 2026 - 15. 8. 2026),aktivní,2,,6430,7100,5700,20,5,,3,6430,580,50
+,#53454,PARKOUR CAMP,RC Lanwood - Lanškroun,Pobytový tábor,9. týden (23. 8. 2026 - 29. 8. 2026),aktivní,3,,6330,7100,5700,20,4,,1,6330,580,50
+,#9365,SCOOTER CAMP,RC Lanwood - Lanškroun,Pobytový tábor,1. týden (28. 6. 2026 - 4. 7. 2026),aktivní,1,,6930,7600,5900,20,10,,9,6930,580,50
+,#9364,SCOOTER CAMP,RC Lanwood - Lanškroun,Pobytový tábor,2. týden (5. 7. 2026 - 11. 7. 2026),aktivní,5,,6780,7600,5900,20,11,,6,6780,580,50
+,#9362,SCOOTER CAMP,RC Lanwood - Lanškroun,Pobytový tábor,3. týden (12. 7. 2026 - 18. 7. 2026),aktivní,4,,6830,7600,5900,20,11,,7,6830,580,50
+,#28866,SCOOTER CAMP,RC Lanwood - Lanškroun,Pobytový tábor,4. týden (19. 7. 2026 - 25. 7. 2026),aktivní,4,,6830,7600,5900,20,11,,7,6830,580,50
+,#9363,SCOOTER CAMP,RC Lanwood - Lanškroun,Pobytový tábor,5. týden (26. 7. 2026 - 1. 8. 2026),aktivní,1,,6980,7600,5900,20,11,,10,6980,580,50
+,#28864,SCOOTER CAMP,RC Lanwood - Lanškroun,Pobytový tábor,6. týden (2. 8. 2026 - 8. 8. 2026),aktivní,4,,6780,7600,5900,20,10,,6,6780,580,50
+,#28863,SCOOTER CAMP,RC Lanwood - Lanškroun,Pobytový tábor,7. týden (9. 8. 2026 - 15. 8. 2026),aktivní,6,,6530,7600,5900,20,7,,1,6530,580,50
+,#28867,SCOOTER CAMP,RC Lanwood - Lanškroun,Pobytový tábor,8. týden (16. 8. 2026 - 22. 8. 2026),aktivní,5,,6580,7600,5900,20,7,,2,6580,580,50
+,#30759,SCOOTER CAMP,RC Lanwood - Lanškroun,Pobytový tábor,9. týden (23. 8. 2026 - 29. 8. 2026),aktivní,6,,6530,7600,5900,20,7,,1,6530,580,50
+,#9361,SKATE CAMP,RC Lanwood - Lanškroun,Pobytový tábor,2. týden (5. 7. 2026 - 11. 7. 2026),aktivní,1,,6930,7100,5700,20,14,,13,6930,580,50
+,#4673,SKATE CAMP,RC Lanwood - Lanškroun,Pobytový tábor,6. týden (2. 8. 2026 - 8. 8. 2026),aktivní,3,,6430,7100,5700,20,6,,3,6430,580,50
+,#9360,SKATE CAMP,RC Lanwood - Lanškroun,Pobytový tábor,4. týden (19. 7. 2026 - 25. 7. 2026),aktivní,2,,6530,7100,5700,20,7,,5,6530,580,50
+,#2333,SKATE CAMP,RC Lanwood - Lanškroun,Pobytový tábor,8. týden (16. 8. 2026 - 22. 8. 2026),aktivní,3,,6430,7100,5700,20,6,,3,6430,580,50
+,#15231,RYBÁŘSKÝ TÁBOR,RC Lanwood - Lanškroun,Pobytový tábor,1. týden (28. 6. 2026 - 4. 7. 2026),aktivní,1,,6880,7100,5700,20,14,,12,6880,580,50
+,#15229,RYBÁŘSKÝ TÁBOR,RC Lanwood - Lanškroun,Pobytový tábor,2. týden (5. 7. 2026 - 11. 7. 2026),aktivní,0,,6930,7100,5700,20,15,,13,6930,580,50
+,#15227,RYBÁŘSKÝ TÁBOR,RC Lanwood - Lanškroun,Pobytový tábor,3. týden (12. 7. 2026 - 18. 7. 2026),aktivní,3,,6680,7100,5700,20,11,,8,6680,580,50
+,#15225,RYBÁŘSKÝ TÁBOR,RC Lanwood - Lanškroun,Pobytový tábor,4. týden (19. 7. 2026 - 25. 7. 2026),aktivní,2,,6630,7100,5700,20,9,,7,6630,580,50
+,#9401,RYBÁŘSKÝ TÁBOR,RC Lanwood - Lanškroun,Pobytový tábor,5. týden (26. 7. 2026 - 1. 8. 2026),aktivní,1,,6730,7100,5700,20,11,,9,6730,580,50
+,#9399,RYBÁŘSKÝ TÁBOR,RC Lanwood - Lanškroun,Pobytový tábor,6. týden (2. 8. 2026 - 8. 8. 2026),aktivní,1,,6730,7100,5700,20,11,,9,6730,580,50
+,#4743,RYBÁŘSKÝ TÁBOR,RC Lanwood - Lanškroun,Pobytový tábor,7. týden (9. 8. 2026 - 15. 8. 2026),aktivní,3,,6580,7100,5700,20,9,,6,6580,580,50
+,#2350,RYBÁŘSKÝ TÁBOR,RC Lanwood - Lanškroun,Pobytový tábor,8. týden (16. 8. 2026 - 22. 8. 2026),aktivní,4,,6330,7100,5700,20,5,,1,6330,580,50
+,#30758,RYBÁŘSKÝ TÁBOR,RC Lanwood - Lanškroun,Pobytový tábor,9. týden (23. 8. 2026 - 29. 8. 2026),aktivní,4,,6330,7100,5700,20,5,,1,6330,580,50
+,#53450,TÁBOR PRO KUTILY,RC Lanwood - Lanškroun,Pobytový tábor,1. týden (28. 6. 2026 - 4. 7. 2026),aktivní,3,,6280,7100,5700,20,3,,0,6280,580,50
+,#15245,TÁBOR PRO KUTILY,RC Lanwood - Lanškroun,Pobytový tábor,3. týden (12. 7. 2026 - 18. 7. 2026),aktivní,2,,6330,7100,5700,20,3,,1,6330,580,50
+,#53451,TÁBOR PRO KUTILY,RC Lanwood - Lanškroun,Pobytový tábor,5. týden (26. 7. 2026 - 1. 8. 2026),aktivní,3,,6280,7100,5700,20,3,,0,6280,580,50
+,#9435,TÁBOR PRO KUTILY,RC Lanwood - Lanškroun,Pobytový tábor,7. týden (9. 8. 2026 - 15. 8. 2026),aktivní,1,,6430,7100,5700,20,4,,3,6430,580,50
+,#53452,TÁBOR PRO KUTILY,RC Lanwood - Lanškroun,Pobytový tábor,9. týden (23. 8. 2026 - 29. 8. 2026),aktivní,2,,6330,7100,5700,20,3,,1,6330,580,50
+,#5162,AIRSOFT CAMP,RC Lanwood - Lanškroun,Pobytový tábor,1. týden (28. 6. 2026 - 4. 7. 2026),aktivní,6,,6330,7100,5700,20,7,,1,6330,580,50
+,#2271,AIRSOFT CAMP,RC Lanwood - Lanškroun,Pobytový tábor,2. týden (5. 7. 2026 - 11. 7. 2026),aktivní,4,,6680,7100,5700,20,12,,8,6680,580,50
+,#2272,AIRSOFT CAMP,RC Lanwood - Lanškroun,Pobytový tábor,3. týden (12. 7. 2026 - 18. 7. 2026),aktivní,2,,6880,7100,5700,20,14,,12,6880,580,50
+,#2280,AIRSOFT CAMP,RC Lanwood - Lanškroun,Pobytový tábor,4. týden (19. 7. 2026 - 25. 7. 2026),aktivní,2,,6730,7100,5700,20,11,,9,6730,580,50
+,#4693,AIRSOFT CAMP,RC Lanwood - Lanškroun,Pobytový tábor,5. týden (26. 7. 2026 - 1. 8. 2026),aktivní,4,,6430,7100,5700,20,7,,3,6430,580,50
+,#2278,AIRSOFT CAMP,RC Lanwood - Lanškroun,Pobytový tábor,6. týden (2. 8. 2026 - 8. 8. 2026),aktivní,3,,6480,7100,5700,20,7,,4,6480,580,50
+,#2276,AIRSOFT CAMP,RC Lanwood - Lanškroun,Pobytový tábor,7. týden (9. 8. 2026 - 15. 8. 2026),aktivní,2,,7030,7100,5700,20,17,,15,7030,580,50
+,#2274,AIRSOFT CAMP,RC Lanwood - Lanškroun,Pobytový tábor,8. týden (16. 8. 2026 - 22. 8. 2026),aktivní,5,,6380,7100,5700,20,7,,2,6380,580,50
+,#30757,AIRSOFT CAMP,RC Lanwood - Lanškroun,Pobytový tábor,9. týden (23. 8. 2026 - 29. 8. 2026),aktivní,6,,6330,7100,5700,20,7,,1,6330,580,50
+,#9392,TANEČNÍ TÁBOR,RC Lanwood - Lanškroun,Pobytový tábor,1. týden (28. 6. 2026 - 4. 7. 2026),aktivní,4,,6580,7100,5700,20,10,,6,6580,580,50
+,#9390,TANEČNÍ TÁBOR,RC Lanwood - Lanškroun,Pobytový tábor,3. týden (12. 7. 2026 - 18. 7. 2026),aktivní,4,,6480,7100,5700,20,8,,4,6480,580,50
+,#9391,TANEČNÍ TÁBOR,RC Lanwood - Lanškroun,Pobytový tábor,2. týden (5. 7. 2026 - 11. 7. 2026),aktivní,2,,7030,7100,5700,20,17,,15,7030,580,50
+,#9388,TANEČNÍ TÁBOR,RC Lanwood - Lanškroun,Pobytový tábor,4. týden (19. 7. 2026 - 25. 7. 2026),aktivní,2,,6580,7100,5700,20,8,,6,6580,580,50
+,#9386,TANEČNÍ TÁBOR,RC Lanwood - Lanškroun,Pobytový tábor,6. týden (2. 8. 2026 - 8. 8. 2026),aktivní,2,,6630,7100,5700,20,9,,7,6630,580,50
+,#9389,TANEČNÍ TÁBOR,RC Lanwood - Lanškroun,Pobytový tábor,5. týden (26. 7. 2026 - 1. 8. 2026),aktivní,4,,6530,7100,5700,20,9,,5,6530,580,50
+,#9387,TANEČNÍ TÁBOR,RC Lanwood - Lanškroun,Pobytový tábor,7. týden (9. 8. 2026 - 15. 8. 2026),aktivní,0,,6630,7100,5700,20,9,,7,6630,580,50
+,#9385,TANEČNÍ TÁBOR,RC Lanwood - Lanškroun,Pobytový tábor,8. týden (16. 8. 2026 - 22. 8. 2026),aktivní,2,,6430,7100,5700,20,5,,3,6430,580,50
+,#30755,TANEČNÍ TÁBOR,RC Lanwood - Lanškroun,Pobytový tábor,9. týden (23. 8. 2026 - 29. 8. 2026),aktivní,5,,6280,7100,5700,20,5,,0,6280,580,50
+,#28840,TÁBOR S MAZLÍČKY,RC Lanwood - Lanškroun,Pobytový tábor,1. týden (28. 6. 2026 - 4. 7. 2026),aktivní,2,,6580,7100,5700,20,8,,6,6580,580,50
+,#28842,TÁBOR S MAZLÍČKY,RC Lanwood - Lanškroun,Pobytový tábor,3. týden (12. 7. 2026 - 18. 7. 2026),aktivní,0,,7030,7100,5700,20,17,,15,7030,580,50
+,#30756,TÁBOR S MAZLÍČKY,RC Lanwood - Lanškroun,Pobytový tábor,5. týden (26. 7. 2026 - 1. 8. 2026),aktivní,3,,6380,7100,5700,20,5,,2,6380,580,50
+,#28847,TÁBOR S MAZLÍČKY,RC Lanwood - Lanškroun,Pobytový tábor,7. týden (9. 8. 2026 - 15. 8. 2026),aktivní,4,,6380,7100,5700,20,6,,2,6380,580,50
+,#28845,TÁBOR S MAZLÍČKY,RC Lanwood - Lanškroun,Pobytový tábor,9. týden (23. 8. 2026 - 29. 8. 2026),aktivní,4,,6280,7100,5700,20,4,,0,6280,580,50
+,#22925,JEZDECKÝ TÁBOR,RC Lanwood - Lanškroun,Pobytový tábor,2. týden (5. 7. 2026 - 11. 7. 2026),aktivní,4,,7580,8100,6500,20,14,,10,7580,580,50
+,#15218,JEZDECKÝ TÁBOR,RC Lanwood - Lanškroun,Pobytový tábor,6. týden (2. 8. 2026 - 8. 8. 2026),aktivní,3,,7330,8100,6500,20,8,,5,7330,580,50
+,#15219,JEZDECKÝ TÁBOR,RC Lanwood - Lanškroun,Pobytový tábor,4. týden (19. 7. 2026 - 25. 7. 2026),aktivní,1,,7780,8100,6500,20,15,,14,7780,580,50
+,#7631,JEZDECKÝ TÁBOR,RC Lanwood - Lanškroun,Pobytový tábor,8. týden (16. 8. 2026 - 22. 8. 2026),aktivní,2,,7280,8100,6500,20,6,,4,7280,580,50
+,#15224,VÝTVARNÝ TÁBOR,RC Lanwood - Lanškroun,Pobytový tábor,2. týden (5. 7. 2026 - 11. 7. 2026),aktivní,4,,6430,7100,5700,20,7,,3,6430,580,50
+,#9373,VÝTVARNÝ TÁBOR,RC Lanwood - Lanškroun,Pobytový tábor,4. týden (19. 7. 2026 - 25. 7. 2026),aktivní,2,,6680,7100,5700,20,10,,8,6680,580,50
+,#15223,VÝTVARNÝ TÁBOR,RC Lanwood - Lanškroun,Pobytový tábor,6. týden (2. 8. 2026 - 8. 8. 2026),aktivní,2,,6630,7100,5700,20,9,,7,6630,580,50
+,#9372,VÝTVARNÝ TÁBOR,RC Lanwood - Lanškroun,Pobytový tábor,8. týden (16. 8. 2026 - 22. 8. 2026),aktivní,5,,6480,7100,5700,20,9,,4,6480,580,50
+,#46861,HUDEBNÍ TÁBOR,RC Lanwood - Lanškroun,Pobytový tábor,2. týden (5. 7. 2026 - 11. 7. 2026),aktivní,1,,6430,7100,5700,20,5,,3,6430,580,50
+,#15240,HUDEBNÍ TÁBOR,RC Lanwood - Lanškroun,Pobytový tábor,4. týden (19. 7. 2026 - 25. 7. 2026),aktivní,2,,6630,7100,5700,20,9,,7,6630,580,50
+,#46862,HUDEBNÍ TÁBOR,RC Lanwood - Lanškroun,Pobytový tábor,6. týden (2. 8. 2026 - 8. 8. 2026),aktivní,4,,6280,7100,5700,20,4,,0,6280,580,50
+,#9393,HUDEBNÍ TÁBOR,RC Lanwood - Lanškroun,Pobytový tábor,8. týden (16. 8. 2026 - 22. 8. 2026),aktivní,4,,6280,7100,5700,20,4,,0,6280,580,50
+,#46863,FILMOVÝ TÁBOR,RC Lanwood - Lanškroun,Pobytový tábor,1. týden (28. 6. 2026 - 4. 7. 2026),aktivní,5,,6530,7100,5700,20,9,,5,6530,580,50
+,#46864,FILMOVÝ TÁBOR,RC Lanwood - Lanškroun,Pobytový tábor,3. týden (12. 7. 2026 - 18. 7. 2026),aktivní,0,,7530,7500,5700,20,25,,25,7530,580,50
+,#15236,FILMOVÝ TÁBOR,RC Lanwood - Lanškroun,Pobytový tábor,5. týden (26. 7. 2026 - 1. 8. 2026),aktivní,4,,6580,7100,5700,20,10,,6,6580,580,50
+,#46874,FILMOVÝ TÁBOR,RC Lanwood - Lanškroun,Pobytový tábor,7. týden (9. 8. 2026 - 15. 8. 2026),aktivní,1,,6680,7100,5700,20,10,,8,6680,580,50
+,#53456,FILMOVÝ TÁBOR,RC Lanwood - Lanškroun,Pobytový tábor,9. týden (23. 8. 2026 - 29. 8. 2026),aktivní,6,,6280,7100,5700,20,5,,0,6280,580,50
