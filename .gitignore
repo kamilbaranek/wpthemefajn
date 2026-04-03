@@ -1,9 +1,11 @@
 *
 !/.gitignore
 !/.gitattributes
+!/.deploy.production.env.example
 !/docs/
 !/docs/theme-staging-deploy.md
 !/scripts/
+!/scripts/deploy-theme.sh
 !/scripts/deploy-theme-staging.sh
 !/themes/
 !/themes/fajntabory/
