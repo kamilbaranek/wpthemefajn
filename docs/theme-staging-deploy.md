@@ -17,6 +17,7 @@ Tento workspace je schválně zúžený jen na deploy šablony `themes/fajntabor
    - `.gitignore`
 2. Push na remote `staging-theme` do branch `main` spustí na serveru `post-receive` hook.
 3. Hook checkoutne poslední commit a přes `rsync --delete` přepíše staging theme adresář.
+4. Hook po deployi čistí staré `.DS_Store` a `._*` soubory v targetu.
 
 Deploy je úmyslně DEV rychlý:
 
