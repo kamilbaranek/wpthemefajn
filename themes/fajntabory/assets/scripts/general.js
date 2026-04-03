@@ -203,10 +203,10 @@ jQuery(document).ready(function($) {
 
 
 	if ($("body").hasClass("single-product")) {
-		if($(".tabcontent").length != 0) {
-			if( $('#pobytovy').length > 0 ) {
+		if($(".camp-tab-panel").length != 0) {
+			if( $('[data-tab-panel="pobytovy"]').length > 0 ) {
 				openCard('js', 'pobytovy');
-			} else if( $('#primestsky').length > 0 ) {
+			} else if( $('[data-tab-panel="primestsky"]').length > 0 ) {
 				openCard('js', 'primestsky');
 			}
 		}
@@ -346,10 +346,10 @@ jQuery(document).ready(function($) {
 
 function openCard(evt, cardName) {
     // Declare all variables
-    var i, tabcontent, tablinks;
+    var i, tabcontent, tablinks, targetPanels, defaultButton;
 
     // Get all elements with class="tabcontent" and hide them
-    tabcontent = document.getElementsByClassName("tabcontent");
+    tabcontent = document.getElementsByClassName("camp-tab-panel");
     for (i = 0; i < tabcontent.length; i++) {
         tabcontent[i].style.display = "none";
     }
@@ -361,10 +361,17 @@ function openCard(evt, cardName) {
     }
 
     // Show the current tab, and add an "active" class to the button that opened the tab
-    document.getElementById(cardName).style.display = "block";
+    targetPanels = document.querySelectorAll('[data-tab-panel="' + cardName + '"]');
+    for (i = 0; i < targetPanels.length; i++) {
+    	targetPanels[i].style.display = "block";
+    }
+
     if( evt == 'js' ) {
-    	tablinks[0].className += " active";
-    } else {
+    	defaultButton = document.querySelector('.tablinks[data-tab-target="' + cardName + '"]');
+    	if (defaultButton) {
+    		defaultButton.className += " active";
+    	}
+    } else if (evt && evt.currentTarget) {
     	evt.currentTarget.className += " active";
     }
 }

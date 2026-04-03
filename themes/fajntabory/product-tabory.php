@@ -1,233 +1,378 @@
-<div id="main">
 <?php
-		$args = array(
-			'wrap_before' => '',
-			'wrap_after' => ''
+$term = wp_get_post_terms( get_the_id(), 'typ-tabora' );
+$term = ! empty( $term ) ? $term[0] : null;
+
+$barva = '#14b5e1';
+if ( ! empty( $term ) ) {
+	$term_barva = get_field( 'barva', 'typ-tabora_' . $term->term_id );
+	if ( ! empty( $term_barva ) ) {
+		$barva = $term_barva;
+	}
+}
+
+$pobytovy_content = get_field( 'popis_pro_pobytovy_tabor' );
+$primestsky_content = get_field( 'popis_pro_primestsky_tabor' );
+
+$hero_summary = trim( wp_strip_all_tags( get_the_excerpt() ) );
+$hero_summary = ! empty( $hero_summary ) ? wp_trim_words( $hero_summary, 42, '…' ) : '';
+
+$hero_image_full = get_the_post_thumbnail_url( get_the_id(), 'full' );
+$hero_tiles = array();
+if ( has_post_thumbnail() ) {
+	$hero_tiles[] = array(
+		'class' => 'is-featured',
+		'full'  => $hero_image_full,
+		'image' => get_the_post_thumbnail(
+			get_the_id(),
+			'large',
+			array(
+				'class' => 'camp-hero__tile-image',
+				'alt'   => trim( wp_strip_all_tags( get_the_title() ) ),
+			)
+		),
+	);
+}
+
+global $product;
+$attachment_ids = array();
+if ( ! empty( $product ) ) {
+	$attachment_ids = $product->get_gallery_attachment_ids();
+}
+
+if ( ! empty( $attachment_ids ) ) {
+	foreach ( array_slice( $attachment_ids, 0, 4 ) as $attachment_id ) {
+		$hero_tiles[] = array(
+			'class' => '',
+			'full'  => wp_get_attachment_url( $attachment_id ),
+			'image' => wp_get_attachment_image(
+				$attachment_id,
+				'large',
+				false,
+				array(
+					'class' => 'camp-hero__tile-image',
+				)
+			),
 		);
-	?>
-<div class="offer parallax" style="background-image: url(<?php echo the_post_thumbnail_url(); ?>);">
-		<?php the_title( '<h2>', '</h2>' ); ?>
-		<?php echo wpautop(do_shortcode(get_the_excerpt())); ?>
-	</div>
-<?php 
-		$term = wp_get_post_terms( get_the_id(), 'typ-tabora');
-		$term = $term[0];
-		$barva = get_field( 'barva', 'typ-tabora_'.$term->term_id );
+	}
+}
 
-		/* if( !empty( $barva )) {
-			echo '<style>';
-			echo '.description h1,';
-			echo '.description h2 {';
-			echo '	color: '.$barva.';';
-			echo '}';
-			echo '</style>';
-		} */
+$pobytovy = array();
+$primestsky = array();
+$count_pobytove = 0;
+$count_primestske = 0;
 
-	/**
-		 * Galerie
-		 */
-	global $product;
-		$attachment_ids = $product->get_gallery_attachment_ids();
-		if(!empty($attachment_ids)) {
-			echo '<h2 class="entry-title" style="background-color: '.$barva.';">Fotografie<span></span></h2>';
-			echo '<ul id="gallery">';
-			/* echo '<li>';
-			echo '<a href="http://www.youtube.com/watch?v=cH6kxtzovew" data-rel="prettyPhoto[gallery]">';
-			echo '<img src="http://img.youtube.com/vi/cH6kxtzovew/default.jpg">';
-			echo '</a>';
-			echo '</li>'; */
-			foreach( $attachment_ids as $attachment_id ) {
-				echo '<li>';
-				echo '<a href="'.wp_get_attachment_url($attachment_id).'" rel="prettyPhoto[gallery]">';
-				echo wp_get_attachment_image( $attachment_id, 'gallery' ); 
-				echo '</a>';
-				echo '</li>';
-			}
-			echo '</ul>';
-		}
-	global $product;
-	if ( $product->is_type( 'variable' ) ) {
-			
-			$available_variations = $product->get_available_variations();
+if ( ! empty( $product ) && $product->is_type( 'variable' ) ) {
+	$available_variations = $product->get_available_variations();
 
-			$pobytovy = array();
-			$primestsky = array();
-			$count_pobytove = 0;
-			$count_primestske = 0;
-			foreach ( $available_variations as $variation ) {
+	foreach ( $available_variations as $variation ) {
+		$taxonomy = 'pa_lokalita';
+		$lokalita = get_post_meta( $variation['variation_id'], 'attribute_' . $taxonomy, true );
+		$lokalita = get_term_by( 'slug', $lokalita, $taxonomy );
+		$lokalita = ! empty( $lokalita->name ) ? $lokalita->name : '';
 
-				$taxonomy = 'pa_lokalita';
-				$lokalita = get_post_meta( $variation['variation_id'], 'attribute_'.$taxonomy, true );
-				$lokalita = get_term_by('slug', $lokalita, $taxonomy);
-				$lokalita = $lokalita->name;
-				
-				$taxonomy = 'pa_typ-tabora';
-				$typ_tabora = get_post_meta( $variation['variation_id'], 'attribute_'.$taxonomy, true );
-				$typ_tabora = get_term_by('slug', $typ_tabora, $taxonomy);
-				$typ_tabora_slug = $typ_tabora->slug;
-				$typ_tabora = $typ_tabora->name;
-				
-				$taxonomy = 'pa_terminy';
-				$terminy = get_post_meta( $variation['variation_id'], 'attribute_'.$taxonomy, true );
-				$terminy = get_term_by('slug', $terminy, $taxonomy);
-				$terminy = $terminy->name;
+		$taxonomy = 'pa_typ-tabora';
+		$typ_tabora = get_post_meta( $variation['variation_id'], 'attribute_' . $taxonomy, true );
+		$typ_tabora = get_term_by( 'slug', $typ_tabora, $taxonomy );
+		$typ_tabora_slug = ! empty( $typ_tabora->slug ) ? $typ_tabora->slug : '';
+		$typ_tabora_name = ! empty( $typ_tabora->name ) ? $typ_tabora->name : '';
 
-				// var_dump( get_post_meta( $variation['variation_id'] ) );
-				
-				if( $typ_tabora_slug == 'pobytovy-tabor' ) {
-					if( empty( $variation['max_qty'] ) ) {
-						$variation['max_qty'] = 0;
-					}
-					$sale_to = get_post_meta( $variation['variation_id'], '_sale_price_dates_to', true );
-				
-					$pobytovy[] = array(
-						'lokalita' 				=> $lokalita,
-						'typ_tabora'			=> $typ_tabora,
-						'terminy'				=> $terminy,
-						'variation_price'		=> $variation['display_regular_price'] . ' Kč',
-						'variation_discount'	=> $variation['display_price'] . ' Kč',
-						'variation_discount_to'	=> get_post_meta( $variation['variation_id'], '_sale_price_dates_to', true ),
-						'variation_qty'			=> 'zbývá ' . $variation['max_qty'] . ' míst',
-						'int_variation_qty'		=> $variation['max_qty'],
-						'variation_id'			=> $variation['variation_id']
-					);
-					$count_pobytove++;
-					
-				} 
+		$taxonomy = 'pa_terminy';
+		$terminy = get_post_meta( $variation['variation_id'], 'attribute_' . $taxonomy, true );
+		$terminy = get_term_by( 'slug', $terminy, $taxonomy );
+		$terminy = ! empty( $terminy->name ) ? $terminy->name : '';
 
-				if ( $typ_tabora_slug == 'primestsky-tabor' ) {
-					if( empty( $variation['max_qty'] ) ) {
-						$variation['max_qty'] = 0;
-					}
-					$sale_to = get_post_meta( $variation['variation_id'], '_sale_price_dates_to', true );
-				
-					$primestsky[] = array(
-						'lokalita' 				=> $lokalita,
-						'typ_tabora'			=> $typ_tabora,
-						'terminy'				=> $terminy,
-						'variation_price'		=> $variation['display_regular_price'] . ' Kč',
-						'variation_discount'	=> $variation['display_price'] . ' Kč',
-						'variation_discount_to'	=> get_post_meta( $variation['variation_id'], '_sale_price_dates_to', true ),
-						'variation_qty'			=> 'zbývá ' . $variation['max_qty'] . ' míst',
-						'int_variation_qty'		=> $variation['max_qty'],
-						'variation_id'			=> $variation['variation_id']
-					);
-					$count_primestske++;
-				}
+		$discount_to = (int) get_post_meta( $variation['variation_id'], '_sale_price_dates_to', true );
+		$manage_stock = get_post_meta( $variation['variation_id'], '_manage_stock', true ) != 'no';
+		$max_qty = ! empty( $variation['max_qty'] ) ? (int) $variation['max_qty'] : 0;
+		$current_qty = $manage_stock ? $max_qty - count( retrieve_orders_ids_from_a_product_id( $variation['variation_id'] ) ) : null;
 
+		$availability_label = '';
+		$availability_class = '';
+		$can_order = true;
+		$order_link = '?add_to_cart=' . $variation['variation_id'];
+
+		if ( $manage_stock ) {
+			$current_qty = max( 0, (int) $current_qty );
+
+			if ( $current_qty <= 0 ) {
+				$availability_label = 'Obsazeno';
+				$availability_class = 'is-full';
+				$can_order = false;
+				$order_link = '#';
+			} elseif ( $current_qty < 6 ) {
+				$availability_label = 'Zbývá ' . $current_qty . ' míst';
+				$availability_class = 'is-low';
+			} else {
+				$availability_label = 'Zbývá ' . $current_qty . ' míst';
+				$availability_class = 'is-open';
 			}
 		}
-	?>
-<div class="description">
-		<?php wc_print_notices(); ?>
-		<div class="tab">
-			<?php if( !empty( get_field( "popis_pro_pobytovy_tabor" ) ) && $count_pobytove > 0 ) { ?>
-				<button class="tablinks" onclick="openCard(event, 'pobytovy')" id="defaultOpen">Pobytový tábor</button>
-			<?php } ?>
-		<?php if( !empty( get_field( "popis_pro_primestsky_tabor" ) ) && $count_primestske > 0 && $count_pobytove != 0 )  { ?>
-				<button class="tablinks" onclick="openCard(event, 'primestsky')">Příměstský tábor</button>
-			<?php } ?>
-		<?php if( !empty( get_field( "popis_pro_primestsky_tabor" ) ) && $count_primestske > 0 && $count_pobytove <= 0 )  { ?>
-				<button class="tablinks" onclick="openCard(event, 'primestsky')" id="defaultOpen">Příměstský tábor</button>
-			<?php } ?>
-		</div>
-	<?php if( !empty( get_field( "popis_pro_pobytovy_tabor" ) ) && $count_pobytove > 0 )  { ?>
-		<div id="pobytovy" class="tabcontent">
-		<div class="variations">
-				<table class="variation">
-					<?php
-						foreach ( $pobytovy as $tabor ) {
-							echo '<tr>';
-							echo '<td>'.$tabor['lokalita'].'</td>';
-							echo '<td>'.$tabor['typ_tabora'].'</td>';
-							echo '<td>'.$tabor['terminy'].'</td>';
 
-							if( $tabor['variation_price'] == $tabor['variation_discount'] || $tabor['variation_price'] < $tabor['variation_discount'] ) {
-								echo '<td class="variation_discount">'.wc_price( $tabor['variation_price'] ).'</td><td></td>';
-							} else {
-								echo '<td class="variation_price">'.wc_price( $tabor['variation_price'] ).'</td>';
-								if( ! $tabor['variation_discount_to'] || $tabor['variation_discount_to'] < time() ) {
-									echo '<td class="variation_discount">'.wc_price( $tabor['variation_discount'] ).'</td>';
-								} else {
-									echo '<td class="variation_discount">'.wc_price( $tabor['variation_discount'] ).'<br><small>platí do '.date('j.n.Y', $tabor['variation_discount_to'] ).'</small></td>';
-								}
-							}
+		$item = array(
+			'lokalita'              => $lokalita,
+			'typ_tabora'            => $typ_tabora_name,
+			'terminy'               => $terminy,
+			'regular_price'         => (float) $variation['display_regular_price'],
+			'discount_price'        => (float) $variation['display_price'],
+			'discount_to'           => $discount_to,
+			'variation_id'          => $variation['variation_id'],
+			'current_qty'           => $current_qty,
+			'manage_stock'          => $manage_stock,
+			'can_order'             => $can_order,
+			'order_link'            => $order_link,
+			'availability_label'    => $availability_label,
+			'availability_class'    => $availability_class,
+		);
 
-							if( get_post_meta( $tabor['variation_id'], '_manage_stock', 'true' ) != 'no' ) {
+		if ( $typ_tabora_slug == 'pobytovy-tabor' ) {
+			$pobytovy[] = $item;
+			$count_pobytove++;
+		}
 
-								$new_qty = (int)$tabor['int_variation_qty'] - (int)count( retrieve_orders_ids_from_a_product_id($tabor['variation_id']) );
+		if ( $typ_tabora_slug == 'primestsky-tabor' ) {
+			$primestsky[] = $item;
+			$count_primestske++;
+		}
+	}
+}
 
-								if( $new_qty <= 0 ) {
-									echo '<td><strong style="color:#c10000;">OBSAZENO</strong></td>';
-									echo '<td><a href="#" class="disabled">Objednat</a></td>';
-								} else if( $new_qty < 6 ) {
-									echo '<td>Zbývá <strong style="color:#c10000;">'.$new_qty.'</strong> míst</td>';
-									echo '<td><a href="?add_to_cart='.$tabor['variation_id'].'">Objednat</a></td>';
-								} else {
-									echo '<td>Zbývá '.$new_qty.' míst</td>';
-									echo '<td><a href="?add_to_cart='.$tabor['variation_id'].'">Objednat</a></td>';
-								}
+$has_pobytovy = $count_pobytove > 0;
+$has_primestsky = $count_primestske > 0;
+$default_tab = $has_pobytovy ? 'pobytovy' : 'primestsky';
 
-							} else {
-								echo '<td></td>';
-								echo '<td><a href="?add_to_cart='.$tabor['variation_id'].'">Objednat</a></td>';
-							}
-							echo '<tr>';
-						}
-					?>
-				</table>
+$pobytovy_lowest_price = 0;
+$pobytovy_location = '';
+if ( ! empty( $pobytovy ) ) {
+	$pobytovy_location = $pobytovy[0]['lokalita'];
+	foreach ( $pobytovy as $item ) {
+		$item_price = $item['discount_price'] > 0 ? $item['discount_price'] : $item['regular_price'];
+		if ( empty( $pobytovy_lowest_price ) || $item_price < $pobytovy_lowest_price ) {
+			$pobytovy_lowest_price = $item_price;
+		}
+	}
+}
+
+$primestsky_lowest_price = 0;
+$primestsky_location = '';
+if ( ! empty( $primestsky ) ) {
+	$primestsky_location = $primestsky[0]['lokalita'];
+	foreach ( $primestsky as $item ) {
+		$item_price = $item['discount_price'] > 0 ? $item['discount_price'] : $item['regular_price'];
+		if ( empty( $primestsky_lowest_price ) || $item_price < $primestsky_lowest_price ) {
+			$primestsky_lowest_price = $item_price;
+		}
+	}
+}
+?>
+
+<div id="main" class="camp-product" style="--camp-accent: <?php echo esc_attr( $barva ); ?>;">
+	<div class="camp-product__top">
+		<section class="camp-hero">
+			<div class="camp-hero__tiles">
+				<?php if ( ! empty( $hero_tiles ) ) { ?>
+					<?php foreach ( $hero_tiles as $tile ) { ?>
+						<div class="camp-hero__tile <?php echo esc_attr( $tile['class'] ); ?>">
+							<a href="<?php echo esc_url( $tile['full'] ); ?>" rel="prettyPhoto[gallery]">
+								<?php echo $tile['image']; ?>
+							</a>
+						</div>
+					<?php } ?>
+				<?php } elseif ( ! empty( $hero_image_full ) ) { ?>
+					<div class="camp-hero__tile is-featured">
+						<img class="camp-hero__tile-image" src="<?php echo esc_url( $hero_image_full ); ?>" alt="<?php echo esc_attr( trim( wp_strip_all_tags( get_the_title() ) ) ); ?>">
+					</div>
+				<?php } ?>
 			</div>
-		<?php echo do_shortcode(get_field( "popis_pro_pobytovy_tabor" )); ?>
-		</div>
+
+			<div class="camp-hero__copy">
+				<?php if ( ! empty( $term->name ) ) { ?>
+					<div class="camp-hero__eyebrow"><?php echo esc_html( $term->name ); ?></div>
+				<?php } ?>
+
+				<?php the_title( '<h1 class="camp-hero__title">', '</h1>' ); ?>
+
+				<?php if ( ! empty( $hero_summary ) ) { ?>
+					<p class="camp-hero__summary"><?php echo esc_html( $hero_summary ); ?></p>
+				<?php } ?>
+
+				<div class="camp-hero__actions">
+					<?php if ( $has_pobytovy || $has_primestsky ) { ?>
+						<a class="camp-hero__button" href="#camp-booking">Vybrat termín</a>
+					<?php } ?>
+
+					<?php if ( ! empty( $attachment_ids ) ) { ?>
+						<a class="camp-hero__button is-secondary" href="#camp-gallery">Fotogalerie</a>
+					<?php } ?>
+				</div>
+			</div>
+		</section>
+
+		<?php if ( $has_pobytovy || $has_primestsky ) { ?>
+			<aside class="camp-booking" id="camp-booking">
+				<?php wc_print_notices(); ?>
+
+				<div class="camp-booking__header">
+					<p class="camp-booking__eyebrow">Termíny a ceny</p>
+					<h2>Vyberte vhodný termín</h2>
+				</div>
+
+				<?php if ( $has_pobytovy && $has_primestsky ) { ?>
+					<div class="tab camp-booking__tabs">
+						<button class="tablinks active" onclick="openCard(event, 'pobytovy')" data-tab-target="pobytovy" id="defaultOpen">Pobytový tábor</button>
+						<button class="tablinks" onclick="openCard(event, 'primestsky')" data-tab-target="primestsky">Příměstský tábor</button>
+					</div>
+				<?php } elseif ( $has_pobytovy ) { ?>
+					<div class="camp-booking__single-label">Pobytový tábor</div>
+				<?php } elseif ( $has_primestsky ) { ?>
+					<div class="camp-booking__single-label">Příměstský tábor</div>
+				<?php } ?>
+
+				<?php if ( $has_pobytovy ) { ?>
+					<div class="tabcontent camp-tab-panel camp-booking__panel" data-tab-panel="pobytovy" style="<?php echo $default_tab === 'pobytovy' ? 'display:block;' : 'display:none;'; ?>">
+						<div class="camp-booking__summary">
+							<div class="camp-booking__summary-item">
+								<span>Termínů</span>
+								<strong><?php echo esc_html( count( $pobytovy ) ); ?></strong>
+							</div>
+							<div class="camp-booking__summary-item">
+								<span>Cena od</span>
+								<strong><?php echo wc_price( $pobytovy_lowest_price ); ?></strong>
+							</div>
+							<?php if ( ! empty( $pobytovy_location ) ) { ?>
+								<div class="camp-booking__summary-item">
+									<span>Lokalita</span>
+									<strong><?php echo esc_html( $pobytovy_location ); ?></strong>
+								</div>
+							<?php } ?>
+						</div>
+
+						<div class="camp-booking__cards">
+							<?php foreach ( $pobytovy as $tabor ) { ?>
+								<div class="camp-booking-card">
+									<div class="camp-booking-card__top">
+										<?php if ( ! empty( $tabor['lokalita'] ) ) { ?>
+											<p class="camp-booking-card__location"><?php echo esc_html( $tabor['lokalita'] ); ?></p>
+										<?php } ?>
+										<h3><?php echo esc_html( $tabor['terminy'] ); ?></h3>
+									</div>
+
+									<div class="camp-booking-card__meta">
+										<div class="camp-booking-card__prices">
+											<?php if ( $tabor['regular_price'] > $tabor['discount_price'] ) { ?>
+												<span class="camp-booking-card__price-old"><?php echo wc_price( $tabor['regular_price'] ); ?></span>
+											<?php } ?>
+											<span class="camp-booking-card__price-current"><?php echo wc_price( $tabor['discount_price'] ); ?></span>
+											<?php if ( $tabor['regular_price'] > $tabor['discount_price'] && ! empty( $tabor['discount_to'] ) && $tabor['discount_to'] >= time() ) { ?>
+												<small>Platí do <?php echo esc_html( date( 'j.n.Y', $tabor['discount_to'] ) ); ?></small>
+											<?php } ?>
+										</div>
+
+										<?php if ( $tabor['manage_stock'] ) { ?>
+											<div class="camp-booking-card__availability <?php echo esc_attr( $tabor['availability_class'] ); ?>">
+												<?php echo esc_html( $tabor['availability_label'] ); ?>
+											</div>
+										<?php } ?>
+									</div>
+
+									<a class="camp-booking-card__cta <?php echo ! $tabor['can_order'] ? 'disabled' : ''; ?>" href="<?php echo esc_url( $tabor['order_link'] ); ?>">
+										<?php echo $tabor['can_order'] ? 'Objednat' : 'Obsazeno'; ?>
+									</a>
+								</div>
+							<?php } ?>
+						</div>
+					</div>
+				<?php } ?>
+
+				<?php if ( $has_primestsky ) { ?>
+					<div class="tabcontent camp-tab-panel camp-booking__panel" data-tab-panel="primestsky" style="<?php echo $default_tab === 'primestsky' ? 'display:block;' : 'display:none;'; ?>">
+						<div class="camp-booking__summary">
+							<div class="camp-booking__summary-item">
+								<span>Termínů</span>
+								<strong><?php echo esc_html( count( $primestsky ) ); ?></strong>
+							</div>
+							<div class="camp-booking__summary-item">
+								<span>Cena od</span>
+								<strong><?php echo wc_price( $primestsky_lowest_price ); ?></strong>
+							</div>
+							<?php if ( ! empty( $primestsky_location ) ) { ?>
+								<div class="camp-booking__summary-item">
+									<span>Lokalita</span>
+									<strong><?php echo esc_html( $primestsky_location ); ?></strong>
+								</div>
+							<?php } ?>
+						</div>
+
+						<div class="camp-booking__cards">
+							<?php foreach ( $primestsky as $tabor ) { ?>
+								<div class="camp-booking-card">
+									<div class="camp-booking-card__top">
+										<?php if ( ! empty( $tabor['lokalita'] ) ) { ?>
+											<p class="camp-booking-card__location"><?php echo esc_html( $tabor['lokalita'] ); ?></p>
+										<?php } ?>
+										<h3><?php echo esc_html( $tabor['terminy'] ); ?></h3>
+									</div>
+
+									<div class="camp-booking-card__meta">
+										<div class="camp-booking-card__prices">
+											<?php if ( $tabor['regular_price'] > $tabor['discount_price'] ) { ?>
+												<span class="camp-booking-card__price-old"><?php echo wc_price( $tabor['regular_price'] ); ?></span>
+											<?php } ?>
+											<span class="camp-booking-card__price-current"><?php echo wc_price( $tabor['discount_price'] ); ?></span>
+											<?php if ( $tabor['regular_price'] > $tabor['discount_price'] && ! empty( $tabor['discount_to'] ) && $tabor['discount_to'] >= time() ) { ?>
+												<small>Platí do <?php echo esc_html( date( 'j.n.Y', $tabor['discount_to'] ) ); ?></small>
+											<?php } ?>
+										</div>
+
+										<?php if ( $tabor['manage_stock'] ) { ?>
+											<div class="camp-booking-card__availability <?php echo esc_attr( $tabor['availability_class'] ); ?>">
+												<?php echo esc_html( $tabor['availability_label'] ); ?>
+											</div>
+										<?php } ?>
+									</div>
+
+									<a class="camp-booking-card__cta <?php echo ! $tabor['can_order'] ? 'disabled' : ''; ?>" href="<?php echo esc_url( $tabor['order_link'] ); ?>">
+										<?php echo $tabor['can_order'] ? 'Objednat' : 'Obsazeno'; ?>
+									</a>
+								</div>
+							<?php } ?>
+						</div>
+					</div>
+				<?php } ?>
+			</aside>
 		<?php } ?>
-	<?php if( !empty( get_field( "popis_pro_primestsky_tabor" ) ) && $count_primestske > 0 )  { ?>
-		<div id="primestsky" class="tabcontent">
-		<div class="variations">
-				<table class="variation">
-					<?php
-						foreach ( $primestsky as $tabor ) {
-							echo '<tr>';
-							echo '<td>'.$tabor['lokalita'].'</td>';
-							echo '<td>'.$tabor['typ_tabora'].'</td>';
-							echo '<td>'.$tabor['terminy'].'</td>';
+	</div>
 
-							if( $tabor['variation_price'] == $tabor['variation_discount'] || $tabor['variation_price'] < $tabor['variation_discount'] ) {
-								echo '<td class="variation_discount">'.wc_price( $tabor['variation_price'] ).'</td><td></td>';
-							} else {
-								echo '<td class="variation_price">'.wc_price( $tabor['variation_price'] ).'</td>';
-								if( ! $tabor['variation_discount_to'] || $tabor['variation_discount_to'] < time() ) {
-									echo '<td class="variation_discount">'.wc_price( $tabor['variation_discount'] ).'</td>';
-								} else {
-									echo '<td class="variation_discount">'.wc_price( $tabor['variation_discount'] ).'<br><small>platí do '.date('j.n.Y', $tabor['variation_discount_to'] ).'</small></td>';
-								}
-							}
+	<?php if ( ! empty( $attachment_ids ) ) { ?>
+		<section class="camp-gallery-section" id="camp-gallery">
+			<h2 class="entry-title" style="background-color: <?php echo esc_attr( $barva ); ?>;">Fotografie<span>Výběr z atmosféry a programu</span></h2>
+			<ul id="gallery">
+				<?php foreach ( $attachment_ids as $attachment_id ) { ?>
+					<li>
+						<a href="<?php echo esc_url( wp_get_attachment_url( $attachment_id ) ); ?>" rel="prettyPhoto[gallery]">
+							<?php echo wp_get_attachment_image( $attachment_id, 'gallery' ); ?>
+						</a>
+					</li>
+				<?php } ?>
+			</ul>
+		</section>
+	<?php } ?>
 
-							if( get_post_meta( $tabor['variation_id'], '_manage_stock', 'true' ) != 'no' ) {
-
-								$new_qty = (int)$tabor['int_variation_qty'] - (int)count( retrieve_orders_ids_from_a_product_id($tabor['variation_id']) );
-
-								if( $new_qty <= 0 ) {
-									echo '<td><strong style="color:#c10000;">OBSAZENO</strong></td>';
-									echo '<td><a href="#" class="disabled">Objednat</a></td>';
-								} else if( $new_qty <= 5 && $new_qty > 0 ) {
-									echo '<td><strong style="color:#c10000;">Zbývá '.$new_qty.' míst</strong></td>';
-									echo '<td><a href="?add_to_cart='.$tabor['variation_id'].'">Objednat</a></td>';
-								} else {
-									echo '<td>Zbývá '.$new_qty.' míst</td>';
-									echo '<td><a href="?add_to_cart='.$tabor['variation_id'].'">Objednat</a></td>';
-								}
-
-							} else {
-								echo '<td></td>';
-								echo '<td><a href="?add_to_cart='.$tabor['variation_id'].'">Objednat</a></td>';
-							}
-							echo '<tr>';
-						}
-					?>
-				</table>
-			</div>
-		<?php echo do_shortcode(get_field( "popis_pro_primestsky_tabor" )); ?>
+	<div class="description camp-description" id="camp-program">
+		<div class="camp-description__intro">
+			<h2>Program a detaily tábora</h2>
+			<p>Vše podstatné o programu, lokalitě, vybavení a organizaci najdete níže.</p>
 		</div>
+
+		<?php if ( $has_pobytovy ) { ?>
+			<div class="tabcontent camp-tab-panel camp-description__panel" data-tab-panel="pobytovy" style="<?php echo $default_tab === 'pobytovy' ? 'display:block;' : 'display:none;'; ?>">
+				<?php echo do_shortcode( $pobytovy_content ); ?>
+			</div>
+		<?php } ?>
+
+		<?php if ( $has_primestsky ) { ?>
+			<div class="tabcontent camp-tab-panel camp-description__panel" data-tab-panel="primestsky" style="<?php echo $default_tab === 'primestsky' ? 'display:block;' : 'display:none;'; ?>">
+				<?php echo do_shortcode( $primestsky_content ); ?>
+			</div>
 		<?php } ?>
 	</div>
 </div>

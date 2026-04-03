@@ -2348,3 +2348,479 @@ div.tab button.active {
     font-weight: 700 !important;      /* silnější font */
     color: #444 !important;           /* černá – nejlepší čitelnost */
 }
+
+/* Detail tábora */
+.camp-product {
+	max-width: 1440px;
+	margin: 0 auto;
+	padding: 24px 25px 0;
+}
+
+.camp-product .tabcontent {
+	padding: 0;
+	border-top: none;
+}
+
+.camp-product__top {
+	display: block;
+}
+
+.camp-hero {
+	position: relative;
+	padding: 18px;
+	border-radius: 32px;
+	background: linear-gradient(135deg, rgba(255,255,255,0.96), rgba(240,247,252,0.92));
+	box-shadow: 0 24px 60px rgba(12, 44, 73, 0.12);
+	overflow: hidden;
+}
+
+.camp-hero__tiles {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	grid-auto-rows: 140px;
+	gap: 12px;
+}
+
+.camp-hero__tile {
+	border-radius: 24px;
+	overflow: hidden;
+	background: #dfeaf1;
+}
+
+.camp-hero__tile.is-featured {
+	grid-column: span 2;
+	grid-row: span 2;
+}
+
+.camp-hero__tile a,
+.camp-hero__tile-image {
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+.camp-hero__tile-image {
+	object-fit: cover;
+	transition: transform 0.35s ease;
+}
+
+.camp-hero__tile:hover .camp-hero__tile-image {
+	transform: scale(1.04);
+}
+
+.camp-hero__copy {
+	margin-top: 18px;
+	padding: 24px;
+	border-radius: 24px;
+	background: rgba(19, 29, 40, 0.78);
+	color: #fff;
+	backdrop-filter: blur(14px);
+}
+
+.camp-hero__eyebrow {
+	display: inline-flex;
+	align-items: center;
+	padding: 8px 14px;
+	border-radius: 999px;
+	background: rgba(255, 255, 255, 0.16);
+	font-size: 12px;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+.camp-hero__title {
+	margin: 14px 0 10px;
+	font-size: 42px;
+	line-height: 0.95;
+	color: #fff;
+}
+
+.camp-hero__summary {
+	margin: 0;
+	font-size: 16px;
+	line-height: 1.7;
+	color: rgba(255,255,255,0.9);
+}
+
+.camp-hero__actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+	margin-top: 22px;
+}
+
+.camp-hero__button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 13px 22px;
+	border-radius: 999px;
+	background: var(--camp-accent);
+	color: #fff;
+	text-decoration: none;
+	font-weight: 700;
+	box-shadow: 0 14px 30px rgba(20, 181, 225, 0.28);
+}
+
+.camp-hero__button.is-secondary {
+	background: rgba(255,255,255,0.12);
+	box-shadow: none;
+	border: 1px solid rgba(255,255,255,0.24);
+}
+
+.camp-booking {
+	margin-top: 28px;
+	padding: 28px;
+	border-radius: 28px;
+	background: #fff;
+	box-shadow: 0 24px 60px rgba(12, 44, 73, 0.14);
+}
+
+.camp-booking .woocommerce-notices-wrapper {
+	margin-bottom: 18px;
+}
+
+.camp-booking__eyebrow {
+	margin: 0 0 8px;
+	font-size: 12px;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--camp-accent);
+}
+
+.camp-booking__header h2 {
+	margin: 0;
+	font-size: 34px;
+	line-height: 1;
+	color: #162333;
+}
+
+.camp-booking__tabs {
+	display: flex;
+	gap: 8px;
+	padding: 6px;
+	margin-top: 22px;
+	border-bottom: none;
+	background: #f2f6f9;
+	border-radius: 20px;
+}
+
+.camp-booking__tabs button {
+	float: none;
+	flex: 1 1 0;
+	padding: 14px 16px;
+	border-radius: 16px;
+	font-size: 15px;
+	font-weight: 700;
+	text-transform: none;
+	color: #567085;
+}
+
+.camp-booking__tabs button:hover {
+	background: rgba(20, 181, 225, 0.08);
+}
+
+.camp-booking__tabs button.active {
+	background: var(--camp-accent);
+	color: #fff;
+	border-radius: 16px;
+}
+
+.camp-booking__single-label {
+	display: inline-flex;
+	align-items: center;
+	padding: 10px 16px;
+	margin-top: 20px;
+	border-radius: 999px;
+	background: rgba(20, 181, 225, 0.12);
+	color: var(--camp-accent);
+	font-weight: 700;
+}
+
+.camp-booking__panel {
+	margin-top: 22px;
+}
+
+.camp-booking__summary {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+	gap: 10px;
+	margin-bottom: 18px;
+}
+
+.camp-booking__summary-item {
+	padding: 14px 16px;
+	border-radius: 18px;
+	background: #f7fafc;
+}
+
+.camp-booking__summary-item span {
+	display: block;
+	margin-bottom: 6px;
+	font-size: 12px;
+	font-weight: 700;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: #7c8d9d;
+}
+
+.camp-booking__summary-item strong {
+	display: block;
+	font-size: 18px;
+	line-height: 1.35;
+	color: #18283a;
+}
+
+.camp-booking__summary-item strong .woocommerce-Price-amount {
+	font-size: inherit;
+}
+
+.camp-booking__cards {
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+}
+
+.camp-booking-card {
+	padding: 20px;
+	border: 1px solid #e6edf3;
+	border-radius: 24px;
+	background: linear-gradient(180deg, #ffffff 0%, #f9fbfd 100%);
+}
+
+.camp-booking-card__location {
+	margin: 0 0 6px;
+	font-size: 12px;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: #7a8e9f;
+}
+
+.camp-booking-card h3 {
+	margin: 0;
+	font-size: 22px;
+	line-height: 1.2;
+	color: #18283a;
+}
+
+.camp-booking-card__meta {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-end;
+	justify-content: space-between;
+	gap: 16px;
+	margin: 18px 0;
+}
+
+.camp-booking-card__prices {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.camp-booking-card__price-old {
+	font-size: 15px;
+	text-decoration: line-through;
+	color: #8798a8;
+}
+
+.camp-booking-card__price-current {
+	font-size: 32px;
+	font-weight: 800;
+	line-height: 1;
+	color: #162333;
+}
+
+.camp-booking-card__price-current .woocommerce-Price-amount {
+	font-size: inherit;
+}
+
+.camp-booking-card__prices small {
+	font-size: 12px;
+	color: #718396;
+}
+
+.camp-booking-card__availability {
+	display: inline-flex;
+	align-items: center;
+	padding: 10px 14px;
+	border-radius: 999px;
+	font-weight: 700;
+	font-size: 14px;
+}
+
+.camp-booking-card__availability.is-open {
+	background: rgba(124, 173, 49, 0.12);
+	color: #577c18;
+}
+
+.camp-booking-card__availability.is-low {
+	background: rgba(237, 16, 135, 0.12);
+	color: #c20f70;
+}
+
+.camp-booking-card__availability.is-full {
+	background: rgba(193, 0, 0, 0.1);
+	color: #a60000;
+}
+
+.camp-booking-card__cta {
+	display: block;
+	padding: 14px 20px;
+	border-radius: 999px;
+	background: var(--camp-accent);
+	color: #fff;
+	text-align: center;
+	text-decoration: none;
+	font-weight: 800;
+}
+
+.camp-booking-card__cta.disabled {
+	background: #d8e1e8;
+	color: #6f8192;
+	pointer-events: none;
+}
+
+.camp-gallery-section {
+	margin-top: 36px;
+}
+
+.camp-gallery-section .entry-title {
+	border-radius: 24px 24px 0 0;
+}
+
+.camp-gallery-section #gallery {
+	padding: 18px 0;
+	background: #fff;
+	border-radius: 0 0 24px 24px;
+	box-shadow: 0 18px 40px rgba(12, 44, 73, 0.08);
+}
+
+.camp-gallery-section .bx-wrapper {
+	margin-bottom: 0;
+	border: none;
+	box-shadow: none;
+	background: transparent;
+}
+
+.camp-description {
+	margin-top: 40px;
+	padding: 34px 24px;
+	border-radius: 32px;
+	background: #fff;
+	box-shadow: 0 20px 50px rgba(12, 44, 73, 0.08);
+}
+
+.camp-description__intro {
+	margin-bottom: 26px;
+}
+
+.camp-description__intro h2 {
+	margin: 0 0 8px;
+	font-size: 34px;
+	line-height: 1;
+	color: #162333;
+}
+
+.camp-description__intro p {
+	margin: 0;
+	font-size: 16px;
+	color: #6f8192;
+}
+
+.camp-description__panel > :first-child {
+	margin-top: 0;
+}
+
+.camp-description__panel {
+	margin: 0 auto;
+	font-size: 16px;
+	line-height: 1.75;
+	color: #31475b;
+}
+
+.camp-description__panel h1,
+.camp-description__panel h2,
+.camp-description__panel h3 {
+	color: #162333;
+}
+
+.camp-description__panel h1 {
+	font-size: 42px;
+	line-height: 1;
+}
+
+.camp-description__panel h2 {
+	margin-top: 36px;
+	font-size: 30px;
+	line-height: 1.1;
+}
+
+.camp-description__panel ul {
+	padding-left: 22px;
+}
+
+.camp-description__panel iframe {
+	max-width: 100%;
+}
+
+@media only screen and (min-width: 961px) {
+	.camp-product {
+		padding: 42px 80px 0;
+	}
+
+	.camp-product__top {
+		display: grid;
+		grid-template-columns: minmax(0, 1.45fr) minmax(360px, 430px);
+		gap: 34px;
+		align-items: start;
+	}
+
+	.camp-hero {
+		min-height: 760px;
+		padding: 22px;
+	}
+
+	.camp-hero__tiles {
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		grid-auto-rows: 148px;
+		height: 100%;
+	}
+
+	.camp-hero__tile.is-featured {
+		grid-column: span 2;
+		grid-row: span 3;
+	}
+
+	.camp-hero__copy {
+		position: absolute;
+		left: 34px;
+		right: 34px;
+		bottom: 34px;
+		max-width: 560px;
+		margin-top: 0;
+	}
+
+	.camp-booking {
+		position: sticky;
+		top: 132px;
+		margin-top: 0;
+	}
+
+	.camp-booking__cards {
+		max-height: calc(100vh - 320px);
+		overflow-y: auto;
+		padding-right: 6px;
+	}
+
+	.camp-description {
+		padding: 46px 58px;
+	}
+
+	.camp-description__panel {
+		max-width: 980px;
+	}
+}
