@@ -142,8 +142,10 @@ $default_tab = $has_pobytovy ? 'pobytovy' : 'primestsky';
 
 $pobytovy_lowest_price = 0;
 $pobytovy_location = '';
+$pobytovy_type_label = 'Pobytový tábor';
 if ( ! empty( $pobytovy ) ) {
 	$pobytovy_location = $pobytovy[0]['lokalita'];
+	$pobytovy_type_label = ! empty( $pobytovy[0]['typ_tabora'] ) ? $pobytovy[0]['typ_tabora'] : $pobytovy_type_label;
 	foreach ( $pobytovy as $item ) {
 		$item_price = $item['discount_price'] > 0 ? $item['discount_price'] : $item['regular_price'];
 		if ( empty( $pobytovy_lowest_price ) || $item_price < $pobytovy_lowest_price ) {
@@ -154,8 +156,10 @@ if ( ! empty( $pobytovy ) ) {
 
 $primestsky_lowest_price = 0;
 $primestsky_location = '';
+$primestsky_type_label = 'Příměstský tábor';
 if ( ! empty( $primestsky ) ) {
 	$primestsky_location = $primestsky[0]['lokalita'];
+	$primestsky_type_label = ! empty( $primestsky[0]['typ_tabora'] ) ? $primestsky[0]['typ_tabora'] : $primestsky_type_label;
 	foreach ( $primestsky as $item ) {
 		$item_price = $item['discount_price'] > 0 ? $item['discount_price'] : $item['regular_price'];
 		if ( empty( $primestsky_lowest_price ) || $item_price < $primestsky_lowest_price ) {
@@ -221,10 +225,6 @@ if ( ! empty( $primestsky ) ) {
 						<button class="tablinks active" onclick="openCard(event, 'pobytovy')" data-tab-target="pobytovy" id="defaultOpen">Pobytový tábor</button>
 						<button class="tablinks" onclick="openCard(event, 'primestsky')" data-tab-target="primestsky">Příměstský tábor</button>
 					</div>
-				<?php } elseif ( $has_pobytovy ) { ?>
-					<div class="camp-booking__single-label">Pobytový tábor</div>
-				<?php } elseif ( $has_primestsky ) { ?>
-					<div class="camp-booking__single-label">Příměstský tábor</div>
 				<?php } ?>
 
 				<?php if ( $has_pobytovy ) { ?>
@@ -244,6 +244,10 @@ if ( ! empty( $primestsky ) ) {
 									<strong><?php echo esc_html( $pobytovy_location ); ?></strong>
 								</div>
 							<?php } ?>
+							<div class="camp-booking__summary-item">
+								<span>Typ tábora</span>
+								<strong><?php echo esc_html( $pobytovy_type_label ); ?></strong>
+							</div>
 						</div>
 
 						<div class="camp-booking__cards">
@@ -300,6 +304,10 @@ if ( ! empty( $primestsky ) ) {
 									<strong><?php echo esc_html( $primestsky_location ); ?></strong>
 								</div>
 							<?php } ?>
+							<div class="camp-booking__summary-item">
+								<span>Typ tábora</span>
+								<strong><?php echo esc_html( $primestsky_type_label ); ?></strong>
+							</div>
 						</div>
 
 						<div class="camp-booking__cards">
