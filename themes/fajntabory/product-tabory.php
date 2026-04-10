@@ -167,6 +167,11 @@ if ( ! empty( $primestsky ) ) {
 		}
 	}
 }
+
+$camp_currency_symbol = function_exists( 'get_woocommerce_currency_symbol' ) ? get_woocommerce_currency_symbol() : 'Kč';
+$camp_summary_price = function( $price ) use ( $camp_currency_symbol ) {
+	return number_format_i18n( (float) $price, 0 ) . '&nbsp;' . esc_html( $camp_currency_symbol );
+};
 ?>
 
 <div id="main" class="camp-product" style="--camp-accent: <?php echo esc_attr( $barva ); ?>;">
@@ -236,7 +241,7 @@ if ( ! empty( $primestsky ) ) {
 							</div>
 							<div class="camp-booking__summary-item">
 								<span>Cena od</span>
-								<strong><?php echo wc_price( $pobytovy_lowest_price ); ?></strong>
+								<strong><?php echo $camp_summary_price( $pobytovy_lowest_price ); ?></strong>
 							</div>
 							<?php if ( ! empty( $pobytovy_location ) ) { ?>
 								<div class="camp-booking__summary-item">
@@ -296,7 +301,7 @@ if ( ! empty( $primestsky ) ) {
 							</div>
 							<div class="camp-booking__summary-item">
 								<span>Cena od</span>
-								<strong><?php echo wc_price( $primestsky_lowest_price ); ?></strong>
+								<strong><?php echo $camp_summary_price( $primestsky_lowest_price ); ?></strong>
 							</div>
 							<?php if ( ! empty( $primestsky_location ) ) { ?>
 								<div class="camp-booking__summary-item">
