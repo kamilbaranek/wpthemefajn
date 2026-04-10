@@ -137,7 +137,7 @@
 		<?php
 			endif;
 		?>
-		<a class="mobile_nav" href="#"><i class="fa fa-bars"></i> Hlavní nabídka</a>
+		<a class="mobile_nav" href="#" aria-label="Hlavní nabídka"><i class="fa fa-bars" aria-hidden="true"></i><span class="mobile_nav__label">Hlavní nabídka</span></a>
 		<?php 
 			if( has_nav_menu( 'main_menu' ) ) {
 				wp_nav_menu( array( 'theme_location' => 'main_menu' ) );
