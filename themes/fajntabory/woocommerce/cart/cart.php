@@ -26,8 +26,6 @@ wc_print_notices();
 
 <?php $mobile_order_cta_rendered = false; ?>
 
-<h2>Máte vybráno ...</h2>
-
 <?php 
 do_action( 'woocommerce_before_cart' ); ?>
 
