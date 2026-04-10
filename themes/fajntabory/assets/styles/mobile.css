@@ -163,6 +163,9 @@
 	}
 
 	body.single-product .camp-hero__copy {
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
 		order: -1;
 		margin: 0 0 12px;
 		padding: 0 4px 4px;
@@ -172,12 +175,18 @@
 	}
 
 	body.single-product .camp-hero__eyebrow {
+		order: 2;
+		align-self: flex-start;
+		padding: 6px 12px;
+		font-size: 10px;
+		letter-spacing: 0.1em;
 		background: rgba(124, 173, 49, 0.12);
 		color: #577c18;
 	}
 
 	body.single-product .camp-hero__title {
-		margin: 8px 0 0;
+		order: 1;
+		margin: 0;
 		color: #162333;
 		font-size: clamp(28px, 8vw, 36px);
 		line-height: 1.03;
@@ -256,7 +265,21 @@
 	}
 
 	body.single-product .camp-booking-card__price-current {
-		font-size: 26px;
+		font-size: 24px;
+		line-height: 1.05;
+		white-space: nowrap;
+	}
+
+	body.single-product .camp-booking-card__price-current .woocommerce-Price-amount {
+		display: inline-flex;
+		align-items: baseline;
+		flex-wrap: nowrap;
+		white-space: nowrap;
+	}
+
+	body.single-product .camp-booking-card__price-current .woocommerce-Price-amount bdi,
+	body.single-product .camp-booking-card__price-current .woocommerce-Price-currencySymbol {
+		white-space: nowrap;
 	}
 
 	body.single-product .camp-booking-card__availability {
