@@ -245,10 +245,6 @@
 		float: none;
 	}
 
-	.woocommerce-cart .cart-collaterals .checkout-button {
-		display: none !important;
-	}
-
 	.woocommerce-cart .woocommerce-cart-form__cart-item td.product-remove {
 		display: flex !important;
 		align-items: center;
@@ -270,7 +266,8 @@
 		text-decoration: none !important;
 	}
 
-	.woocommerce-cart .woocommerce-cart-form__cart-item td.product-remove .cart-mobile-order {
+	.woocommerce-cart .woocommerce-cart-form__cart-item td.product-remove .cart-mobile-order,
+	.woocommerce-cart .cart-collaterals .checkout-button {
 		display: inline-flex !important;
 		align-items: center;
 		justify-content: center;
