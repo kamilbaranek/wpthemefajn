@@ -41,5 +41,5 @@ if ( ! defined( 'ABSPATH' ) ) {
 <?php } ?>
 
 <a href="<?php echo esc_url( wc_get_checkout_url() );?>" class="checkout-button button alt wc-forward">
-	Přejít k objednávce
+	OBJEDNAT
 </a>

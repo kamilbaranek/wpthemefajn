@@ -2310,6 +2310,10 @@ div.tab button.active {
     padding: 10px 20px !important;
     font-weight: 600 !important;
 }
+
+.cart-mobile-order {
+	display: none;
+}
 /* Zvětšení náhledové fotky v košíku */
 .woocommerce-cart-form__cart-item .product-thumbnail img {
     width: 120px !important;

@@ -24,6 +24,8 @@ wc_print_notices();
 
 ?> 
 
+<?php $mobile_order_cta_rendered = false; ?>
+
 <h2>Máte vybráno ...</h2>
 
 <?php 
@@ -41,7 +43,7 @@ do_action( 'woocommerce_before_cart' ); ?>
 	}
 	if( $count > 1 ) {
 ?>
-<p class="sorry jako">V jedné přihlášce lze objednat pouze jeden tábor (jeden termín). Máte-li zájem o dva nebo více termínů, je zapotřebí vyplnit na každý termín přihlášku zvlášť. Pokud Váš košík obsahuje více než jeden tábor, klikněte na tlačítko odebrat tak, aby v košíku zůstal pouze jeden, který si nyní přejete objednat. Toto neplatí u doplňků, jako jsou: Společná doprava, Táborové tričko apod.</p>
+<p class="sorry jako">V jedné přihlášce lze objednat pouze jeden tábor (jeden termín). Máte-li zájem o dva nebo více termínů, je zapotřebí vyplnit na každý termín přihlášku zvlášť. Pokud Váš košík obsahuje více než jeden tábor, klikněte na tlačítko Zrušit tak, aby v košíku zůstal pouze jeden, který si nyní přejete objednat. Toto neplatí u doplňků, jako jsou: Společná doprava, Táborové tričko apod.</p>
 <?php
 	}
 ?>
@@ -154,13 +156,26 @@ do_action( 'woocommerce_before_cart' ); ?>
 
 						<td class="product-remove">
 							<?php
-								echo apply_filters( 'woocommerce_cart_item_remove_link', sprintf(
-									'<a href="%s" aria-label="%s" data-product_id="%s" data-product_sku="%s">Odebrat</a>',
+								$remove_link = sprintf(
+									'<a href="%s" class="cart-remove-link" aria-label="%s" data-product_id="%s" data-product_sku="%s">Zrušit</a>',
 									esc_url( WC()->cart->get_remove_url( $cart_item_key ) ),
-									__( 'Remove this item', 'woocommerce' ),
+									esc_attr__( 'Zrušit položku', 'fajntabory' ),
 									esc_attr( $product_id ),
 									esc_attr( $_product->get_sku() )
-								), $cart_item_key );
+								);
+
+								$remove_link = apply_filters( 'woocommerce_cart_item_remove_link', $remove_link, $cart_item_key );
+
+								// Show the mobile checkout CTA only once, next to the first remove action.
+								if ( ! $mobile_order_cta_rendered ) {
+									$remove_link .= sprintf(
+										'<a href="%s" class="checkout-button button alt wc-forward cart-mobile-order">OBJEDNAT</a>',
+										esc_url( wc_get_checkout_url() )
+									);
+									$mobile_order_cta_rendered = true;
+								}
+
+								echo $remove_link;
 							?>
 						</td>
 					</tr>
