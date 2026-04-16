@@ -199,10 +199,74 @@ jQuery(document).ready(function($) {
   		touchEnabled: false
 	});
 
-	// $("#defaultOpen").click();
+	function initCampBookingPicker() {
+		$('[data-camp-picker]').each(function() {
+			var $picker = $(this);
+			var $select = $picker.find('[data-camp-select]');
+			var $location = $picker.find('[data-camp-location]');
+			var $term = $picker.find('[data-camp-term]');
+			var $priceOld = $picker.find('[data-camp-price-old]');
+			var $priceCurrent = $picker.find('[data-camp-price-current]');
+			var $discountNote = $picker.find('[data-camp-discount-note]');
+			var $availability = $picker.find('[data-camp-availability]');
+			var $cta = $picker.find('[data-camp-cta]');
+
+			if ( ! $select.length ) {
+				return;
+			}
+
+			function syncCampBookingSelection() {
+				var $option = $select.find('option:selected');
+				var location = $option.attr('data-location') || '';
+				var term = $option.attr('data-term') || $option.text();
+				var price = $option.attr('data-price') || '';
+				var priceOld = $option.attr('data-price-old') || '';
+				var discountNote = $option.attr('data-discount-note') || '';
+				var availabilityLabel = $option.attr('data-availability-label') || '';
+				var availabilityClass = $option.attr('data-availability-class') || '';
+				var manageStock = $option.attr('data-manage-stock') === '1';
+				var canOrder = $option.attr('data-can-order') === '1';
+				var orderLink = $option.attr('data-order-link') || '#';
+				var buttonLabel = $option.attr('data-button-label') || (canOrder ? 'Objednat' : 'Obsazeno');
+
+				$term.text(term);
+				$priceCurrent.text(price);
+
+				if ( $location.length ) {
+					$location.text(location);
+					$location.toggleClass('is-hidden', ! location);
+				}
+
+				$priceOld.text(priceOld);
+				$priceOld.toggleClass('is-hidden', ! priceOld);
+
+				$discountNote.text(discountNote);
+				$discountNote.toggleClass('is-hidden', ! discountNote);
+
+				$availability
+					.removeClass('is-open is-low is-full')
+					.toggleClass('is-hidden', ! manageStock || ! availabilityLabel)
+					.text(availabilityLabel);
+
+				if ( manageStock && availabilityClass ) {
+					$availability.addClass(availabilityClass);
+				}
+
+				$cta
+					.attr('href', orderLink)
+					.toggleClass('disabled', ! canOrder)
+					.text(buttonLabel);
+			}
+
+			$select.on('change', syncCampBookingSelection);
+			syncCampBookingSelection();
+		});
+	}
 
 
 	if ($("body").hasClass("single-product")) {
+		initCampBookingPicker();
+
 		if($(".camp-tab-panel").length != 0) {
 			if( $('[data-tab-panel="pobytovy"]').length > 0 ) {
 				openCard('js', 'pobytovy');

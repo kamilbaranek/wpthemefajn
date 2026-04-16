@@ -264,6 +264,27 @@
 		white-space: nowrap;
 	}
 
+	body.single-product .camp-booking__picker {
+		gap: 12px;
+	}
+
+	body.single-product .camp-booking__label {
+		font-size: 11px;
+	}
+
+	body.single-product .camp-booking__select {
+		padding: 14px 42px 14px 14px;
+		border-radius: 16px;
+		font-size: 15px;
+	}
+
+	body.single-product .camp-booking__select-wrap::after {
+		right: 16px;
+		width: 8px;
+		height: 8px;
+		margin-top: -6px;
+	}
+
 	body.single-product .camp-booking-card {
 		padding: 16px;
 		border-radius: 18px;

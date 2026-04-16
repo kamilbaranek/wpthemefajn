@@ -2581,10 +2581,62 @@ div.tab button.active {
 	font-size: inherit;
 }
 
-.camp-booking__cards {
+.camp-booking__picker {
 	display: flex;
 	flex-direction: column;
-	gap: 14px;
+	gap: 16px;
+}
+
+.camp-booking__field {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.camp-booking__label {
+	font-size: 13px;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: #6f8396;
+}
+
+.camp-booking__select-wrap {
+	position: relative;
+}
+
+.camp-booking__select-wrap::after {
+	content: "";
+	position: absolute;
+	top: 50%;
+	right: 20px;
+	width: 10px;
+	height: 10px;
+	margin-top: -7px;
+	border-left: 2px solid #6f8396;
+	border-bottom: 2px solid #6f8396;
+	transform: rotate(-45deg);
+	pointer-events: none;
+}
+
+.camp-booking__select {
+	width: 100%;
+	padding: 16px 52px 16px 18px;
+	border: 1px solid #d9e4ed;
+	border-radius: 18px;
+	background: #fff;
+	box-shadow: 0 16px 32px rgba(12, 44, 73, 0.08);
+	font-size: 16px;
+	font-weight: 700;
+	color: #18283a;
+	appearance: none;
+	-webkit-appearance: none;
+}
+
+.camp-booking__select:focus {
+	outline: none;
+	border-color: var(--camp-accent);
+	box-shadow: 0 0 0 4px rgba(20, 181, 225, 0.14);
 }
 
 .camp-booking-card {
@@ -2592,6 +2644,10 @@ div.tab button.active {
 	border: 1px solid #e6edf3;
 	border-radius: 24px;
 	background: linear-gradient(180deg, #ffffff 0%, #f9fbfd 100%);
+}
+
+.camp-booking-card--selected {
+	box-shadow: 0 20px 40px rgba(12, 44, 73, 0.08);
 }
 
 .camp-booking-card__location {
@@ -2635,6 +2691,7 @@ div.tab button.active {
 	font-size: 32px;
 	font-weight: 800;
 	line-height: 1;
+	white-space: nowrap;
 	color: #162333;
 }
 
@@ -2669,6 +2726,13 @@ div.tab button.active {
 .camp-booking-card__availability.is-full {
 	background: rgba(193, 0, 0, 0.1);
 	color: #a60000;
+}
+
+.camp-booking-card__location.is-hidden,
+.camp-booking-card__price-old.is-hidden,
+.camp-booking-card__discount-note.is-hidden,
+.camp-booking-card__availability.is-hidden {
+	display: none;
 }
 
 .camp-booking-card__cta {
@@ -2812,12 +2876,6 @@ div.tab button.active {
 		position: sticky;
 		top: 132px;
 		margin-top: 0;
-	}
-
-	.camp-booking__cards {
-		max-height: calc(100vh - 320px);
-		overflow-y: auto;
-		padding-right: 6px;
 	}
 
 	.camp-description {
