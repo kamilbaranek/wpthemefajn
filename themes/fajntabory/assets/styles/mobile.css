@@ -175,13 +175,7 @@
 	}
 
 	body.single-product .camp-hero__eyebrow {
-		order: 2;
-		align-self: flex-start;
-		padding: 6px 12px;
-		font-size: 10px;
-		letter-spacing: 0.1em;
-		background: rgba(124, 173, 49, 0.12);
-		color: #577c18;
+		display: none;
 	}
 
 	body.single-product .camp-hero__title {
