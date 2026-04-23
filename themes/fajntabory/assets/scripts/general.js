@@ -227,7 +227,7 @@ jQuery(document).ready(function($) {
 				var manageStock = $option.attr('data-manage-stock') === '1';
 				var canOrder = $option.attr('data-can-order') === '1';
 				var orderLink = $option.attr('data-order-link') || '#';
-				var buttonLabel = $option.attr('data-button-label') || (canOrder ? 'Objednat' : 'Obsazeno');
+				var buttonLabel = $option.attr('data-button-label') || (canOrder ? 'Rezervovat' : 'Obsazeno');
 
 				$term.text(term);
 				$priceCurrent.text(price);

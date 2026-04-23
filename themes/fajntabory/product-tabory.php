@@ -239,7 +239,7 @@ $render_booking_panel = function( $panel_id, $items, $lowest_price, $location, $
 								data-manage-stock="<?php echo $tabor['manage_stock'] ? '1' : '0'; ?>"
 								data-can-order="<?php echo $tabor['can_order'] ? '1' : '0'; ?>"
 								data-order-link="<?php echo esc_attr( $tabor['order_link'] ); ?>"
-								data-button-label="<?php echo esc_attr( $tabor['can_order'] ? 'Objednat' : 'Obsazeno' ); ?>"
+								data-button-label="<?php echo esc_attr( $tabor['can_order'] ? 'Rezervovat' : 'Obsazeno' ); ?>"
 							><?php echo esc_html( $tabor['terminy'] ); ?></option>
 						<?php } ?>
 					</select>
@@ -263,7 +263,7 @@ $render_booking_panel = function( $panel_id, $items, $lowest_price, $location, $
 				</div>
 
 				<a class="camp-booking-card__cta <?php echo ! $selected_item['can_order'] ? 'disabled' : ''; ?>" data-camp-cta href="<?php echo esc_url( $selected_item['order_link'] ); ?>">
-					<?php echo $selected_item['can_order'] ? 'Objednat' : 'Obsazeno'; ?>
+					<?php echo $selected_item['can_order'] ? 'Rezervovat' : 'Obsazeno'; ?>
 				</a>
 			</div>
 		</div>
