@@ -203,6 +203,7 @@ $render_booking_panel = function( $panel_id, $items, $lowest_price, $location, $
 			<div class="camp-booking__summary-item">
 				<span>Cena</span>
 				<strong data-camp-summary-price><?php echo $camp_summary_price( $selected_price ); ?></strong>
+				<small class="camp-booking__summary-status <?php echo esc_attr( $selected_item['availability_class'] ); ?><?php echo $selected_item['manage_stock'] ? '' : ' is-hidden'; ?>" data-camp-summary-availability><?php echo esc_html( $selected_item['availability_label'] ); ?></small>
 			</div>
 			<?php if ( ! empty( $location ) ) { ?>
 				<div class="camp-booking__summary-item">

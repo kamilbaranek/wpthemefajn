@@ -260,6 +260,34 @@
 		font-size: 16px;
 	}
 
+	body.single-product .camp-booking__summary-status {
+		display: inline-flex;
+		margin-top: 8px;
+		padding: 8px 12px;
+		border-radius: 999px;
+		font-size: 12px;
+		font-weight: 700;
+	}
+
+	body.single-product .camp-booking__summary-status.is-hidden {
+		display: none;
+	}
+
+	body.single-product .camp-booking__summary-status.is-open {
+		background: rgba(124, 173, 49, 0.12);
+		color: #577c18;
+	}
+
+	body.single-product .camp-booking__summary-status.is-low {
+		background: rgba(237, 16, 135, 0.12);
+		color: #c20f70;
+	}
+
+	body.single-product .camp-booking__summary-status.is-full {
+		background: rgba(193, 0, 0, 0.1);
+		color: #a60000;
+	}
+
 	body.single-product .camp-booking__summary .camp-booking__summary-item:nth-child(2) strong {
 		white-space: nowrap;
 	}
@@ -305,52 +333,12 @@
 		box-shadow: none;
 	}
 
+	body.single-product .camp-booking-card__meta,
 	body.single-product .camp-booking-card__location,
 	body.single-product .camp-booking-card h3,
 	body.single-product .camp-booking-card__price-old,
 	body.single-product .camp-booking-card__discount-note {
 		display: none;
-	}
-
-	body.single-product .camp-booking-card h3 {
-		font-size: 18px;
-	}
-
-	body.single-product .camp-booking-card__meta {
-		flex-direction: column;
-		align-items: flex-end;
-		justify-content: flex-start;
-		gap: 8px;
-		margin: 0;
-	}
-
-	body.single-product .camp-booking-card__prices {
-		align-items: flex-end;
-		text-align: right;
-	}
-
-	body.single-product .camp-booking-card__price-current {
-		font-size: 28px;
-		line-height: 1.05;
-		white-space: nowrap;
-	}
-
-	body.single-product .camp-booking-card__price-current .woocommerce-Price-amount {
-		display: inline-flex;
-		align-items: baseline;
-		flex-wrap: nowrap;
-		white-space: nowrap;
-	}
-
-	body.single-product .camp-booking-card__price-current .woocommerce-Price-amount bdi,
-	body.single-product .camp-booking-card__price-current .woocommerce-Price-currencySymbol {
-		white-space: nowrap;
-	}
-
-	body.single-product .camp-booking-card__availability {
-		align-self: flex-end;
-		padding: 8px 12px;
-		font-size: 12px;
 	}
 
 	body.single-product .camp-booking-card__cta {

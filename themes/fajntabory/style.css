@@ -2588,6 +2588,10 @@ div.tab button.active {
 	font-size: inherit;
 }
 
+.camp-booking__summary-status {
+	display: none;
+}
+
 .camp-booking__picker {
 	display: flex;
 	flex-direction: column;

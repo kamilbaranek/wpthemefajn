@@ -212,6 +212,7 @@ jQuery(document).ready(function($) {
 			var $availability = $picker.find('[data-camp-availability]');
 			var $cta = $picker.find('[data-camp-cta]');
 			var $summaryPrice = $panel.find('[data-camp-summary-price]');
+			var $summaryAvailability = $panel.find('[data-camp-summary-availability]');
 
 			if ( ! $select.length ) {
 				return;
@@ -253,6 +254,15 @@ jQuery(document).ready(function($) {
 
 				if ( manageStock && availabilityClass ) {
 					$availability.addClass(availabilityClass);
+				}
+
+				$summaryAvailability
+					.removeClass('is-open is-low is-full')
+					.toggleClass('is-hidden', ! manageStock || ! availabilityLabel)
+					.text(availabilityLabel);
+
+				if ( manageStock && availabilityClass ) {
+					$summaryAvailability.addClass(availabilityClass);
 				}
 
 				$cta
