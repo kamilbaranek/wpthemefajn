@@ -2386,6 +2386,7 @@ div.tab button.active {
 }
 
 .camp-hero__tile {
+	position: relative;
 	border-radius: 24px;
 	overflow: hidden;
 	background: #dfeaf1;
@@ -2403,8 +2404,14 @@ div.tab button.active {
 	height: 100%;
 }
 
+.camp-hero__tile a {
+	position: absolute;
+	inset: 0;
+}
+
 .camp-hero__tile-image {
 	object-fit: cover;
+	object-position: center;
 	transition: transform 0.35s ease;
 }
 
