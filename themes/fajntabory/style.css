@@ -2604,6 +2604,10 @@ div.tab button.active {
 	gap: 8px;
 }
 
+.camp-booking__mobile-title {
+	display: none;
+}
+
 .camp-booking__label {
 	font-size: 13px;
 	font-weight: 700;

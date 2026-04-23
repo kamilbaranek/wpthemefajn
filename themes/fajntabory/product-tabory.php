@@ -219,6 +219,7 @@ $render_booking_panel = function( $panel_id, $items, $lowest_price, $location, $
 
 		<div class="camp-booking__picker" data-camp-picker>
 			<div class="camp-booking__field">
+				<p class="camp-booking__mobile-title">Vyberte vhodný termín</p>
 				<label class="camp-booking__label" for="camp-booking-select-<?php echo esc_attr( $panel_id ); ?>">Termín</label>
 				<div class="camp-booking__select-wrap">
 					<select class="camp-booking__select" id="camp-booking-select-<?php echo esc_attr( $panel_id ); ?>" data-camp-select>

@@ -218,7 +218,7 @@
 	}
 
 	body.single-product .camp-booking__header h2 {
-		font-size: 26px;
+		display: none;
 	}
 
 	body.single-product .camp-booking__tabs {
@@ -308,8 +308,18 @@
 		gap: 10px;
 	}
 
+	body.single-product .camp-booking__mobile-title {
+		display: block;
+		margin: 4px 0 8px;
+		font-family: 'Dosis', serif;
+		font-size: 26px;
+		font-weight: 700;
+		line-height: 1.05;
+		color: #162333;
+	}
+
 	body.single-product .camp-booking__label {
-		font-size: 11px;
+		display: none;
 	}
 
 	body.single-product .camp-booking__select {
