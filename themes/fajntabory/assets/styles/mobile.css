@@ -239,6 +239,19 @@
 		gap: 8px;
 	}
 
+	body.single-product .camp-booking__summary-item:nth-child(1),
+	body.single-product .camp-booking__summary-item:nth-child(4) {
+		display: none;
+	}
+
+	body.single-product .camp-booking__summary-item:nth-child(2) {
+		order: 2;
+	}
+
+	body.single-product .camp-booking__summary-item:nth-child(3) {
+		order: 1;
+	}
+
 	body.single-product .camp-booking__summary-item {
 		padding: 12px;
 		border-radius: 14px;
