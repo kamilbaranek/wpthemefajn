@@ -300,23 +300,23 @@ jQuery(document).ready(function($) {
 	});
 
 	$('form.objednavka').on( 'submit', function() {
-		
+		var $form = $(this);
 		var $valid = true;
 
 		// Validace jestli bylo zatrhnuto TOC
 
-		if( $('#toc').prop('checked') == true) {
-			$(this).parent('div').removeClass('not-valid');
-			$('.tocdiv').removeClass('not-valid');
+		if( $form.find('#toc').prop('checked') == true) {
+			$form.parent('div').removeClass('not-valid');
+			$form.find('.tocdiv').removeClass('not-valid');
 		} else {
 			$valid = false;
-			$(this).parent('div').addClass('not-valid');
-			$('.tocdiv').addClass('not-valid');
+			$form.parent('div').addClass('not-valid');
+			$form.find('.tocdiv').addClass('not-valid');
 		}
 
 		// Validace povinných polí
 
-		$('form.objednavka .required').each( function() {
+		$form.find('.required').each( function() {
 			if( $(this).val().length === 0 || $(this).val() == 0 ) {
 				$(this).parent('div').addClass('not-valid');
 				$valid = false;
@@ -327,20 +327,22 @@ jQuery(document).ready(function($) {
 
 		// Validace, jestli emaily odpovídají
 
-		if( $("input[name='email']").val() != $("input[name='email-check']").val() ) {
-			$("input[name='email']").parent('div').addClass('not-valid');
-			$("input[name='email-check']").parent('div').addClass('not-valid');
-			$valid = false;
-		} else if( !$("input[name='email']").length ) {
-			$("input[name='email']").parent('div').removeClass('not-valid');
-			$("input[name='email-check']").parent('div').removeClass('not-valid');
+		if( $form.find("input[name='email-check']").length ) {
+			if( $form.find("input[name='email']").val() != $form.find("input[name='email-check']").val() ) {
+				$form.find("input[name='email']").parent('div').addClass('not-valid');
+				$form.find("input[name='email-check']").parent('div').addClass('not-valid');
+				$valid = false;
+			} else {
+				$form.find("input[name='email']").parent('div').removeClass('not-valid');
+				$form.find("input[name='email-check']").parent('div').removeClass('not-valid');
+			}
 		}
 
-		if ( $('form.objednavka .checkit').length ) {
+		if ( $form.find('.checkit').length ) {
 
 			var checkit = false;
 
-			$('form.objednavka .checkit').each( function() {
+			$form.find('.checkit').each( function() {
 
 				if( $(this).prop('checked') == true ) {
 					checkit = true;
@@ -349,21 +351,21 @@ jQuery(document).ready(function($) {
 			});
 
 			if( checkit == false ) {
-				$('.checkitdiv').addClass('not-valid');
+				$form.find('.checkitdiv').addClass('not-valid');
 				$valid = false;
 			} else {
-				$('.checkitdiv').removeClass('not-valid');
+				$form.find('.checkitdiv').removeClass('not-valid');
 			}
 
 		}
 
 		if( $valid == false ) {
 			$('html,body').animate({ scrollTop: 0 }, 'slow');
-			$('.form-validation-error').show();
+			$form.find('.form-validation-error').show();
 			console.log( 'invalid' );
 			return false;
 		} else {
-			$('.form-validation-error').hide();
+			$form.find('.form-validation-error').hide();
 			console.log( 'valid' );
 			return true;
 		}

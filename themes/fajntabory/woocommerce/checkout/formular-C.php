@@ -31,16 +31,16 @@
 
 	<div class="col-3">
 		<label for="">Telefon<em>Toto pole je vyžadováno</em></label>
-		<input type="text" name="telefon" class="form-element required">
+		<input type="text" name="telefon" class="form-element required" value="<?php echo esc_attr( fajntabory_checkout_field_value( 'telefon' ) ); ?>">
 	</div>
 	<div class="col-3">
 		<label for="">E-mail<em>Toto pole je vyžadováno</em></label>
-		<input type="text" name="email" class="form-element required">
+		<input type="text" name="email" class="form-element required" value="<?php echo esc_attr( fajntabory_checkout_field_value( 'email' ) ); ?>">
 		<p>Prosím zkontrolujte, zda jste svůj E-MAIL uvedli správně.</p>
 	</div>
 	<div class="col-3">
 		<label for="">E-mail znovu<em>Toto pole je vyžadováno</em></label>
-		<input type="text" name="email-check" class="form-element required">
+		<input type="text" name="email-check" class="form-element required" value="<?php echo esc_attr( fajntabory_checkout_field_value( 'email-check' ) ); ?>">
 		<p>Ověření správnosti e-mailu</p>
 	</div>
 
