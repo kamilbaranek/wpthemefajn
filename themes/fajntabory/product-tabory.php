@@ -201,8 +201,8 @@ $render_booking_panel = function( $panel_id, $items, $lowest_price, $location, $
 				<strong><?php echo esc_html( count( $items ) ); ?></strong>
 			</div>
 			<div class="camp-booking__summary-item">
-				<span>Cena od</span>
-				<strong><?php echo $camp_summary_price( $lowest_price ); ?></strong>
+				<span>Cena</span>
+				<strong data-camp-summary-price><?php echo $camp_summary_price( $selected_price ); ?></strong>
 			</div>
 			<?php if ( ! empty( $location ) ) { ?>
 				<div class="camp-booking__summary-item">

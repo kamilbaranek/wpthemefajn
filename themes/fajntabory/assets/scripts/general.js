@@ -202,6 +202,7 @@ jQuery(document).ready(function($) {
 	function initCampBookingPicker() {
 		$('[data-camp-picker]').each(function() {
 			var $picker = $(this);
+			var $panel = $picker.closest('.camp-booking__panel');
 			var $select = $picker.find('[data-camp-select]');
 			var $location = $picker.find('[data-camp-location]');
 			var $term = $picker.find('[data-camp-term]');
@@ -210,6 +211,7 @@ jQuery(document).ready(function($) {
 			var $discountNote = $picker.find('[data-camp-discount-note]');
 			var $availability = $picker.find('[data-camp-availability]');
 			var $cta = $picker.find('[data-camp-cta]');
+			var $summaryPrice = $panel.find('[data-camp-summary-price]');
 
 			if ( ! $select.length ) {
 				return;
@@ -231,6 +233,7 @@ jQuery(document).ready(function($) {
 
 				$term.text(term);
 				$priceCurrent.text(price);
+				$summaryPrice.html(price.replace(/ /g, '&nbsp;'));
 
 				if ( $location.length ) {
 					$location.text(location);
