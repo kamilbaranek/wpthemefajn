@@ -18,6 +18,12 @@
 
 	add_filter( 'woocommerce_can_reduce_order_stock','filter_woocommerce_can_reduce_order_stock', 10, 2 ); 
 
+	if ( ! function_exists( 'fajntabory_get_checkout_url' ) ) {
+		function fajntabory_get_checkout_url() {
+			return home_url( '/objednavka/' );
+		}
+	}
+
 
 
 	function handsome_bearded_guy_increase_variations_per_page() {

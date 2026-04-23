@@ -92,7 +92,7 @@
 				echo '<p>Opravdu si přejete objednat tábor bez Storno pojištění?</p>';
 				echo '<p>';
 				echo '<a href="https://www.fajntabory.cz/kosik/?add_to_cart=2853" class="popup_button">Přidat do košíku</a>';
-				echo '<a href="https://www.fajntabory.cz/objednavka/" class="popup_button continue">Přesto pokračovat</a>';
+				echo '<a href="'.esc_url( fajntabory_get_checkout_url() ).'" class="popup_button continue">Přesto pokračovat</a>';
 				echo '</p>';
 				echo '</div>';
 			}

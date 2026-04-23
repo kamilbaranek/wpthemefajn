@@ -15,7 +15,7 @@
 
 ?>
 
-<form name="checkout" method="post" class="objednavka" action="<?php echo esc_url( wc_get_checkout_url() ); ?>" enctype="multipart/form-data">
+<form name="checkout" method="post" class="objednavka" action="<?php echo esc_url( fajntabory_get_checkout_url() ); ?>" enctype="multipart/form-data">
 
 	<?php
 

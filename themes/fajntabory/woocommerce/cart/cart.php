@@ -168,7 +168,7 @@ do_action( 'woocommerce_before_cart' ); ?>
 								if ( ! $mobile_order_cta_rendered ) {
 									$remove_link .= sprintf(
 										'<a href="%s" class="checkout-button button alt wc-forward cart-mobile-order">OBJEDNAT</a>',
-										esc_url( wc_get_checkout_url() )
+										esc_url( fajntabory_get_checkout_url() )
 									);
 									$mobile_order_cta_rendered = true;
 								}

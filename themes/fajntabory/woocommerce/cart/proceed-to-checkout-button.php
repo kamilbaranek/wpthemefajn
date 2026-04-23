@@ -40,6 +40,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 </form>
 <?php } ?>
 
-<a href="<?php echo esc_url( wc_get_checkout_url() );?>" class="checkout-button button alt wc-forward">
+<a href="<?php echo esc_url( fajntabory_get_checkout_url() );?>" class="checkout-button button alt wc-forward">
 	OBJEDNAT
 </a>
