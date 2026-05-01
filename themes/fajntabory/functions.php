@@ -16,7 +16,98 @@
 
 	}; 
 
-	add_filter( 'woocommerce_can_reduce_order_stock','filter_woocommerce_can_reduce_order_stock', 10, 2 ); 
+	add_filter( 'woocommerce_can_reduce_order_stock','filter_woocommerce_can_reduce_order_stock', 10, 2 );
+
+	if( ! defined( 'FAJNTABORY_INCOMPLETE_ORDER_STATUS' ) ) {
+
+		define( 'FAJNTABORY_INCOMPLETE_ORDER_STATUS', 'incomplete' );
+
+	}
+
+	if( ! defined( 'FAJNTABORY_INCOMPLETE_ORDER_POST_STATUS' ) ) {
+
+		define( 'FAJNTABORY_INCOMPLETE_ORDER_POST_STATUS', 'wc-incomplete' );
+
+	}
+
+	add_action( 'init', 'fajntabory_register_incomplete_order_status' );
+
+	function fajntabory_register_incomplete_order_status() {
+
+		register_post_status( FAJNTABORY_INCOMPLETE_ORDER_POST_STATUS, array(
+			'label'                     => _x( 'Nedokončeno', 'Order status', 'woocommerce' ),
+			'public'                    => true,
+			'exclude_from_search'       => false,
+			'show_in_admin_all_list'    => true,
+			'show_in_admin_status_list' => true,
+			'label_count'               => _n_noop( 'Nedokončeno <span class="count">(%s)</span>', 'Nedokončeno <span class="count">(%s)</span>', 'woocommerce' )
+		) );
+
+	}
+
+	add_filter( 'wc_order_statuses', 'fajntabory_add_incomplete_order_status' );
+
+	function fajntabory_add_incomplete_order_status( $order_statuses ) {
+
+		$new_order_statuses = array();
+		$status_added = false;
+
+		foreach( $order_statuses as $status => $label ) {
+
+			$new_order_statuses[ $status ] = $label;
+
+			if( 'wc-pending' === $status ) {
+
+				$new_order_statuses[ FAJNTABORY_INCOMPLETE_ORDER_POST_STATUS ] = _x( 'Nedokončeno', 'Order status', 'woocommerce' );
+				$status_added = true;
+
+			}
+
+		}
+
+		if( ! $status_added ) {
+
+			$new_order_statuses[ FAJNTABORY_INCOMPLETE_ORDER_POST_STATUS ] = _x( 'Nedokončeno', 'Order status', 'woocommerce' );
+
+		}
+
+		return $new_order_statuses;
+
+	}
+
+	add_action( 'init', 'fajntabory_migrate_pending_reservations_to_incomplete', 20 );
+
+	function fajntabory_migrate_pending_reservations_to_incomplete() {
+
+		if( get_option( 'fajntabory_incomplete_reservation_status_migrated' ) || ! function_exists( 'wc_get_orders' ) ) {
+
+			return;
+
+		}
+
+		$orders = wc_get_orders( array(
+			'limit'      => -1,
+			'status'     => 'pending',
+			'meta_key'   => '_reservation_status',
+			'meta_value' => 'pending_completion',
+		) );
+
+		foreach( $orders as $order ) {
+
+			if( ! $order instanceof WC_Order ) {
+
+				continue;
+
+			}
+
+			$order->update_status( FAJNTABORY_INCOMPLETE_ORDER_STATUS, 'Nedokončená rezervace byla převedena ze stavu Čeká na platbu.' );
+			update_post_meta( fajntabory_get_order_id( $order ), '_fajntabory_incomplete_order', 'yes' );
+
+		}
+
+		update_option( 'fajntabory_incomplete_reservation_status_migrated', current_time( 'mysql' ), false );
+
+	}
 
 	if ( ! function_exists( 'fajntabory_get_checkout_url' ) ) {
 		function fajntabory_get_checkout_url() {
@@ -2755,7 +2846,7 @@
 
 		$order_data = array(
 
-	        'status' => apply_filters('woocommerce_default_order_status', 'pending'),
+	        'status' => FAJNTABORY_INCOMPLETE_ORDER_STATUS,
 
 	        'customer_id' => get_current_user_id()
 
@@ -2820,6 +2911,8 @@
         update_post_meta( $order_id, 'objednavka', $form_type );
         update_post_meta( $order_id, '_reservation_status', 'pending_completion' );
         update_post_meta( $order_id, '_reservation_created_at', current_time( 'mysql' ) );
+        update_post_meta( $order_id, '_fajntabory_incomplete_order', 'yes' );
+        $new_order->add_order_note( 'Objednávka byla vytvořena jako nedokončená rezervace. Na stav Čeká na platbu se přepne až po doplnění přihlášky.' );
 
 
 
@@ -2998,6 +3091,14 @@
 
         	update_post_meta( $newid, '_reservation_status', 'completed' );
         	update_post_meta( $newid, '_reservation_completed_at', current_time( 'mysql' ) );
+            update_post_meta( $newid, '_fajntabory_incomplete_order', 'no' );
+
+            if ( $new_order->has_status( FAJNTABORY_INCOMPLETE_ORDER_STATUS ) ) {
+
+                $new_order->set_status( apply_filters('woocommerce_default_order_status', 'pending') );
+                $new_order->add_order_note( 'Přihláška byla doplněna. Objednávka byla přepnuta na stav Čeká na platbu.' );
+
+            }
 
         }
 
@@ -4086,7 +4187,7 @@
 
 
 
-	    $orders_statuses = "'wc-pending', 'wc-completed', 'wc-processing', 'wc-on-hold'";
+	    $orders_statuses = "'wc-incomplete', 'wc-pending', 'wc-completed', 'wc-processing', 'wc-on-hold'";
 
 
 
