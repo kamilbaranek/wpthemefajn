@@ -2880,6 +2880,16 @@ div.tab button.active {
 		border-radius: 20px;
 	}
 
+	.camp-hero__tile .camp-hero__tile-image {
+		position: absolute;
+		inset: 0;
+		width: 100% !important;
+		height: 100% !important;
+		max-width: none;
+		object-fit: cover;
+		object-position: center;
+	}
+
 	.camp-hero__tile.is-featured {
 		grid-column: 1;
 		grid-row: 1 / 3;
