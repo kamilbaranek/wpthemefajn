@@ -2852,7 +2852,7 @@ div.tab button.active {
 
 @media only screen and (min-width: 961px) {
 	.camp-product {
-		padding: 42px 80px 0;
+		padding: 92px 80px 0;
 	}
 
 	.camp-product__top {
@@ -2917,6 +2917,10 @@ div.tab button.active {
 		position: sticky;
 		top: 132px;
 		margin-top: 0;
+	}
+
+	.camp-booking-card h3 {
+		display: none;
 	}
 
 	.camp-gallery-section {
