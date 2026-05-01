@@ -299,7 +299,7 @@ jQuery(document).ready(function($) {
 		$(this).mask($(this).attr('data-mask'), { });
 	});
 
-	$('form.objednavka').on( 'submit', function() {
+	$('form.objednavka').on( 'submit', function(e) {
 		var $form = $(this);
 		var $valid = true;
 
@@ -367,6 +367,31 @@ jQuery(document).ready(function($) {
 		} else {
 			$form.find('.form-validation-error').hide();
 			console.log( 'valid' );
+			if (
+				$form.attr('data-checkout-step') == 'reserve' &&
+				$form.find("input[name='_wpcf7_recaptcha_response']").length &&
+				$form.attr('data-recaptcha-sitekey')
+			) {
+				e.preventDefault();
+
+				if (typeof grecaptcha === 'undefined') {
+					$('html,body').animate({ scrollTop: 0 }, 'slow');
+					$form.find('.form-validation-error').show();
+					return false;
+				}
+
+				grecaptcha.ready(function() {
+					grecaptcha.execute($form.attr('data-recaptcha-sitekey'), { action: 'contactform' }).then(function(token) {
+						$form.find("input[name='_wpcf7_recaptcha_response']").val(token);
+						$form[0].submit();
+					}).catch(function() {
+						$('html,body').animate({ scrollTop: 0 }, 'slow');
+						$form.find('.form-validation-error').show();
+					});
+				});
+
+				return false;
+			}
 			return true;
 		}
 
