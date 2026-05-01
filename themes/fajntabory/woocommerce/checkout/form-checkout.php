@@ -19,7 +19,17 @@
 	$recaptcha_site_key = function_exists( 'fajntabory_get_recaptcha_site_key' ) ? fajntabory_get_recaptcha_site_key() : '';
 
 	if ( $reservation_sent ) {
-		echo '<div class="woocommerce-message">Dokončete přihlášku ve vašem e-mailu.</div>';
+		?>
+		<section class="reservation-sent" role="status" aria-live="polite">
+			<div class="reservation-sent__icon" aria-hidden="true">&#10003;</div>
+			<div class="reservation-sent__content">
+				<p class="reservation-sent__eyebrow">Rezervace je vytvořená</p>
+				<h2>Teď zkontrolujte svůj e-mail</h2>
+				<p>Poslali jsme vám odkaz pro dokončení přihlášky. Otevřete e-mail a klikněte na tlačítko v něm.</p>
+				<p class="reservation-sent__hint">Pokud zprávu nevidíte během pár minut, zkontrolujte také spam nebo hromadnou poštu.</p>
+			</div>
+		</section>
+		<?php
 		return;
 	}
 

@@ -1278,6 +1278,69 @@ ul.listing li.rowfix {
 	width: 90%;
 }
 
+.reservation-sent {
+	display: flex;
+	align-items: center;
+	gap: 28px;
+	max-width: 980px;
+	margin: 20px auto 90px;
+	padding: 38px 44px;
+	background: #fff;
+	border-top: 8px solid #8bb21a;
+	box-shadow: 0 18px 45px rgba(0, 0, 0, .1);
+	color: #333;
+}
+
+.reservation-sent__icon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex: 0 0 82px;
+	width: 82px;
+	height: 82px;
+	border-radius: 50%;
+	background: #8bb21a;
+	color: #fff;
+	font-size: 46px;
+	font-weight: 700;
+	line-height: 1;
+}
+
+.reservation-sent__content {
+	flex: 1;
+}
+
+.reservation-sent p {
+	width: auto;
+	float: none;
+	margin: 0;
+	font-size: 20px;
+	line-height: 1.55;
+	color: #555;
+}
+
+.reservation-sent .reservation-sent__eyebrow {
+	margin-bottom: 8px;
+	color: #8bb21a;
+	font-size: 16px;
+	font-weight: 700;
+	letter-spacing: .06em;
+	text-transform: uppercase;
+}
+
+.reservation-sent h2 {
+	margin: 0 0 12px;
+	color: #333;
+	font-size: 42px;
+	line-height: 1.1;
+}
+
+.reservation-sent .reservation-sent__hint {
+	margin-top: 14px;
+	color: #777;
+	font-size: 17px;
+}
+
 .wpcf7-form label {
 	display: block;
 }

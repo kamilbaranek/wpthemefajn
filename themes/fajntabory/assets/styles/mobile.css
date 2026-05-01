@@ -544,6 +544,36 @@
 		float: none;
 	}
 
+	.reservation-sent {
+		display: block;
+		margin: 5px 0 45px;
+		padding: 28px 24px;
+		text-align: center;
+	}
+
+	.reservation-sent__icon {
+		width: 64px;
+		height: 64px;
+		margin: 0 auto 18px;
+		font-size: 36px;
+	}
+
+	.reservation-sent .reservation-sent__eyebrow {
+		font-size: 13px;
+	}
+
+	.reservation-sent h2 {
+		font-size: 32px;
+	}
+
+	.reservation-sent p {
+		font-size: 18px;
+	}
+
+	.reservation-sent .reservation-sent__hint {
+		font-size: 15px;
+	}
+
 	.woocommerce-cart .woocommerce-cart-form__cart-item td.product-remove {
 		display: flex !important;
 		align-items: center;
