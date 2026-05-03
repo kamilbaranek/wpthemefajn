@@ -2765,12 +2765,16 @@ div.tab button.active {
 	color: #8798a8;
 }
 
+.camp-booking-card__price-old .woocommerce-Price-amount {
+	font-size: inherit;
+}
+
 .camp-booking-card__price-current {
 	font-size: 32px;
 	font-weight: 800;
 	line-height: 1;
 	white-space: nowrap;
-	color: #162333;
+	color: #d71920;
 }
 
 .camp-booking-card__price-current .woocommerce-Price-amount {

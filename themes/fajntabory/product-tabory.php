@@ -65,6 +65,10 @@ if ( ! empty( $product ) && $product->is_type( 'variable' ) ) {
 	$available_variations = $product->get_available_variations();
 
 	foreach ( $available_variations as $variation ) {
+		$regular_price = (float) $variation['display_regular_price'];
+		$sale_price = (float) wc_format_decimal( get_post_meta( $variation['variation_id'], '_sale_price', true ) );
+		$display_price = $regular_price > $sale_price && $sale_price > 0 ? $sale_price : (float) $variation['display_price'];
+
 		$taxonomy = 'pa_lokalita';
 		$lokalita = get_post_meta( $variation['variation_id'], 'attribute_' . $taxonomy, true );
 		$lokalita = get_term_by( 'slug', $lokalita, $taxonomy );
@@ -112,8 +116,8 @@ if ( ! empty( $product ) && $product->is_type( 'variable' ) ) {
 			'lokalita'              => $lokalita,
 			'typ_tabora'            => $typ_tabora_name,
 			'terminy'               => $terminy,
-			'regular_price'         => (float) $variation['display_regular_price'],
-			'discount_price'        => (float) $variation['display_price'],
+			'regular_price'         => $regular_price,
+			'discount_price'        => $display_price,
 			'discount_to'           => $discount_to,
 			'variation_id'          => $variation['variation_id'],
 			'current_qty'           => $current_qty,
