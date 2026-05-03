@@ -35,7 +35,7 @@
 				<script type="text/javascript">
 					jQuery(document).ready( function($) {
 
-						$('.checkout-button').on('click', function() {
+						$('.checkout-button, .cart-mobile-order').on('click', function() {
 							if( $('.storno').length ) {
 								$('.overlay').fadeIn();
 								$('.storno').fadeIn();
