@@ -242,17 +242,12 @@
 		gap: 8px;
 	}
 
-	body.single-product .camp-booking__summary-item:nth-child(1),
-	body.single-product .camp-booking__summary-item:nth-child(4) {
-		display: none;
-	}
-
-	body.single-product .camp-booking__summary-item:nth-child(2) {
-		order: 2;
-	}
-
-	body.single-product .camp-booking__summary-item:nth-child(3) {
+	body.single-product .camp-booking__summary-item--location {
 		order: 1;
+	}
+
+	body.single-product .camp-booking__summary-item--price {
+		order: 2;
 	}
 
 	body.single-product .camp-booking__summary-item {
@@ -292,19 +287,19 @@
 		color: #a60000;
 	}
 
-	body.single-product .camp-booking__summary .camp-booking__summary-item:nth-child(2) strong {
+	body.single-product .camp-booking__summary-item--price strong {
 		white-space: nowrap;
 	}
 
-	body.single-product .camp-booking__summary .camp-booking__summary-item:nth-child(2) strong .woocommerce-Price-amount {
+	body.single-product .camp-booking__summary-item--price strong .woocommerce-Price-amount {
 		display: inline-flex;
 		align-items: baseline;
 		flex-wrap: nowrap;
 		white-space: nowrap;
 	}
 
-	body.single-product .camp-booking__summary .camp-booking__summary-item:nth-child(2) strong .woocommerce-Price-amount bdi,
-	body.single-product .camp-booking__summary .camp-booking__summary-item:nth-child(2) strong .woocommerce-Price-currencySymbol {
+	body.single-product .camp-booking__summary-item--price strong .woocommerce-Price-amount bdi,
+	body.single-product .camp-booking__summary-item--price strong .woocommerce-Price-currencySymbol {
 		white-space: nowrap;
 	}
 

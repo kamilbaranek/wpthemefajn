@@ -161,34 +161,16 @@ $camp_discount_note = function( $discount_to ) {
 	return '';
 };
 
-$pobytovy_lowest_price = 0;
 $pobytovy_location = '';
-$pobytovy_type_label = 'Pobytový tábor';
 if ( ! empty( $pobytovy ) ) {
 	$pobytovy_location = $pobytovy[0]['lokalita'];
-	$pobytovy_type_label = ! empty( $pobytovy[0]['typ_tabora'] ) ? $pobytovy[0]['typ_tabora'] : $pobytovy_type_label;
-	foreach ( $pobytovy as $item ) {
-		$item_price = $camp_get_display_price( $item );
-		if ( empty( $pobytovy_lowest_price ) || $item_price < $pobytovy_lowest_price ) {
-			$pobytovy_lowest_price = $item_price;
-		}
-	}
 }
 
-$primestsky_lowest_price = 0;
 $primestsky_location = '';
-$primestsky_type_label = 'Příměstský tábor';
 if ( ! empty( $primestsky ) ) {
 	$primestsky_location = $primestsky[0]['lokalita'];
-	$primestsky_type_label = ! empty( $primestsky[0]['typ_tabora'] ) ? $primestsky[0]['typ_tabora'] : $primestsky_type_label;
-	foreach ( $primestsky as $item ) {
-		$item_price = $camp_get_display_price( $item );
-		if ( empty( $primestsky_lowest_price ) || $item_price < $primestsky_lowest_price ) {
-			$primestsky_lowest_price = $item_price;
-		}
-	}
 }
-$render_booking_panel = function( $panel_id, $items, $lowest_price, $location, $type_label, $is_active ) use ( $camp_summary_price, $camp_get_display_price, $camp_format_price_text, $camp_discount_note ) {
+$render_booking_panel = function( $panel_id, $items, $location, $is_active ) use ( $camp_summary_price, $camp_get_display_price, $camp_format_price_text, $camp_discount_note ) {
 	if ( empty( $items ) ) {
 		return;
 	}
@@ -200,24 +182,16 @@ $render_booking_panel = function( $panel_id, $items, $lowest_price, $location, $
 	?>
 	<div class="tabcontent camp-tab-panel camp-booking__panel" data-tab-panel="<?php echo esc_attr( $panel_id ); ?>" style="<?php echo $is_active ? 'display:block;' : 'display:none;'; ?>">
 		<div class="camp-booking__summary">
-			<div class="camp-booking__summary-item">
-				<span>Termínů</span>
-				<strong><?php echo esc_html( count( $items ) ); ?></strong>
-			</div>
-			<div class="camp-booking__summary-item">
-				<span>Cena</span>
-				<strong data-camp-summary-price><?php echo $camp_summary_price( $selected_price ); ?></strong>
-				<small class="camp-booking__summary-status <?php echo esc_attr( $selected_item['availability_class'] ); ?><?php echo $selected_item['manage_stock'] ? '' : ' is-hidden'; ?>" data-camp-summary-availability><?php echo esc_html( $selected_item['availability_label'] ); ?></small>
-			</div>
 			<?php if ( ! empty( $location ) ) { ?>
-				<div class="camp-booking__summary-item">
+				<div class="camp-booking__summary-item camp-booking__summary-item--location">
 					<span>Lokalita</span>
 					<strong><?php echo esc_html( $location ); ?></strong>
 				</div>
 			<?php } ?>
-			<div class="camp-booking__summary-item">
-				<span>Typ tábora</span>
-				<strong><?php echo esc_html( $type_label ); ?></strong>
+			<div class="camp-booking__summary-item camp-booking__summary-item--price">
+				<span>Cena</span>
+				<strong data-camp-summary-price><?php echo $camp_summary_price( $selected_price ); ?></strong>
+				<small class="camp-booking__summary-status <?php echo esc_attr( $selected_item['availability_class'] ); ?><?php echo $selected_item['manage_stock'] ? '' : ' is-hidden'; ?>" data-camp-summary-availability><?php echo esc_html( $selected_item['availability_label'] ); ?></small>
 			</div>
 		</div>
 
@@ -337,11 +311,11 @@ $render_booking_panel = function( $panel_id, $items, $lowest_price, $location, $
 				<?php } ?>
 
 				<?php if ( $has_pobytovy ) { ?>
-					<?php $render_booking_panel( 'pobytovy', $pobytovy, $pobytovy_lowest_price, $pobytovy_location, $pobytovy_type_label, $default_tab === 'pobytovy' ); ?>
+					<?php $render_booking_panel( 'pobytovy', $pobytovy, $pobytovy_location, $default_tab === 'pobytovy' ); ?>
 				<?php } ?>
 
 				<?php if ( $has_primestsky ) { ?>
-					<?php $render_booking_panel( 'primestsky', $primestsky, $primestsky_lowest_price, $primestsky_location, $primestsky_type_label, $default_tab === 'primestsky' ); ?>
+					<?php $render_booking_panel( 'primestsky', $primestsky, $primestsky_location, $default_tab === 'primestsky' ); ?>
 				<?php } ?>
 			</aside>
 		<?php } ?>
