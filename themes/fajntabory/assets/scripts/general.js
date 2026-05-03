@@ -213,9 +213,69 @@ jQuery(document).ready(function($) {
 			var $cta = $picker.find('[data-camp-cta]');
 			var $summaryPrice = $panel.find('[data-camp-summary-price]');
 			var $summaryAvailability = $panel.find('[data-camp-summary-availability]');
+			var $countdown = $picker.find('[data-camp-countdown]');
+			var $countdownValue = $picker.find('[data-camp-countdown-value]');
+			var countdownTimer = null;
 
 			if ( ! $select.length ) {
 				return;
+			}
+
+			function padCountdownNumber(number) {
+				return number < 10 ? '0' + number : number;
+			}
+
+			function formatSaleCountdown(milliseconds) {
+				var secondsTotal = Math.max(0, Math.floor(milliseconds / 1000));
+				var days = Math.floor(secondsTotal / 86400);
+				var hours = Math.floor((secondsTotal % 86400) / 3600);
+				var minutes = Math.floor((secondsTotal % 3600) / 60);
+				var seconds = secondsTotal % 60;
+				var time = padCountdownNumber(hours) + ':' + padCountdownNumber(minutes) + ':' + padCountdownNumber(seconds);
+
+				if ( days > 0 ) {
+					return days + ' d ' + time;
+				}
+
+				return time;
+			}
+
+			function stopSaleCountdown() {
+				if ( countdownTimer ) {
+					clearInterval(countdownTimer);
+					countdownTimer = null;
+				}
+			}
+
+			function syncSaleCountdown(saleEndsAt) {
+				var endsAt = parseInt(saleEndsAt, 10);
+
+				stopSaleCountdown();
+
+				if ( ! $countdown.length || ! endsAt ) {
+					$countdown.addClass('is-hidden');
+					$countdownValue.text('');
+					return;
+				}
+
+				function renderCountdown() {
+					var remaining = (endsAt * 1000) - Date.now();
+
+					if ( remaining <= 0 ) {
+						stopSaleCountdown();
+						$countdown.addClass('is-hidden');
+						$countdownValue.text('');
+						return;
+					}
+
+					$countdown
+						.attr('data-sale-ends-at', endsAt)
+						.removeClass('is-hidden');
+					$countdownValue.text(formatSaleCountdown(remaining));
+				}
+
+				renderCountdown();
+				countdownTimer = setInterval(renderCountdown, 1000);
 			}
 
 			function syncCampBookingSelection() {
@@ -223,8 +283,10 @@ jQuery(document).ready(function($) {
 				var location = $option.attr('data-location') || '';
 				var term = $option.attr('data-term') || $option.text();
 				var price = $option.attr('data-price') || '';
+				var regularPrice = $option.attr('data-regular-price') || price;
 				var priceOld = $option.attr('data-price-old') || '';
 				var discountNote = $option.attr('data-discount-note') || '';
+				var saleEndsAt = $option.attr('data-sale-ends-at') || '';
 				var availabilityLabel = $option.attr('data-availability-label') || '';
 				var availabilityClass = $option.attr('data-availability-class') || '';
 				var manageStock = $option.attr('data-manage-stock') === '1';
@@ -234,7 +296,8 @@ jQuery(document).ready(function($) {
 
 				$term.text(term);
 				$priceCurrent.text(price);
-				$summaryPrice.html(price.replace(/ /g, '&nbsp;'));
+				$summaryPrice.html(regularPrice.replace(/ /g, '&nbsp;'));
+				syncSaleCountdown(saleEndsAt);
 
 				if ( $location.length ) {
 					$location.text(location);

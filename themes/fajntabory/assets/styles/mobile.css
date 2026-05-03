@@ -356,6 +356,16 @@
 		font-size: 15px;
 	}
 
+	body.single-product .camp-booking-card__countdown {
+		margin-bottom: 10px;
+		padding: 10px 12px;
+		border-radius: 14px;
+	}
+
+	body.single-product .camp-booking-card__countdown strong {
+		font-size: 16px;
+	}
+
 	body.single-product .camp-gallery-section {
 		display: none;
 	}

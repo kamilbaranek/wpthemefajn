@@ -179,6 +179,7 @@ $render_booking_panel = function( $panel_id, $items, $location, $is_active ) use
 	$selected_price = $camp_get_display_price( $selected_item );
 	$selected_has_discount = $selected_item['regular_price'] > $selected_price;
 	$selected_discount_note = $camp_discount_note( $selected_item['discount_to'] );
+	$selected_sale_ends_at = $selected_has_discount && ! empty( $selected_item['discount_to'] ) ? $selected_item['discount_to'] : 0;
 	?>
 	<div class="tabcontent camp-tab-panel camp-booking__panel" data-tab-panel="<?php echo esc_attr( $panel_id ); ?>" style="<?php echo $is_active ? 'display:block;' : 'display:none;'; ?>">
 		<div class="camp-booking__summary">
@@ -189,8 +190,8 @@ $render_booking_panel = function( $panel_id, $items, $location, $is_active ) use
 				</div>
 			<?php } ?>
 			<div class="camp-booking__summary-item camp-booking__summary-item--price">
-				<span>Cena</span>
-				<strong data-camp-summary-price><?php echo $camp_summary_price( $selected_price ); ?></strong>
+				<span>Běžná cena</span>
+				<strong data-camp-summary-price><?php echo $camp_summary_price( $selected_item['regular_price'] ); ?></strong>
 				<small class="camp-booking__summary-status <?php echo esc_attr( $selected_item['availability_class'] ); ?><?php echo $selected_item['manage_stock'] ? '' : ' is-hidden'; ?>" data-camp-summary-availability><?php echo esc_html( $selected_item['availability_label'] ); ?></small>
 			</div>
 		</div>
@@ -212,8 +213,10 @@ $render_booking_panel = function( $panel_id, $items, $location, $is_active ) use
 								data-location="<?php echo esc_attr( $tabor['lokalita'] ); ?>"
 								data-term="<?php echo esc_attr( $tabor['terminy'] ); ?>"
 								data-price="<?php echo esc_attr( $camp_format_price_text( $item_price ) ); ?>"
+								data-regular-price="<?php echo esc_attr( $camp_format_price_text( $tabor['regular_price'] ) ); ?>"
 								data-price-old="<?php echo esc_attr( $item_has_discount ? $camp_format_price_text( $tabor['regular_price'] ) : '' ); ?>"
 								data-discount-note="<?php echo esc_attr( $item_discount_note ); ?>"
+								data-sale-ends-at="<?php echo esc_attr( $item_has_discount && ! empty( $tabor['discount_to'] ) ? $tabor['discount_to'] : '' ); ?>"
 								data-availability-label="<?php echo esc_attr( $tabor['availability_label'] ); ?>"
 								data-availability-class="<?php echo esc_attr( $tabor['availability_class'] ); ?>"
 								data-manage-stock="<?php echo $tabor['manage_stock'] ? '1' : '0'; ?>"
@@ -240,6 +243,11 @@ $render_booking_panel = function( $panel_id, $items, $location, $is_active ) use
 					<div class="camp-booking-card__availability <?php echo esc_attr( $selected_item['availability_class'] ); ?><?php echo $selected_item['manage_stock'] ? '' : ' is-hidden'; ?>" data-camp-availability>
 						<?php echo esc_html( $selected_item['availability_label'] ); ?>
 					</div>
+				</div>
+
+				<div class="camp-booking-card__countdown is-hidden" data-camp-countdown data-sale-ends-at="<?php echo esc_attr( $selected_sale_ends_at ); ?>">
+					<span>Akce končí za</span>
+					<strong data-camp-countdown-value></strong>
 				</div>
 
 				<a class="camp-booking-card__cta <?php echo ! $selected_item['can_order'] ? 'disabled' : ''; ?>" data-camp-cta href="<?php echo esc_url( $selected_item['order_link'] ); ?>">

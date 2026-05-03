@@ -2813,8 +2813,34 @@ div.tab button.active {
 .camp-booking-card__location.is-hidden,
 .camp-booking-card__price-old.is-hidden,
 .camp-booking-card__discount-note.is-hidden,
-.camp-booking-card__availability.is-hidden {
+.camp-booking-card__availability.is-hidden,
+.camp-booking-card__countdown.is-hidden {
 	display: none;
+}
+
+.camp-booking-card__countdown {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	margin: 0 0 14px;
+	padding: 12px 14px;
+	border-radius: 16px;
+	background: rgba(237, 16, 135, 0.1);
+	color: #c20f70;
+	font-weight: 700;
+}
+
+.camp-booking-card__countdown span {
+	font-size: 12px;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+}
+
+.camp-booking-card__countdown strong {
+	font-size: 18px;
+	line-height: 1;
+	white-space: nowrap;
 }
 
 .camp-booking-card__cta {
