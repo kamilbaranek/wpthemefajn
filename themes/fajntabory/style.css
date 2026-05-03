@@ -2400,12 +2400,16 @@ div.tab button.active {
 	align-items: center;
 	justify-content: center;
 	padding: 11px 24px !important;
+	border: 0 !important;
 	border-radius: 999px !important;
 	background: #ed1087 !important;
 	color: #fff !important;
 	box-shadow: 0 10px 24px rgba(237, 16, 135, 0.26) !important;
+	cursor: pointer;
+	font-family: inherit;
 	font-weight: 800 !important;
 	letter-spacing: .04em;
+	line-height: 1;
 	text-decoration: none !important;
 	text-transform: uppercase;
 }

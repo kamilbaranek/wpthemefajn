@@ -30,27 +30,34 @@
 
 	<?php
 		if ( is_page( 'cart' ) || is_cart() ) {
-			if( matched_cart_items(2853) == 0 && matched_cart_items(14754) == 0 ) {
-				?>
-				<script type="text/javascript">
-					jQuery(document).ready( function($) {
+			?>
+			<script type="text/javascript">
+				jQuery(document).ready( function($) {
 
-						$('.checkout-button, .cart-mobile-order').on('click', function() {
-							if( $('.storno').length ) {
-								$('.overlay').fadeIn();
-								$('.storno').fadeIn();
-								return false;
-							}
-						});
+					$('.checkout-button, .cart-mobile-order').on('click', function(e) {
+						var checkoutUrl = $(this).data('checkout-url');
 
-						$('.continue').on('click', function(e) {
-							$('.overlay').fadeOut();
-							$('.storno').fadeOut();
-						});
+						if( $('.storno').length ) {
+							e.preventDefault();
+							$('.overlay').fadeIn();
+							$('.storno').fadeIn();
+							return false;
+						}
+
+						if( checkoutUrl ) {
+							e.preventDefault();
+							window.location.href = checkoutUrl;
+							return false;
+						}
 					});
-				</script>
-				<?php
-			}
+
+					$('.continue').on('click', function(e) {
+						$('.overlay').fadeOut();
+						$('.storno').fadeOut();
+					});
+				});
+			</script>
+			<?php
 		}
 	?>
 	

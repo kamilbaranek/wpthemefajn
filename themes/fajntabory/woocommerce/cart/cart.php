@@ -167,7 +167,7 @@ do_action( 'woocommerce_before_cart' ); ?>
 								// Show the mobile checkout CTA only once, next to the first remove action.
 								if ( ! $mobile_order_cta_rendered ) {
 									$remove_link .= sprintf(
-										'<a href="%s" class="cart-mobile-order">OBJEDNAT</a>',
+										'<button type="button" class="cart-mobile-order" data-checkout-url="%s">OBJEDNAT</button>',
 										esc_url( fajntabory_get_checkout_url() )
 									);
 									$mobile_order_cta_rendered = true;

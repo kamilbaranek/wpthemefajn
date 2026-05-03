@@ -608,13 +608,17 @@
 		justify-content: center;
 		flex: 0 0 auto;
 		padding: 12px 18px !important;
+		border: 0 !important;
 		border-radius: 999px !important;
 		background: #ed1087 !important;
 		color: #fff !important;
 		box-shadow: 0 10px 24px rgba(237, 16, 135, 0.26) !important;
+		cursor: pointer;
+		font-family: inherit;
 		font-size: 15px !important;
 		font-weight: 800 !important;
 		letter-spacing: .04em;
+		line-height: 1;
 		text-transform: uppercase;
 		white-space: nowrap;
 	}
