@@ -204,7 +204,6 @@ jQuery(document).ready(function($) {
 			var $picker = $(this);
 			var $panel = $picker.closest('.camp-booking__panel');
 			var $select = $picker.find('[data-camp-select]');
-			var $location = $picker.find('[data-camp-location]');
 			var $term = $picker.find('[data-camp-term]');
 			var $priceOld = $picker.find('[data-camp-price-old]');
 			var $priceCurrent = $picker.find('[data-camp-price-current]');
@@ -280,7 +279,6 @@ jQuery(document).ready(function($) {
 
 			function syncCampBookingSelection() {
 				var $option = $select.find('option:selected');
-				var location = $option.attr('data-location') || '';
 				var term = $option.attr('data-term') || $option.text();
 				var price = $option.attr('data-price') || '';
 				var regularPrice = $option.attr('data-regular-price') || price;
@@ -298,11 +296,6 @@ jQuery(document).ready(function($) {
 				$priceCurrent.text(price);
 				$summaryPrice.html(regularPrice.replace(/ /g, '&nbsp;'));
 				syncSaleCountdown(saleEndsAt);
-
-				if ( $location.length ) {
-					$location.text(location);
-					$location.toggleClass('is-hidden', ! location);
-				}
 
 				$priceOld.text(priceOld);
 				$priceOld.toggleClass('is-hidden', ! priceOld);

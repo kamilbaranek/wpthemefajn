@@ -230,7 +230,6 @@ $render_booking_panel = function( $panel_id, $items, $location, $is_active ) use
 			</div>
 
 			<div class="camp-booking-card camp-booking-card--selected" data-camp-selection>
-				<p class="camp-booking-card__location<?php echo empty( $selected_item['lokalita'] ) ? ' is-hidden' : ''; ?>" data-camp-location><?php echo esc_html( $selected_item['lokalita'] ); ?></p>
 				<h3 data-camp-term><?php echo esc_html( $selected_item['terminy'] ); ?></h3>
 
 				<div class="camp-booking-card__meta">
