@@ -338,6 +338,18 @@
 		}
 	}
 
+	if ( ! function_exists( 'fajntabory_get_reservation_choice_url' ) ) {
+		function fajntabory_get_reservation_choice_url( $token ) {
+			return add_query_arg(
+				array(
+					'reservation' => 'choose',
+					'rezervace'   => rawurlencode( $token ),
+				),
+				fajntabory_get_checkout_url()
+			);
+		}
+	}
+
 	if ( ! function_exists( 'fajntabory_send_reservation_email' ) ) {
 		function fajntabory_send_reservation_email( $order, $token ) {
 			global $woocommerce;
@@ -2744,11 +2756,15 @@
 	 ***/
 
 
-	if( !empty( $_POST['objednavka']) ) {
+	if( !empty( $_POST['reservation_step'] ) || !empty( $_POST['objednavka']) ) {
 
-		if ( ! empty( $_POST['reservation_step'] ) && 'reserve' === $_POST['reservation_step'] ) {
+		$reservation_step = ! empty( $_POST['reservation_step'] ) ? sanitize_text_field( wp_unslash( $_POST['reservation_step'] ) ) : '';
+
+		if ( 'reserve' === $reservation_step ) {
 			add_action( 'init', 'fajntabory_create_reservation' );
-		} else {
+		} elseif ( 'send_link' === $reservation_step ) {
+			add_action( 'init', 'fajntabory_send_reservation_link_request' );
+		} elseif ( ! empty( $_POST['objednavka'] ) ) {
 			add_action( 'init', 'complete_order' );
 		}
 
@@ -2932,13 +2948,47 @@
 
 
 
-        fajntabory_send_reservation_email( $new_order, $reservation_token );
-
-
-
 		WC()->cart->empty_cart( true );
 
 
+
+		wp_safe_redirect( fajntabory_get_reservation_choice_url( $reservation_token ) );
+		exit;
+
+	}
+
+
+
+	function fajntabory_send_reservation_link_request() {
+
+		$reservation_token = ! empty( $_POST['reservation_token'] ) ? sanitize_text_field( wp_unslash( $_POST['reservation_token'] ) ) : '';
+
+		if (
+			empty( $reservation_token )
+			|| empty( $_POST['reservation_action_nonce'] )
+			|| ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['reservation_action_nonce'] ) ), 'fajntabory_send_reservation_link' )
+		) {
+			wc_add_notice( 'Odkaz pro dokončení přihlášky se nepodařilo ověřit. Zkuste to prosím znovu.', 'error' );
+			wp_safe_redirect( fajntabory_get_checkout_url() );
+			exit;
+		}
+
+		$reservation_order = fajntabory_get_reservation_order( $reservation_token );
+
+		if ( ! $reservation_order ) {
+			wc_add_notice( 'Rezervaci se nepodařilo najít. Zkuste prosím vytvořit objednávku znovu.', 'error' );
+			wp_safe_redirect( fajntabory_get_checkout_url() );
+			exit;
+		}
+
+		if ( fajntabory_reservation_is_completed( $reservation_order ) ) {
+			wc_add_notice( 'Tato přihláška už byla dokončena.', 'notice' );
+			wp_safe_redirect( fajntabory_get_reservation_complete_url( $reservation_token ) );
+			exit;
+		}
+
+		fajntabory_send_reservation_email( $reservation_order, $reservation_token );
+		update_post_meta( fajntabory_get_order_id( $reservation_order ), '_reservation_email_sent_at', current_time( 'mysql' ) );
 
 		wp_safe_redirect( add_query_arg( 'reservation', 'sent', fajntabory_get_checkout_url() ) );
 		exit;

@@ -19,7 +19,7 @@
 </div>
 
 <div class="col-3">
-	<p>Tlačítkem níže vytvoříte rezervaci a odkaz pro doplnění přihlášky pošleme na uvedený e-mail.</p>
+	<p>Tlačítkem níže vytvoříte předběžnou objednávku. V dalším kroku zvolíte, jestli údaje doplníte hned, nebo později přes e-mail.</p>
 </div>
 
 <div class="submit tocdiv">
@@ -30,5 +30,5 @@
 </div>
 
 <div class="submit">
-	<input type="submit" class="form-submit" value="Objednat">
+	<input type="submit" class="form-submit" value="Pokračovat">
 </div>
