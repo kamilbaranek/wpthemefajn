@@ -2406,6 +2406,44 @@ body.cookies-not-set #header {
 	margin-bottom: 6px;
 }
 
+.storno_actions {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	margin-top: 24px;
+}
+
+.storno .popup_button {
+	box-sizing: border-box;
+	height: auto;
+	min-height: 48px;
+	line-height: 1.2;
+	margin: 0;
+	padding: 13px 22px;
+	text-align: center;
+}
+
+.storno .popup_button_primary {
+	background-color: #bed62f;
+	color: #fff;
+	font-weight: 700;
+	font-size: 20px;
+	box-shadow: 0 6px 14px rgba(139, 178, 26, .28);
+}
+
+.storno .popup_button_secondary {
+	background-color: transparent;
+	color: #666;
+	border: 2px solid #ddd;
+	font-size: 17px;
+}
+
+.storno .popup_button_secondary:hover {
+	color: #333;
+	border-color: #bbb;
+}
+
 .zamestnavatel_hidden {
 	display: none;
 }

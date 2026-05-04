@@ -97,9 +97,9 @@
 				echo '<p>Ve Vaší objednávce nemáte Storno pojištění. Díky Storno pojištění se vyhnete nepříjemnosti propadnutí až 100 % Vašich peněz v případě zrušení. Cena by jinak podlehla našim <a href="https://www.fajntabory.cz/produkt/storno-pojisteni/" target="_blank">storno podmínkám</a>.</p>';
 				echo '<p>Cena storno pojištění je pouze ' . ceil($storno_val) . ' kč</p>';
 				echo '<p>Opravdu si přejete objednat tábor bez Storno pojištění?</p>';
-				echo '<p>';
-				echo '<a href="' . esc_url( add_query_arg( 'add_to_cart', 2853, wc_get_cart_url() ) ) . '" class="popup_button">Přidat do košíku</a>';
-				echo '<a href="'.esc_url( fajntabory_get_checkout_url() ).'" class="popup_button continue">Přesto pokračovat</a>';
+				echo '<p class="storno_actions">';
+				echo '<a href="'.esc_url( fajntabory_get_checkout_url() ).'" class="popup_button popup_button_secondary continue">Risknu to bez pojištění</a>';
+				echo '<a href="' . esc_url( add_query_arg( 'add_to_cart', 2853, wc_get_cart_url() ) ) . '" class="popup_button popup_button_primary">Přidat do košíku</a>';
 				echo '</p>';
 				echo '</div>';
 			}

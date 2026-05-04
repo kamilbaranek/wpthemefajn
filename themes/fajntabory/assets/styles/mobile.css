@@ -750,4 +750,15 @@
 		top: 5%;
 	}
 
+	.storno_actions {
+		display: flex;
+		flex-direction: column-reverse;
+		align-items: stretch;
+		gap: 10px;
+	}
+
+	.storno .popup_button {
+		width: 100%;
+	}
+
 }
