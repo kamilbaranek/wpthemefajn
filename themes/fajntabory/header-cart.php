@@ -11,10 +11,6 @@
 	  gtag('config', 'UA-114677811-1');
 	  gtag('config', 'AW-809603562');
 	</script>
-	<?php if(is_page_template( 'page-thankyou.php' ) && !empty($_GET['oid'])) : ?>
-	<!-- Event snippet for Nákup conversion page --> 
-	<script> gtag('event', 'conversion', { 'send_to': 'AW-809603562/3WcBCO6FmcQCEOqjhoID', '<?php echo $_GET['oid']; ?>': '' }); </script>
-	<?php endif; ?>
 	<meta charset="<?php bloginfo( 'charset' ); ?>">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="google-site-verification" content="ngt00vcEOaVFTxgkiHyF173vkpXgIBj6NsjDrcWXfUQ" />
@@ -25,6 +21,11 @@
 	<script src="<?php echo esc_url( get_template_directory_uri() ); ?>/assets/scripts/html5.js"></script>
 	<![endif]-->
 	<?php wp_head(); ?>
+	<?php
+		if ( function_exists( 'fajntabory_print_purchase_conversion' ) ) {
+			fajntabory_print_purchase_conversion();
+		}
+	?>
 	
 	<script>
 		(function(i,s,o,g,r,a,m){ i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

@@ -216,6 +216,105 @@
 		}
 	}
 
+	if ( ! function_exists( 'fajntabory_get_conversion_order_from_request' ) ) {
+		function fajntabory_get_conversion_order_from_request() {
+			if ( empty( $_GET['oid'] ) || ! function_exists( 'wc_get_order' ) ) {
+				return false;
+			}
+
+			$requested_order_id = wp_unslash( $_GET['oid'] );
+
+			if ( is_array( $requested_order_id ) ) {
+				$requested_order_id = reset( $requested_order_id );
+			}
+
+			$order_id = absint( $requested_order_id );
+
+			if ( $order_id < 1 ) {
+				return false;
+			}
+
+			$order = wc_get_order( $order_id );
+
+			return $order instanceof WC_Order ? $order : false;
+		}
+	}
+
+	if ( ! function_exists( 'fajntabory_get_purchase_event_data' ) ) {
+		function fajntabory_get_purchase_event_data( $order ) {
+			if ( ! $order instanceof WC_Order ) {
+				return array();
+			}
+
+			$items = array();
+
+			foreach ( $order->get_items() as $item ) {
+				$quantity = max( 1, (int) $item->get_quantity() );
+				$product_id = (int) $item->get_product_id();
+
+				if ( method_exists( $item, 'get_variation_id' ) && $item->get_variation_id() ) {
+					$product_id = (int) $item->get_variation_id();
+				}
+
+				$items[] = array(
+					'item_id'   => (string) $product_id,
+					'item_name' => wp_strip_all_tags( $item->get_name() ),
+					'price'     => (float) wc_format_decimal( (float) $item->get_total() / $quantity, 2 ),
+					'quantity'  => $quantity,
+				);
+			}
+
+			return array(
+				'transaction_id' => (string) fajntabory_get_order_id( $order ),
+				'value'          => (float) wc_format_decimal( $order->get_total(), 2 ),
+				'currency'       => $order->get_currency() ? $order->get_currency() : get_woocommerce_currency(),
+				'items'          => $items,
+			);
+		}
+	}
+
+	if ( ! function_exists( 'fajntabory_print_purchase_conversion' ) ) {
+		function fajntabory_print_purchase_conversion() {
+			$order = fajntabory_get_conversion_order_from_request();
+
+			if ( ! $order ) {
+				return;
+			}
+
+			$purchase_data = fajntabory_get_purchase_event_data( $order );
+
+			if ( empty( $purchase_data['transaction_id'] ) ) {
+				return;
+			}
+
+			$ads_data = array(
+				'send_to'        => 'AW-809603562/3WcBCO6FmcQCEOqjhoID',
+				'transaction_id' => $purchase_data['transaction_id'],
+				'value'          => $purchase_data['value'],
+				'currency'       => $purchase_data['currency'],
+			);
+
+			$data_layer_purchase = array(
+				'event'                 => 'purchase',
+				'ecommerce'             => $purchase_data,
+				'google_ads_conversion' => $ads_data,
+			);
+			?>
+			<!-- Purchase conversion events -->
+			<script>
+				window.dataLayer = window.dataLayer || [];
+				window.dataLayer.push({ ecommerce: null });
+				window.dataLayer.push(<?php echo wp_json_encode( $data_layer_purchase ); ?>);
+
+				if (typeof gtag === 'function' && typeof window.google_tag_manager === 'undefined') {
+					gtag('event', 'conversion', <?php echo wp_json_encode( $ads_data ); ?>);
+					gtag('event', 'purchase', <?php echo wp_json_encode( $purchase_data ); ?>);
+				}
+			</script>
+			<?php
+		}
+	}
+
 	if ( ! function_exists( 'fajntabory_get_checkout_form_type_from_product_ids' ) ) {
 		function fajntabory_get_checkout_form_type_from_product_ids( $product_ids ) {
 			$form = null;
@@ -3409,7 +3508,13 @@
 
 		fajntabory_mark_reservation_link_sent( $reservation_order, 'customer_choice' );
 
-		wp_safe_redirect( add_query_arg( 'reservation', 'sent', fajntabory_get_checkout_url() ) );
+		wp_safe_redirect( add_query_arg(
+			array(
+				'reservation' => 'sent',
+				'oid'         => fajntabory_get_order_id( $reservation_order ),
+			),
+			fajntabory_get_checkout_url()
+		) );
 		exit;
 
 	}
