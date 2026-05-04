@@ -587,43 +587,53 @@
 	}
 
 	.reservation-choice {
-		margin: 5px 0 45px;
-		padding: 28px 24px;
+		margin: 5px 0 28px;
+		padding: 18px 16px;
 	}
 
 	.reservation-choice__eyebrow {
-		font-size: 13px;
+		margin-bottom: 5px;
+		font-size: 11px;
 	}
 
 	.reservation-choice h2 {
-		font-size: 32px;
+		margin-bottom: 8px;
+		font-size: 27px;
 	}
 
 	.reservation-choice__lead {
-		font-size: 18px;
+		margin-bottom: 14px;
+		font-size: 15px;
+		line-height: 1.35;
 	}
 
 	.reservation-choice__options {
-		display: block;
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 10px;
 	}
 
 	.reservation-choice__option {
 		min-height: 0;
-		padding: 22px;
-		margin-top: 16px;
+		padding: 14px;
+		margin-top: 0;
 	}
 
 	.reservation-choice__option h3 {
-		font-size: 25px;
+		margin-bottom: 6px;
+		font-size: 20px;
 	}
 
 	.reservation-choice__option p {
-		font-size: 16px;
+		margin-bottom: 10px;
+		font-size: 14px;
+		line-height: 1.35;
 	}
 
 	.reservation-choice__button {
-		min-height: 54px;
-		font-size: 18px;
+		min-height: 44px;
+		padding: 10px 14px;
+		font-size: 15px;
 	}
 
 	.woocommerce-cart .woocommerce-cart-form__cart-item td.product-remove {
