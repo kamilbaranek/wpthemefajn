@@ -641,11 +641,14 @@
 					}
 
 					$opened_at = fajntabory_reservation_time_to_timestamp( $order->get_meta( '_reservation_completion_form_opened_at' ) );
+					$reservation_created_at = fajntabory_reservation_time_to_timestamp( $order->get_meta( '_reservation_created_at' ) );
+					$auto_link_base_time = $opened_at > 0 ? $opened_at : $reservation_created_at;
+					$auto_link_source = $opened_at > 0 ? 'auto_after_open_form' : 'auto_after_abandoned_choice';
 					$delay_minutes = max( 5, (int) get_option( 'fajntabory_reservation_auto_link_delay_minutes', 60 ) );
 
-					if ( $opened_at > 0 && time() >= $opened_at + ( $delay_minutes * MINUTE_IN_SECONDS ) ) {
+					if ( $auto_link_base_time > 0 && time() >= $auto_link_base_time + ( $delay_minutes * MINUTE_IN_SECONDS ) ) {
 						if ( fajntabory_send_reservation_email( $order, $token, 'link' ) ) {
-							fajntabory_mark_reservation_link_sent( $order, 'auto_after_open_form' );
+							fajntabory_mark_reservation_link_sent( $order, $auto_link_source );
 						} else {
 							update_post_meta( $order_id, '_reservation_email_last_error_at', current_time( 'mysql' ) );
 							$order->add_order_note( 'Automatické odeslání odkazu k dokončení objednávky selhalo.' );
@@ -697,14 +700,14 @@
 					'id'      => 'fajntabory_reservation_auto_link_enabled',
 					'default' => 'yes',
 					'type'    => 'checkbox',
-					'desc'    => 'Poslat odkaz automaticky, když zákazník otevře formulář „Doplnit údaje hned“ a nedokončí ho.',
+					'desc'    => 'Poslat odkaz automaticky, když zákazník nedokončí rozdělovník nebo otevře formulář „Doplnit údaje hned“ a nedokončí ho.',
 				),
 				array(
 					'title'             => 'Zpoždění prvního odkazu',
 					'id'                => 'fajntabory_reservation_auto_link_delay_minutes',
 					'default'           => '60',
 					'type'              => 'number',
-					'desc'              => 'Počet minut od otevření formuláře. Doporučeno: 60.',
+					'desc'              => 'Počet minut od vytvoření předběžné objednávky nebo od otevření formuláře. Doporučeno: 60.',
 					'custom_attributes' => array(
 						'min'  => '5',
 						'step' => '1',
