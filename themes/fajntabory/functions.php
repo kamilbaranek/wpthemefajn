@@ -30,6 +30,43 @@
 
 	}
 
+	if( ! defined( 'FAJNTABORY_RESERVATION_LINK_SENT_STATUS' ) ) {
+
+		define( 'FAJNTABORY_RESERVATION_LINK_SENT_STATUS', 'res-link-sent' );
+
+	}
+
+	if( ! defined( 'FAJNTABORY_RESERVATION_MAX_REMINDERS' ) ) {
+
+		define( 'FAJNTABORY_RESERVATION_MAX_REMINDERS', 5 );
+
+	}
+
+	function fajntabory_get_reservation_reminder_status( $reminder_number ) {
+
+		$reminder_number = max( 1, min( FAJNTABORY_RESERVATION_MAX_REMINDERS, (int) $reminder_number ) );
+
+		return 'res-remind-' . $reminder_number;
+
+	}
+
+	function fajntabory_get_reservation_tracking_statuses() {
+
+		$statuses = array(
+			FAJNTABORY_INCOMPLETE_ORDER_STATUS,
+			FAJNTABORY_RESERVATION_LINK_SENT_STATUS,
+		);
+
+		for( $i = 1; $i <= FAJNTABORY_RESERVATION_MAX_REMINDERS; $i++ ) {
+
+			$statuses[] = fajntabory_get_reservation_reminder_status( $i );
+
+		}
+
+		return $statuses;
+
+	}
+
 	add_action( 'init', 'fajntabory_register_incomplete_order_status' );
 
 	function fajntabory_register_incomplete_order_status() {
@@ -42,6 +79,28 @@
 			'show_in_admin_status_list' => true,
 			'label_count'               => _n_noop( 'Nedokončeno <span class="count">(%s)</span>', 'Nedokončeno <span class="count">(%s)</span>', 'woocommerce' )
 		) );
+
+		register_post_status( 'wc-' . FAJNTABORY_RESERVATION_LINK_SENT_STATUS, array(
+			'label'                     => _x( 'Odkaz odeslán', 'Order status', 'woocommerce' ),
+			'public'                    => true,
+			'exclude_from_search'       => false,
+			'show_in_admin_all_list'    => true,
+			'show_in_admin_status_list' => true,
+			'label_count'               => _n_noop( 'Odkaz odeslán <span class="count">(%s)</span>', 'Odkaz odeslán <span class="count">(%s)</span>', 'woocommerce' )
+		) );
+
+		for( $i = 1; $i <= FAJNTABORY_RESERVATION_MAX_REMINDERS; $i++ ) {
+
+			register_post_status( 'wc-' . fajntabory_get_reservation_reminder_status( $i ), array(
+				'label'                     => sprintf( _x( 'Připomenutí %d odesláno', 'Order status', 'woocommerce' ), $i ),
+				'public'                    => true,
+				'exclude_from_search'       => false,
+				'show_in_admin_all_list'    => true,
+				'show_in_admin_status_list' => true,
+				'label_count'               => _n_noop( 'Připomenutí odesláno <span class="count">(%s)</span>', 'Připomenutí odesláno <span class="count">(%s)</span>', 'woocommerce' )
+			) );
+
+		}
 
 	}
 
@@ -59,6 +118,14 @@
 			if( 'wc-pending' === $status ) {
 
 				$new_order_statuses[ FAJNTABORY_INCOMPLETE_ORDER_POST_STATUS ] = _x( 'Nedokončeno', 'Order status', 'woocommerce' );
+				$new_order_statuses[ 'wc-' . FAJNTABORY_RESERVATION_LINK_SENT_STATUS ] = _x( 'Odkaz odeslán', 'Order status', 'woocommerce' );
+
+				for( $i = 1; $i <= FAJNTABORY_RESERVATION_MAX_REMINDERS; $i++ ) {
+
+					$new_order_statuses[ 'wc-' . fajntabory_get_reservation_reminder_status( $i ) ] = sprintf( _x( 'Připomenutí %d odesláno', 'Order status', 'woocommerce' ), $i );
+
+				}
+
 				$status_added = true;
 
 			}
@@ -68,6 +135,13 @@
 		if( ! $status_added ) {
 
 			$new_order_statuses[ FAJNTABORY_INCOMPLETE_ORDER_POST_STATUS ] = _x( 'Nedokončeno', 'Order status', 'woocommerce' );
+			$new_order_statuses[ 'wc-' . FAJNTABORY_RESERVATION_LINK_SENT_STATUS ] = _x( 'Odkaz odeslán', 'Order status', 'woocommerce' );
+
+			for( $i = 1; $i <= FAJNTABORY_RESERVATION_MAX_REMINDERS; $i++ ) {
+
+				$new_order_statuses[ 'wc-' . fajntabory_get_reservation_reminder_status( $i ) ] = sprintf( _x( 'Připomenutí %d odesláno', 'Order status', 'woocommerce' ), $i );
+
+			}
 
 		}
 
@@ -350,51 +424,371 @@
 		}
 	}
 
+	if ( ! function_exists( 'fajntabory_get_reservation_camp_summary' ) ) {
+		function fajntabory_get_reservation_camp_summary( $order ) {
+			if ( ! $order instanceof WC_Order ) {
+				return '';
+			}
+
+			$summary = '<ul>';
+
+			foreach ( $order->get_items() as $item ) {
+				$item_meta = wc_display_item_meta( $item, array( 'echo' => false ) );
+				$summary .= '<li>' . esc_html( $item->get_name() ) . ' - ' . wp_kses_post( $order->get_formatted_line_subtotal( $item ) );
+
+				if ( ! empty( $item_meta ) ) {
+					$summary .= '<div>' . wp_kses_post( $item_meta ) . '</div>';
+				}
+
+				$summary .= '</li>';
+			}
+
+			$summary .= '</ul>';
+
+			return $summary;
+		}
+	}
+
+	if ( ! function_exists( 'fajntabory_get_reservation_email_defaults' ) ) {
+		function fajntabory_get_reservation_email_defaults() {
+			return array(
+				'link_subject'      => 'Dokončete přihlášku k táboru',
+				'link_body'         => '<p>Dobrý den,</p><p>vaši rezervaci jsme přijali pod číslem {order_id}.</p><p>Pro dokončení přihlášky prosím otevřete tento odkaz:</p><p><a href="{complete_url}">{complete_url}</a></p><p>Rezervovaný tábor:</p>{camp_summary}<p>Po otevření odkazu doplníte zbývající údaje k táboru a teprve potom vám pošleme finální potvrzení a platební pokyny.</p><p>FajnTábory</p>',
+				'reminder_subject'  => 'Připomenutí: dokončete přihlášku k táboru',
+				'reminder_body'     => '<p>Dobrý den,</p><p>připomínáme dokončení vaší přihlášky k táboru pod číslem {order_id}.</p><p>Pokračovat můžete zde:</p><p><a href="{complete_url}">{complete_url}</a></p><p>Rezervovaný tábor:</p>{camp_summary}<p>FajnTábory</p>',
+			);
+		}
+	}
+
+	if ( ! function_exists( 'fajntabory_get_reservation_email_template' ) ) {
+		function fajntabory_get_reservation_email_template( $key ) {
+			$defaults = fajntabory_get_reservation_email_defaults();
+			$value = get_option( 'fajntabory_reservation_' . $key );
+
+			return '' !== (string) $value ? (string) $value : $defaults[ $key ];
+		}
+	}
+
+	if ( ! function_exists( 'fajntabory_render_reservation_email_template' ) ) {
+		function fajntabory_render_reservation_email_template( $template, $order, $token, $reminder_number = 0 ) {
+			$order_id = fajntabory_get_order_id( $order );
+			$complete_url = fajntabory_get_reservation_complete_url( $token );
+			$replacements = array(
+				'{order_id}'        => esc_html( $order_id ),
+				'{complete_url}'    => esc_url( $complete_url ),
+				'{customer_email}'  => esc_html( $order->get_billing_email() ),
+				'{customer_phone}'  => esc_html( $order->get_billing_phone() ),
+				'{camp_summary}'    => fajntabory_get_reservation_camp_summary( $order ),
+				'{reminder_number}' => esc_html( $reminder_number ),
+				'{site_name}'       => esc_html( wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES ) ),
+			);
+
+			return strtr( $template, $replacements );
+		}
+	}
+
 	if ( ! function_exists( 'fajntabory_send_reservation_email' ) ) {
-		function fajntabory_send_reservation_email( $order, $token ) {
+		function fajntabory_send_reservation_email( $order, $token, $email_type = 'link', $reminder_number = 0 ) {
 			global $woocommerce;
 
+			if ( ! $order instanceof WC_Order ) {
+				return false;
+			}
+
+			$email = $order->get_billing_email();
+
+			if ( empty( $email ) ) {
+				return false;
+			}
+
+			$mailer = $woocommerce->mailer();
+			$subject_key = 'reminder' === $email_type ? 'reminder_subject' : 'link_subject';
+			$body_key = 'reminder' === $email_type ? 'reminder_body' : 'link_body';
+			$subject = wp_strip_all_tags( fajntabory_render_reservation_email_template( fajntabory_get_reservation_email_template( $subject_key ), $order, $token, $reminder_number ) );
+			$headers = array( 'Content-Type: text/html; charset=UTF-8' );
+			$headers[] = 'From: Fajn Tábory <tereza@fajntabory.cz>';
+			$message_body = wp_kses_post( fajntabory_render_reservation_email_template( fajntabory_get_reservation_email_template( $body_key ), $order, $token, $reminder_number ) );
+
+			$message = $mailer->wrap_message( $subject, $message_body );
+
+			return (bool) $mailer->send( $email, $subject, $message, $headers );
+		}
+	}
+
+	if ( ! function_exists( 'fajntabory_mark_reservation_link_sent' ) ) {
+		function fajntabory_mark_reservation_link_sent( $order, $source = 'manual' ) {
 			if ( ! $order instanceof WC_Order ) {
 				return;
 			}
 
 			$order_id = fajntabory_get_order_id( $order );
-			$email = $order->get_billing_email();
+			$sent_at = current_time( 'mysql' );
 
-			if ( empty( $email ) ) {
+			if ( '' === (string) $order->get_meta( '_reservation_email_sent_at' ) ) {
+				update_post_meta( $order_id, '_reservation_email_sent_at', $sent_at );
+			}
+
+			update_post_meta( $order_id, '_reservation_email_last_sent_at', $sent_at );
+			update_post_meta( $order_id, '_reservation_email_last_source', $source );
+			update_post_meta( $order_id, '_reservation_email_send_count', (int) $order->get_meta( '_reservation_email_send_count' ) + 1 );
+
+			if ( ! fajntabory_reservation_is_completed( $order ) && $order->has_status( array( FAJNTABORY_INCOMPLETE_ORDER_STATUS, 'pending' ) ) ) {
+				$order->update_status( FAJNTABORY_RESERVATION_LINK_SENT_STATUS, 'Odkaz k dokončení objednávky byl odeslán e-mailem.' );
+			} else {
+				$order->add_order_note( 'Odkaz k dokončení objednávky byl odeslán e-mailem.' );
+			}
+		}
+	}
+
+	if ( ! function_exists( 'fajntabory_mark_reservation_reminder_sent' ) ) {
+		function fajntabory_mark_reservation_reminder_sent( $order, $reminder_number ) {
+			if ( ! $order instanceof WC_Order ) {
 				return;
 			}
 
-			$mailer = $woocommerce->mailer();
-			$subject = __( 'Dokončete přihlášku k táboru', 'fajntabory' );
-			$headers = array( 'Content-Type: text/html; charset=UTF-8' );
-			$headers[] = 'From: Fajn Tábory <tereza@fajntabory.cz>';
+			$reminder_number = max( 1, min( FAJNTABORY_RESERVATION_MAX_REMINDERS, (int) $reminder_number ) );
+			$order_id = fajntabory_get_order_id( $order );
+			$sent_at = current_time( 'mysql' );
+			$note = sprintf( 'Připomenutí %d odesláno.', $reminder_number );
 
-			$message_body  = '<p>Dobrý den,</p>';
-			$message_body .= '<p>vaši rezervaci jsme přijali pod číslem ' . $order_id . '.</p>';
-			$message_body .= '<p>Pro dokončení přihlášky prosím otevřete tento odkaz:</p>';
-			$message_body .= '<p><a href="' . esc_url( fajntabory_get_reservation_complete_url( $token ) ) . '">' . esc_html( fajntabory_get_reservation_complete_url( $token ) ) . '</a></p>';
-			$message_body .= '<p>Rezervovaný tábor:</p>';
-			$message_body .= '<ul>';
+			update_post_meta( $order_id, '_reservation_reminder_count', $reminder_number );
+			update_post_meta( $order_id, '_reservation_reminder_' . $reminder_number . '_sent_at', $sent_at );
+			update_post_meta( $order_id, '_reservation_email_last_sent_at', $sent_at );
+			update_post_meta( $order_id, '_reservation_email_last_source', 'reminder_' . $reminder_number );
+			update_post_meta( $order_id, '_reservation_email_send_count', (int) $order->get_meta( '_reservation_email_send_count' ) + 1 );
 
-			foreach ( $order->get_items() as $item ) {
-				$item_meta = wc_display_item_meta( $item, array( 'echo' => false ) );
-				$message_body .= '<li>' . esc_html( $item->get_name() ) . ' - ' . wp_kses_post( $order->get_formatted_line_subtotal( $item ) );
+			if ( ! fajntabory_reservation_is_completed( $order ) ) {
+				$order->update_status( fajntabory_get_reservation_reminder_status( $reminder_number ), $note );
+			} else {
+				$order->add_order_note( $note );
+			}
+		}
+	}
 
-				if ( ! empty( $item_meta ) ) {
-					$message_body .= '<div>' . wp_kses_post( $item_meta ) . '</div>';
+	if ( ! function_exists( 'fajntabory_get_reservation_reminder_intervals' ) ) {
+		function fajntabory_get_reservation_reminder_intervals() {
+			$raw_intervals = (string) get_option( 'fajntabory_reservation_reminder_intervals_hours', '24,72,168' );
+			$intervals = array();
+
+			foreach ( explode( ',', $raw_intervals ) as $interval ) {
+				$interval = (int) trim( $interval );
+
+				if ( $interval > 0 ) {
+					$intervals[] = $interval;
 				}
-
-				$message_body .= '</li>';
 			}
 
-			$message_body .= '</ul>';
-			$message_body .= '<p>Po otevření odkazu doplníte zbývající údaje k táboru a teprve potom vám pošleme finální potvrzení a platební pokyny.</p>';
-			$message_body .= '<p>FajnTábory</p>';
+			return array_slice( $intervals, 0, FAJNTABORY_RESERVATION_MAX_REMINDERS );
+		}
+	}
 
-			$message = $mailer->wrap_message( $subject, $message_body );
+	if ( ! function_exists( 'fajntabory_reservation_time_to_timestamp' ) ) {
+		function fajntabory_reservation_time_to_timestamp( $time ) {
+			if ( empty( $time ) ) {
+				return 0;
+			}
 
-			$mailer->send( $email, $subject, $message, $headers );
+			$timestamp = strtotime( $time );
+
+			return false === $timestamp ? 0 : $timestamp;
+		}
+	}
+
+	if ( ! function_exists( 'fajntabory_schedule_reservation_reminders' ) ) {
+		add_action( 'init', 'fajntabory_schedule_reservation_reminders' );
+
+		function fajntabory_schedule_reservation_reminders() {
+			if ( ! wp_next_scheduled( 'fajntabory_process_reservation_reminders' ) ) {
+				wp_schedule_event( time() + 300, 'hourly', 'fajntabory_process_reservation_reminders' );
+			}
+		}
+	}
+
+	if ( ! function_exists( 'fajntabory_process_reservation_reminders' ) ) {
+		add_action( 'fajntabory_process_reservation_reminders', 'fajntabory_process_reservation_reminders' );
+
+		function fajntabory_process_reservation_reminders() {
+			if ( ! function_exists( 'wc_get_orders' ) ) {
+				return;
+			}
+
+			$orders = wc_get_orders( array(
+				'limit'      => 50,
+				'status'     => array_merge( fajntabory_get_reservation_tracking_statuses(), array( 'pending' ) ),
+				'meta_key'   => '_reservation_status',
+				'meta_value' => 'pending_completion',
+				'orderby'    => 'date',
+				'order'      => 'ASC',
+			) );
+
+			foreach ( $orders as $order ) {
+				if ( ! $order instanceof WC_Order || fajntabory_reservation_is_completed( $order ) ) {
+					continue;
+				}
+
+				$token = (string) $order->get_meta( '_reservation_token' );
+
+				if ( empty( $token ) || empty( $order->get_billing_email() ) ) {
+					continue;
+				}
+
+				$order_id = fajntabory_get_order_id( $order );
+				$email_sent_at = (string) $order->get_meta( '_reservation_email_sent_at' );
+
+				if ( empty( $email_sent_at ) ) {
+					if ( 'yes' !== get_option( 'fajntabory_reservation_auto_link_enabled', 'yes' ) ) {
+						continue;
+					}
+
+					$opened_at = fajntabory_reservation_time_to_timestamp( $order->get_meta( '_reservation_completion_form_opened_at' ) );
+					$delay_minutes = max( 5, (int) get_option( 'fajntabory_reservation_auto_link_delay_minutes', 60 ) );
+
+					if ( $opened_at > 0 && time() >= $opened_at + ( $delay_minutes * MINUTE_IN_SECONDS ) ) {
+						if ( fajntabory_send_reservation_email( $order, $token, 'link' ) ) {
+							fajntabory_mark_reservation_link_sent( $order, 'auto_after_open_form' );
+						} else {
+							update_post_meta( $order_id, '_reservation_email_last_error_at', current_time( 'mysql' ) );
+							$order->add_order_note( 'Automatické odeslání odkazu k dokončení objednávky selhalo.' );
+						}
+					}
+
+					continue;
+				}
+
+				if ( 'yes' !== get_option( 'fajntabory_reservation_reminders_enabled', 'yes' ) ) {
+					continue;
+				}
+
+				$intervals = fajntabory_get_reservation_reminder_intervals();
+				$reminder_count = (int) $order->get_meta( '_reservation_reminder_count' );
+				$next_reminder = $reminder_count + 1;
+
+				if ( empty( $intervals[ $next_reminder - 1 ] ) ) {
+					continue;
+				}
+
+				$email_sent_timestamp = fajntabory_reservation_time_to_timestamp( $email_sent_at );
+
+				if ( $email_sent_timestamp > 0 && time() >= $email_sent_timestamp + ( (int) $intervals[ $next_reminder - 1 ] * HOUR_IN_SECONDS ) ) {
+					if ( fajntabory_send_reservation_email( $order, $token, 'reminder', $next_reminder ) ) {
+						fajntabory_mark_reservation_reminder_sent( $order, $next_reminder );
+					} else {
+						update_post_meta( $order_id, '_reservation_email_last_error_at', current_time( 'mysql' ) );
+						$order->add_order_note( sprintf( 'Odeslání připomenutí %d selhalo.', $next_reminder ) );
+					}
+				}
+			}
+		}
+	}
+
+	if ( ! function_exists( 'fajntabory_get_reservation_reminder_settings' ) ) {
+		function fajntabory_get_reservation_reminder_settings() {
+			$defaults = fajntabory_get_reservation_email_defaults();
+
+			return array(
+				array(
+					'title' => 'Dokončování přihlášek',
+					'type'  => 'title',
+					'desc'  => 'Nastavení automatického odesílání odkazu a reminderů pro nedokončené předběžné objednávky.',
+					'id'    => 'fajntabory_reservation_reminders_options',
+				),
+				array(
+					'title'   => 'Automatický první odkaz',
+					'id'      => 'fajntabory_reservation_auto_link_enabled',
+					'default' => 'yes',
+					'type'    => 'checkbox',
+					'desc'    => 'Poslat odkaz automaticky, když zákazník otevře formulář „Doplnit údaje hned“ a nedokončí ho.',
+				),
+				array(
+					'title'             => 'Zpoždění prvního odkazu',
+					'id'                => 'fajntabory_reservation_auto_link_delay_minutes',
+					'default'           => '60',
+					'type'              => 'number',
+					'desc'              => 'Počet minut od otevření formuláře. Doporučeno: 60.',
+					'custom_attributes' => array(
+						'min'  => '5',
+						'step' => '1',
+					),
+				),
+				array(
+					'title'   => 'Reminder e-maily',
+					'id'      => 'fajntabory_reservation_reminders_enabled',
+					'default' => 'yes',
+					'type'    => 'checkbox',
+					'desc'    => 'Posílat další připomenutí po odeslání prvního odkazu.',
+				),
+				array(
+					'title'   => 'Intervaly reminderů',
+					'id'      => 'fajntabory_reservation_reminder_intervals_hours',
+					'default' => '24,72,168',
+					'type'    => 'text',
+					'desc'    => 'Časy v hodinách od odeslání prvního odkazu, oddělené čárkou. Např. 24,72,168. Eviduje se max. 5 reminderů.',
+				),
+				array(
+					'title' => 'Proměnné v šablonách',
+					'type'  => 'title',
+					'desc'  => 'Použitelné proměnné: {order_id}, {complete_url}, {customer_email}, {customer_phone}, {camp_summary}, {reminder_number}, {site_name}.',
+					'id'    => 'fajntabory_reservation_template_variables',
+				),
+				array(
+					'title'   => 'Předmět prvního odkazu',
+					'id'      => 'fajntabory_reservation_link_subject',
+					'default' => $defaults['link_subject'],
+					'type'    => 'text',
+				),
+				array(
+					'title'   => 'Text prvního odkazu',
+					'id'      => 'fajntabory_reservation_link_body',
+					'default' => $defaults['link_body'],
+					'type'    => 'textarea',
+					'css'     => 'min-width: 520px; min-height: 190px;',
+				),
+				array(
+					'title'   => 'Předmět reminderu',
+					'id'      => 'fajntabory_reservation_reminder_subject',
+					'default' => $defaults['reminder_subject'],
+					'type'    => 'text',
+				),
+				array(
+					'title'   => 'Text reminderu',
+					'id'      => 'fajntabory_reservation_reminder_body',
+					'default' => $defaults['reminder_body'],
+					'type'    => 'textarea',
+					'css'     => 'min-width: 520px; min-height: 190px;',
+				),
+				array(
+					'type' => 'sectionend',
+					'id'   => 'fajntabory_reservation_reminders_options',
+				),
+			);
+		}
+	}
+
+	add_filter( 'woocommerce_settings_tabs_array', 'fajntabory_add_reservation_reminder_settings_tab', 50 );
+
+	function fajntabory_add_reservation_reminder_settings_tab( $settings_tabs ) {
+		$settings_tabs['fajntabory_reservations'] = 'FajnTábory přihlášky';
+
+		return $settings_tabs;
+	}
+
+	add_action( 'woocommerce_settings_tabs_fajntabory_reservations', 'fajntabory_render_reservation_reminder_settings' );
+
+	function fajntabory_render_reservation_reminder_settings() {
+		woocommerce_admin_fields( fajntabory_get_reservation_reminder_settings() );
+	}
+
+	add_action( 'woocommerce_update_options_fajntabory_reservations', 'fajntabory_save_reservation_reminder_settings' );
+
+	function fajntabory_save_reservation_reminder_settings() {
+		woocommerce_update_options( fajntabory_get_reservation_reminder_settings() );
+
+		foreach ( array( 'link_body', 'reminder_body' ) as $body_key ) {
+			$option_name = 'fajntabory_reservation_' . $body_key;
+
+			if ( isset( $_POST[ $option_name ] ) ) {
+				update_option( $option_name, wp_kses_post( wp_unslash( $_POST[ $option_name ] ) ) );
+			}
 		}
 	}
 
@@ -2987,8 +3381,13 @@
 			exit;
 		}
 
-		fajntabory_send_reservation_email( $reservation_order, $reservation_token );
-		update_post_meta( fajntabory_get_order_id( $reservation_order ), '_reservation_email_sent_at', current_time( 'mysql' ) );
+		if ( ! fajntabory_send_reservation_email( $reservation_order, $reservation_token, 'link' ) ) {
+			wc_add_notice( 'Odkaz se nepodařilo odeslat. Zkuste to prosím znovu.', 'error' );
+			wp_safe_redirect( fajntabory_get_reservation_choice_url( $reservation_token ) );
+			exit;
+		}
+
+		fajntabory_mark_reservation_link_sent( $reservation_order, 'customer_choice' );
 
 		wp_safe_redirect( add_query_arg( 'reservation', 'sent', fajntabory_get_checkout_url() ) );
 		exit;
@@ -3143,7 +3542,7 @@
         	update_post_meta( $newid, '_reservation_completed_at', current_time( 'mysql' ) );
             update_post_meta( $newid, '_fajntabory_incomplete_order', 'no' );
 
-            if ( $new_order->has_status( FAJNTABORY_INCOMPLETE_ORDER_STATUS ) ) {
+            if ( $new_order->has_status( fajntabory_get_reservation_tracking_statuses() ) ) {
 
                 $new_order->set_status( apply_filters('woocommerce_default_order_status', 'pending') );
                 $new_order->add_order_note( 'Přihláška byla doplněna. Objednávka byla přepnuta na stav Čeká na platbu.' );

@@ -79,6 +79,11 @@
 		return;
 	}
 
+	if ( $reservation_order && empty( $reservation_order->get_meta( '_reservation_email_sent_at' ) ) && empty( $reservation_order->get_meta( '_reservation_completion_form_opened_at' ) ) ) {
+		update_post_meta( fajntabory_get_order_id( $reservation_order ), '_reservation_completion_form_opened_at', current_time( 'mysql' ) );
+		$reservation_order->add_order_note( 'Zákazník otevřel formulář pro okamžité doplnění údajů.' );
+	}
+
 	if ( empty( $form ) ) {
 		return;
 	}
