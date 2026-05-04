@@ -32,6 +32,7 @@
 		</div>
 <?php wp_footer(); ?>
 
+<?php if ( false ) : // Hardcoded Facebook Pixel disabled; managed via GTM plugin. ?>
 <!-- Facebook Pixel Code -->
 <script>
 !function(f,b,e,v,n,t,s)
@@ -49,5 +50,6 @@ fbq('track', 'PageView');
 src="https://www.facebook.com/tr?id=520340979105270&ev=PageView&noscript=1"
 /></noscript>
 <!-- End Facebook Pixel Code -->
+<?php endif; ?>
 </body>
 </html>
