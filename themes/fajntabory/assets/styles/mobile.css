@@ -36,7 +36,8 @@
 		height: auto;
 	}
 
-	.woocommerce-cart header#header {
+	.woocommerce-cart header#header,
+	.reservation-compact-header header#header {
 		display: flex;
 		flex-wrap: nowrap;
 		align-items: flex-start;
@@ -59,12 +60,14 @@
 		display: block;
 	}
 
-	.woocommerce-cart header#header .logo {
+	.woocommerce-cart header#header .logo,
+	.reservation-compact-header header#header .logo {
 		margin: 0;
 		flex: 0 1 auto;
 	}
 
-	.woocommerce-cart header#header .logo img {
+	.woocommerce-cart header#header .logo img,
+	.reservation-compact-header header#header .logo img {
 		max-width: 150px;
 		height: auto;
 	}
@@ -75,7 +78,8 @@
 		text-align: center;
 	}
 
-	.woocommerce-cart header#header #social {
+	.woocommerce-cart header#header #social,
+	.reservation-compact-header header#header #social {
 		display: none !important;
 	}
 
@@ -90,7 +94,8 @@
 		background: #7CAB31;
 	}
 
-	.woocommerce-cart .mobile_nav {
+	.woocommerce-cart .mobile_nav,
+	.reservation-compact-header .mobile_nav {
 		display: flex !important;
 		align-items: center;
 		justify-content: center;
@@ -105,11 +110,13 @@
 		box-sizing: border-box;
 	}
 
-	.woocommerce-cart .mobile_nav .mobile_nav__label {
+	.woocommerce-cart .mobile_nav .mobile_nav__label,
+	.reservation-compact-header .mobile_nav .mobile_nav__label {
 		display: none;
 	}
 
-	.woocommerce-cart .mobile_nav i {
+	.woocommerce-cart .mobile_nav i,
+	.reservation-compact-header .mobile_nav i {
 		font-size: 18px;
 		line-height: 1;
 	}

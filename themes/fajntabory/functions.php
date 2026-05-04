@@ -189,6 +189,23 @@
 		}
 	}
 
+	add_filter( 'body_class', 'fajntabory_reservation_choice_body_class' );
+
+	function fajntabory_reservation_choice_body_class( $classes ) {
+		$is_reservation_choice = ! empty( $_GET['reservation'] ) && 'choose' === sanitize_text_field( wp_unslash( $_GET['reservation'] ) );
+		$is_reservation_entry = is_page( 'objednavka' ) && empty( $_GET['reservation'] ) && empty( $_GET['rezervace'] );
+
+		if ( $is_reservation_choice ) {
+			$classes[] = 'reservation-choice-page';
+		}
+
+		if ( $is_reservation_choice || $is_reservation_entry ) {
+			$classes[] = 'reservation-compact-header';
+		}
+
+		return $classes;
+	}
+
 	if ( ! function_exists( 'fajntabory_get_order_id' ) ) {
 		function fajntabory_get_order_id( $order ) {
 			if ( is_object( $order ) && method_exists( $order, 'get_id' ) ) {
