@@ -30,6 +30,20 @@
 }
 
 @media only screen and (max-width: 640px) {
+	html,
+	body {
+		max-width: 100%;
+		overflow-x: hidden;
+	}
+
+	body.single-product,
+	body.single-product #content,
+	body.single-product #main,
+	body.single-product .camp-product {
+		max-width: 100%;
+		overflow-x: hidden;
+		touch-action: pan-y;
+	}
 
 	header#header {
 		position: static;
@@ -263,6 +277,7 @@
 	}
 
 	body.single-product .camp-booking__summary-item {
+		min-width: 0;
 		padding: 12px;
 		border-radius: 14px;
 	}
@@ -293,6 +308,7 @@
 		display: block;
 		grid-column: 1;
 		grid-row: 2;
+		min-width: 0;
 		margin-bottom: 2px;
 		font-size: 13px;
 		font-weight: 700;
@@ -354,11 +370,12 @@
 		display: inline-flex;
 		grid-column: 2;
 		grid-row: 2;
+		max-width: 100%;
 		margin-top: 0;
 		margin-bottom: 2px;
-		padding: 5px 8px;
+		padding: 4px 7px;
 		border-radius: 999px;
-		font-size: 10px;
+		font-size: 9px;
 		font-weight: 700;
 		line-height: 1;
 		white-space: nowrap;
