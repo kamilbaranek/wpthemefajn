@@ -2844,6 +2844,11 @@ div.tab button.active {
 	display: none;
 }
 
+.camp-booking__summary-price-old,
+.camp-booking__summary-countdown {
+	display: none;
+}
+
 .camp-booking__picker {
 	display: flex;
 	flex-direction: column;

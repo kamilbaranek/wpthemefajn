@@ -211,9 +211,13 @@ jQuery(document).ready(function($) {
 			var $availability = $picker.find('[data-camp-availability]');
 			var $cta = $picker.find('[data-camp-cta]');
 			var $summaryPrice = $panel.find('[data-camp-summary-price]');
+			var $summaryPriceLabel = $panel.find('[data-camp-summary-price-label]');
+			var $summaryPriceOld = $panel.find('[data-camp-summary-price-old]');
 			var $summaryAvailability = $panel.find('[data-camp-summary-availability]');
 			var $countdown = $picker.find('[data-camp-countdown]');
 			var $countdownValue = $picker.find('[data-camp-countdown-value]');
+			var $summaryCountdown = $panel.find('[data-camp-summary-countdown]');
+			var $summaryCountdownValue = $panel.find('[data-camp-summary-countdown-value]');
 			var countdownTimer = null;
 
 			if ( ! $select.length ) {
@@ -254,6 +258,8 @@ jQuery(document).ready(function($) {
 				if ( ! $countdown.length || ! endsAt ) {
 					$countdown.addClass('is-hidden');
 					$countdownValue.text('');
+					$summaryCountdown.addClass('is-hidden');
+					$summaryCountdownValue.text('');
 					return;
 				}
 
@@ -264,13 +270,20 @@ jQuery(document).ready(function($) {
 						stopSaleCountdown();
 						$countdown.addClass('is-hidden');
 						$countdownValue.text('');
+						$summaryCountdown.addClass('is-hidden');
+						$summaryCountdownValue.text('');
 						return;
 					}
 
 					$countdown
 						.attr('data-sale-ends-at', endsAt)
 						.removeClass('is-hidden');
-					$countdownValue.text(formatSaleCountdown(remaining));
+					$summaryCountdown
+						.attr('data-sale-ends-at', endsAt)
+						.removeClass('is-hidden');
+					var formattedCountdown = formatSaleCountdown(remaining);
+					$countdownValue.text(formattedCountdown);
+					$summaryCountdownValue.text(formattedCountdown);
 				}
 
 				renderCountdown();
@@ -294,7 +307,10 @@ jQuery(document).ready(function($) {
 
 				$term.text(term);
 				$priceCurrent.text(price);
-				$summaryPrice.html(regularPrice.replace(/ /g, '&nbsp;'));
+				$summaryPrice.html(price.replace(/ /g, '&nbsp;'));
+				$summaryPriceLabel.text(priceOld ? 'Akční cena' : 'Cena');
+				$summaryPriceOld.text(priceOld);
+				$summaryPriceOld.toggleClass('is-hidden', ! priceOld);
 				syncSaleCountdown(saleEndsAt);
 
 				$priceOld.text(priceOld);

@@ -190,8 +190,13 @@ $render_booking_panel = function( $panel_id, $items, $location, $is_active ) use
 				</div>
 			<?php } ?>
 			<div class="camp-booking__summary-item camp-booking__summary-item--price">
-				<span>Běžná cena</span>
-				<strong data-camp-summary-price><?php echo $camp_summary_price( $selected_item['regular_price'] ); ?></strong>
+				<span data-camp-summary-price-label><?php echo $selected_has_discount ? 'Akční cena' : 'Cena'; ?></span>
+				<small class="camp-booking__summary-price-old<?php echo $selected_has_discount ? '' : ' is-hidden'; ?>" data-camp-summary-price-old><?php echo esc_html( $selected_has_discount ? $camp_format_price_text( $selected_item['regular_price'] ) : '' ); ?></small>
+				<strong data-camp-summary-price><?php echo $camp_summary_price( $selected_price ); ?></strong>
+				<div class="camp-booking__summary-countdown is-hidden" data-camp-summary-countdown data-sale-ends-at="<?php echo esc_attr( $selected_sale_ends_at ); ?>">
+					<span>Akce končí za</span>
+					<strong data-camp-summary-countdown-value></strong>
+				</div>
 				<small class="camp-booking__summary-status <?php echo esc_attr( $selected_item['availability_class'] ); ?><?php echo $selected_item['manage_stock'] ? '' : ' is-hidden'; ?>" data-camp-summary-availability><?php echo esc_html( $selected_item['availability_label'] ); ?></small>
 			</div>
 		</div>

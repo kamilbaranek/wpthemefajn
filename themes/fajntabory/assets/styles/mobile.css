@@ -254,6 +254,11 @@
 	}
 
 	body.single-product .camp-booking__summary-item--price {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) auto;
+		align-content: start;
+		align-items: center;
+		column-gap: 8px;
 		order: 2;
 	}
 
@@ -266,13 +271,79 @@
 		font-size: 16px;
 	}
 
+	body.single-product .camp-booking__summary-item--price > span {
+		grid-column: 1 / -1;
+		grid-row: 1;
+		margin-bottom: 5px;
+	}
+
+	body.single-product .camp-booking__summary-item--price strong {
+		grid-column: 1 / -1;
+		grid-row: 3;
+		color: #d71920;
+		font-size: 22px;
+		line-height: 1.1;
+	}
+
+	body.single-product .camp-booking__summary-price-old {
+		display: block;
+		grid-column: 1;
+		grid-row: 2;
+		margin-bottom: 2px;
+		font-size: 13px;
+		font-weight: 700;
+		text-decoration: line-through;
+		color: #8798a8;
+	}
+
+	body.single-product .camp-booking__summary-price-old.is-hidden {
+		display: none;
+	}
+
+	body.single-product .camp-booking__summary-countdown {
+		display: flex;
+		grid-column: 1 / -1;
+		grid-row: 4;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 2px;
+		margin-top: 8px;
+		padding: 8px 10px;
+		border-radius: 12px;
+		background: rgba(237, 16, 135, 0.1);
+		color: #c20f70;
+		font-weight: 700;
+	}
+
+	body.single-product .camp-booking__summary-countdown.is-hidden {
+		display: none;
+	}
+
+	body.single-product .camp-booking__summary-countdown span {
+		margin: 0;
+		font-size: 10px;
+		line-height: 1;
+		letter-spacing: 0.06em;
+	}
+
+	body.single-product .camp-booking__summary-countdown strong {
+		color: inherit;
+		font-size: 14px;
+		line-height: 1;
+	}
+
 	body.single-product .camp-booking__summary-status {
 		display: inline-flex;
-		margin-top: 8px;
-		padding: 8px 12px;
+		grid-column: 2;
+		grid-row: 2;
+		margin-top: 0;
+		margin-bottom: 2px;
+		padding: 5px 8px;
 		border-radius: 999px;
-		font-size: 12px;
+		font-size: 10px;
 		font-weight: 700;
+		line-height: 1;
+		white-space: nowrap;
 	}
 
 	body.single-product .camp-booking__summary-status.is-hidden {
@@ -364,9 +435,7 @@
 	}
 
 	body.single-product .camp-booking-card__countdown {
-		margin-bottom: 10px;
-		padding: 10px 12px;
-		border-radius: 14px;
+		display: none;
 	}
 
 	body.single-product .camp-booking-card__countdown strong {
