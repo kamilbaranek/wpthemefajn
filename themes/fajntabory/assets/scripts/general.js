@@ -213,6 +213,7 @@ jQuery(document).ready(function($) {
 			var $summaryPrice = $panel.find('[data-camp-summary-price]');
 			var $summaryPriceLabel = $panel.find('[data-camp-summary-price-label]');
 			var $summaryPriceOld = $panel.find('[data-camp-summary-price-old]');
+			var $summaryPriceCard = $summaryPrice.closest('.camp-booking__summary-item--price');
 			var $summaryAvailability = $panel.find('[data-camp-summary-availability]');
 			var $countdown = $picker.find('[data-camp-countdown]');
 			var $countdownValue = $picker.find('[data-camp-countdown-value]');
@@ -260,6 +261,7 @@ jQuery(document).ready(function($) {
 					$countdownValue.text('');
 					$summaryCountdown.addClass('is-hidden');
 					$summaryCountdownValue.text('');
+					$summaryPriceCard.removeClass('has-active-countdown');
 					return;
 				}
 
@@ -272,6 +274,7 @@ jQuery(document).ready(function($) {
 						$countdownValue.text('');
 						$summaryCountdown.addClass('is-hidden');
 						$summaryCountdownValue.text('');
+						$summaryPriceCard.removeClass('has-active-countdown');
 						return;
 					}
 
@@ -281,6 +284,7 @@ jQuery(document).ready(function($) {
 					$summaryCountdown
 						.attr('data-sale-ends-at', endsAt)
 						.removeClass('is-hidden');
+					$summaryPriceCard.addClass('has-active-countdown');
 					var formattedCountdown = formatSaleCountdown(remaining);
 					$countdownValue.text(formattedCountdown);
 					$summaryCountdownValue.text(formattedCountdown);

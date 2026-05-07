@@ -277,6 +277,10 @@
 		margin-bottom: 5px;
 	}
 
+	body.single-product .camp-booking__summary-item--price.has-active-countdown > span[data-camp-summary-price-label] {
+		display: none;
+	}
+
 	body.single-product .camp-booking__summary-item--price strong {
 		grid-column: 1 / -1;
 		grid-row: 3;
@@ -298,6 +302,20 @@
 
 	body.single-product .camp-booking__summary-price-old.is-hidden {
 		display: none;
+	}
+
+	body.single-product .camp-booking__summary-item--price.has-active-countdown .camp-booking__summary-price-old,
+	body.single-product .camp-booking__summary-item--price.has-active-countdown .camp-booking__summary-status {
+		grid-row: 1;
+	}
+
+	body.single-product .camp-booking__summary-item--price.has-active-countdown strong {
+		grid-row: 2;
+	}
+
+	body.single-product .camp-booking__summary-item--price.has-active-countdown .camp-booking__summary-countdown {
+		grid-row: 3;
+		margin-top: 6px;
 	}
 
 	body.single-product .camp-booking__summary-countdown {
