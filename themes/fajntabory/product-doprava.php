@@ -80,19 +80,19 @@
 					echo '</tr>';
 					echo '<tr>';
 
-						$ids = serialize( $value );
+						$ids = wp_json_encode( array_map( 'absint', $value ) );
 						$title = get_term_by('slug', $key, 'pa_lokalita');
 						$title = $title->name;
-						echo '<td>'.$title.'<input class="v_chose" type="hidden" value="'.$ids.'"></td>';
+						echo '<td>'.esc_html( $title ).'<input class="v_chose" type="hidden" value="'.esc_attr( $ids ).'"></td>';
 						
 						if( !empty( $nastup ) ) {
 							echo '<td><select class="n_chose d_chose">';
 							echo '<option value="" disabled selected>Prosím vyberte..</option>';
 							foreach ($nastup as $n_key => $n_value) {
-								$ids = serialize( $n_value );
+								$ids = wp_json_encode( array_map( 'absint', $n_value ) );
 								$title = get_term_by('slug', $n_key, 'pa_doprava');
 								$title = $title->name;
-								echo '<option value="'.$ids.'">'.$title.'</option>';
+								echo '<option value="'.esc_attr( $ids ).'">'.esc_html( $title ).'</option>';
 							}
 							echo '</select></td>';
 						}
@@ -102,10 +102,10 @@
 							echo '<td><select class="t_chose d_chose">';
 							echo '<option value="" disabled selected>Prosím vyberte..</option>';
 							foreach ($termin as $t_key => $t_value) {
-								$ids = serialize( $t_value );
+								$ids = wp_json_encode( array_map( 'absint', $t_value ) );
 								$title = get_term_by('slug', $t_key, 'pa_terminy');
 								$title = $title->name;
-								echo '<option value="'.$ids.'">'.$title.'</option>';
+								echo '<option value="'.esc_attr( $ids ).'">'.esc_html( $title ).'</option>';
 							}
 							echo '</select></td>';
 						}
@@ -114,10 +114,10 @@
 							echo '<td><select class="z_chose d_chose">';
 							echo '<option value="" disabled selected>Prosím vyberte..</option>';
 							foreach ($z_n_do as $z_key => $z_value) {
-								$ids = serialize( $z_value );
+								$ids = wp_json_encode( array_map( 'absint', $z_value ) );
 								$title = get_term_by('slug', $z_key, 'pa_smer');
 								$title = $title->name;
-								echo '<option value="'.$ids.'">'.$title.'</option>';
+								echo '<option value="'.esc_attr( $ids ).'">'.esc_html( $title ).'</option>';
 							}
 							echo '</select></td>';
 						}

@@ -42,6 +42,18 @@
 
 	}
 
+	if( ! defined( 'FAJNTABORY_RESERVATION_LINK_MAX_SENDS' ) ) {
+
+		define( 'FAJNTABORY_RESERVATION_LINK_MAX_SENDS', 3 );
+
+	}
+
+	if( ! defined( 'FAJNTABORY_RESERVATION_LINK_RESEND_COOLDOWN' ) ) {
+
+		define( 'FAJNTABORY_RESERVATION_LINK_RESEND_COOLDOWN', 15 * 60 );
+
+	}
+
 	function fajntabory_get_reservation_reminder_status( $reminder_number ) {
 
 		$reminder_number = max( 1, min( FAJNTABORY_RESERVATION_MAX_REMINDERS, (int) $reminder_number ) );
@@ -476,6 +488,142 @@
 		}
 	}
 
+	if ( ! function_exists( 'fajntabory_get_client_ip' ) ) {
+		function fajntabory_get_client_ip() {
+			$server_keys = array( 'HTTP_CF_CONNECTING_IP', 'HTTP_X_REAL_IP', 'REMOTE_ADDR' );
+
+			foreach ( $server_keys as $server_key ) {
+				if ( empty( $_SERVER[ $server_key ] ) || is_array( $_SERVER[ $server_key ] ) ) {
+					continue;
+				}
+
+				$ip = trim( explode( ',', wp_unslash( $_SERVER[ $server_key ] ) )[0] );
+
+				if ( filter_var( $ip, FILTER_VALIDATE_IP ) ) {
+					return $ip;
+				}
+			}
+
+			return 'unknown';
+		}
+	}
+
+	if ( ! function_exists( 'fajntabory_rate_limit_key' ) ) {
+		function fajntabory_rate_limit_key( $scope, $identifier ) {
+			$identifier_hash = hash_hmac( 'sha256', strtolower( trim( (string) $identifier ) ), wp_salt( 'auth' ) );
+
+			return 'fajn_rl_' . md5( $scope . '|' . $identifier_hash );
+		}
+	}
+
+	if ( ! function_exists( 'fajntabory_check_rate_limit' ) ) {
+		function fajntabory_check_rate_limit( $scope, $identifier, $limit, $window ) {
+			$limit = (int) $limit;
+			$window = (int) $window;
+
+			if ( $limit < 1 || $window < 1 || '' === (string) $identifier ) {
+				return false;
+			}
+
+			$key = fajntabory_rate_limit_key( $scope, $identifier );
+			$count = (int) get_transient( $key );
+
+			if ( $count >= $limit ) {
+				return false;
+			}
+
+			set_transient( $key, $count + 1, $window );
+
+			return true;
+		}
+	}
+
+	if ( ! function_exists( 'fajntabory_reservation_rate_limit_passed' ) ) {
+		function fajntabory_reservation_rate_limit_passed( $email ) {
+			$ip = fajntabory_get_client_ip();
+			$checks = array(
+				array( 'reservation_site_hour', 'site', (int) apply_filters( 'fajntabory_reservation_site_hour_limit', 60 ), HOUR_IN_SECONDS ),
+				array( 'reservation_site_day', 'site', (int) apply_filters( 'fajntabory_reservation_site_day_limit', 200 ), DAY_IN_SECONDS ),
+				array( 'reservation_ip_hour', $ip, (int) apply_filters( 'fajntabory_reservation_ip_hour_limit', 5 ), HOUR_IN_SECONDS ),
+				array( 'reservation_ip_day', $ip, (int) apply_filters( 'fajntabory_reservation_ip_day_limit', 20 ), DAY_IN_SECONDS ),
+				array( 'reservation_email_hour', $email, (int) apply_filters( 'fajntabory_reservation_email_hour_limit', 2 ), HOUR_IN_SECONDS ),
+				array( 'reservation_email_day', $email, (int) apply_filters( 'fajntabory_reservation_email_day_limit', 4 ), DAY_IN_SECONDS ),
+			);
+
+			foreach ( $checks as $check ) {
+				if ( ! fajntabory_check_rate_limit( $check[0], $check[1], $check[2], $check[3] ) ) {
+					return false;
+				}
+			}
+
+			return true;
+		}
+	}
+
+	if ( ! function_exists( 'fajntabory_reservation_email_allowed' ) ) {
+		function fajntabory_reservation_email_allowed( $order ) {
+			if ( ! $order instanceof WC_Order || ! is_email( $order->get_billing_email() ) ) {
+				return false;
+			}
+
+			$verified_at = (string) $order->get_meta( '_reservation_security_verified_at' );
+
+			if ( empty( $verified_at ) && ! apply_filters( 'fajntabory_allow_unverified_reservation_email', false, $order ) ) {
+				return false;
+			}
+
+			return true;
+		}
+	}
+
+	if ( ! function_exists( 'fajntabory_clean_order_post_value' ) ) {
+		function fajntabory_clean_order_post_value( $key, $value ) {
+			if ( is_array( $value ) ) {
+				return array_map( function( $item ) use ( $key ) {
+					return fajntabory_clean_order_post_value( $key, $item );
+				}, $value );
+			}
+
+			$value = wp_unslash( $value );
+
+			if ( in_array( $key, array( 'email', 'email-check' ), true ) ) {
+				return sanitize_email( $value );
+			}
+
+			if ( in_array( $key, array( 'zpusobilost', 'zamestnavatel', 'poznamky', 'dalsi_tabornici' ), true ) ) {
+				return sanitize_textarea_field( $value );
+			}
+
+			return sanitize_text_field( $value );
+		}
+	}
+
+	if ( ! function_exists( 'fajntabory_sanitize_order_post' ) ) {
+		function fajntabory_sanitize_order_post( $post ) {
+			$clean = array();
+
+			foreach ( $post as $key => $value ) {
+				$clean_key = sanitize_key( $key );
+
+				if ( '' === $clean_key ) {
+					continue;
+				}
+
+				$clean[ $clean_key ] = fajntabory_clean_order_post_value( $clean_key, $value );
+			}
+
+			return $clean;
+		}
+	}
+
+	if ( ! function_exists( 'fajntabory_abort_checkout' ) ) {
+		function fajntabory_abort_checkout( $message, $redirect_url = '' ) {
+			wc_add_notice( $message, 'error' );
+			wp_safe_redirect( $redirect_url ? $redirect_url : fajntabory_get_checkout_url() );
+			exit;
+		}
+	}
+
 	if ( ! function_exists( 'fajntabory_get_order_bank_account_number' ) ) {
 		function fajntabory_get_order_bank_account_number( $order ) {
 			$bank_account_number = get_option( 'bank_account' );
@@ -613,7 +761,18 @@
 
 			$email = $order->get_billing_email();
 
-			if ( empty( $email ) ) {
+			if ( empty( $email ) || ! fajntabory_reservation_email_allowed( $order ) ) {
+				return false;
+			}
+
+			if ( (int) $order->get_meta( '_reservation_email_send_count' ) >= FAJNTABORY_RESERVATION_MAX_REMINDERS + FAJNTABORY_RESERVATION_LINK_MAX_SENDS ) {
+				return false;
+			}
+
+			if (
+				! fajntabory_check_rate_limit( 'reservation_mail_site_hour', 'site', (int) apply_filters( 'fajntabory_reservation_mail_site_hour_limit', 80 ), HOUR_IN_SECONDS )
+				|| ! fajntabory_check_rate_limit( 'reservation_mail_recipient_day', $email, (int) apply_filters( 'fajntabory_reservation_mail_recipient_day_limit', 8 ), DAY_IN_SECONDS )
+			) {
 				return false;
 			}
 
@@ -647,6 +806,7 @@
 			update_post_meta( $order_id, '_reservation_email_last_sent_at', $sent_at );
 			update_post_meta( $order_id, '_reservation_email_last_source', $source );
 			update_post_meta( $order_id, '_reservation_email_send_count', (int) $order->get_meta( '_reservation_email_send_count' ) + 1 );
+			update_post_meta( $order_id, '_reservation_link_email_send_count', (int) $order->get_meta( '_reservation_link_email_send_count' ) + 1 );
 
 			if ( ! fajntabory_reservation_is_completed( $order ) && $order->has_status( array( FAJNTABORY_INCOMPLETE_ORDER_STATUS, 'pending' ) ) ) {
 				$order->update_status( FAJNTABORY_RESERVATION_LINK_SENT_STATUS, 'Odkaz k dokončení objednávky byl odeslán e-mailem.' );
@@ -749,6 +909,16 @@
 				}
 
 				$order_id = fajntabory_get_order_id( $order );
+
+				if ( ! fajntabory_reservation_email_allowed( $order ) ) {
+					if ( '' === (string) $order->get_meta( '_reservation_email_blocked_at' ) ) {
+						update_post_meta( $order_id, '_reservation_email_blocked_at', current_time( 'mysql' ) );
+						$order->add_order_note( 'Automatické rezervační e-maily byly zablokovány, protože rezervace neprošla kontrolou proti spamu.' );
+					}
+
+					continue;
+				}
+
 				$email_sent_at = (string) $order->get_meta( '_reservation_email_sent_at' );
 
 				if ( empty( $email_sent_at ) ) {
@@ -1168,7 +1338,10 @@
 
 		wp_enqueue_script( 'general', get_template_directory_uri() . '/assets/scripts/general.js?' . time() );
 
-		wp_localize_script( 'general', 'ajax_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
+		wp_localize_script( 'general', 'ajax_object', array(
+			'ajax_url'             => admin_url( 'admin-ajax.php' ),
+			'product_choice_nonce' => wp_create_nonce( 'fajntabory_product_choice' ),
+		) );
 
 	} );
 
@@ -3277,6 +3450,8 @@
 			add_action( 'init', 'fajntabory_create_reservation' );
 		} elseif ( 'send_link' === $reservation_step ) {
 			add_action( 'init', 'fajntabory_send_reservation_link_request' );
+		} elseif ( 'complete' === $reservation_step ) {
+			add_action( 'init', 'complete_order' );
 		} elseif ( ! empty( $_POST['objednavka'] ) ) {
 			add_action( 'init', 'complete_order' );
 		}
@@ -3308,6 +3483,7 @@
 		$form_type = ! empty( $_POST['objednavka'] ) ? sanitize_text_field( wp_unslash( $_POST['objednavka'] ) ) : fajntabory_get_checkout_form_type();
 		$coupon_code = ! empty( $_POST['coupon_code'] ) ? sanitize_text_field( wp_unslash( $_POST['coupon_code'] ) ) : '';
 		$recaptcha_token = ! empty( $_POST['_wpcf7_recaptcha_response'] ) ? sanitize_text_field( wp_unslash( $_POST['_wpcf7_recaptcha_response'] ) ) : '';
+		$honeypot = ! empty( $_POST['reservation_company'] ) ? sanitize_text_field( wp_unslash( $_POST['reservation_company'] ) ) : '';
 
 
 
@@ -3315,6 +3491,26 @@
 
 			wc_add_notice( 'Nepodařilo se určit typ přihlášky. Vraťte se prosím do košíku a zkuste to znovu.', 'error' );
 			wp_safe_redirect( wc_get_cart_url() );
+			exit;
+
+		}
+
+		if ( ! in_array( $form_type, array( 'a', 'b', 'c', 'd' ), true ) ) {
+
+			wc_add_notice( 'Nepodařilo se ověřit typ přihlášky. Vraťte se prosím do košíku a zkuste to znovu.', 'error' );
+			wp_safe_redirect( wc_get_cart_url() );
+			exit;
+
+		}
+
+		if (
+			! empty( $honeypot )
+			|| empty( $_POST['reservation_create_nonce'] )
+			|| ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['reservation_create_nonce'] ) ), 'fajntabory_create_reservation' )
+		) {
+
+			wc_add_notice( 'Objednávkový formulář se nepodařilo ověřit. Zkuste to prosím znovu.', 'error' );
+			wp_safe_redirect( fajntabory_get_checkout_url() );
 			exit;
 
 		}
@@ -3354,6 +3550,16 @@
 		if ( ! fajntabory_verify_recaptcha_token( $recaptcha_token ) ) {
 
 			wc_add_notice( 'Nepodařilo se ověřit ochranu proti spamu. Zkuste to prosím znovu.', 'error' );
+			wp_safe_redirect( fajntabory_get_checkout_url() );
+			exit;
+
+		}
+
+
+
+		if ( ! fajntabory_reservation_rate_limit_passed( $email ) ) {
+
+			wc_add_notice( 'Formulář byl z této adresy odeslán příliš často. Zkuste to prosím později.', 'error' );
 			wp_safe_redirect( fajntabory_get_checkout_url() );
 			exit;
 
@@ -3441,6 +3647,8 @@
         update_post_meta( $order_id, '_reservation_status', 'pending_completion' );
         update_post_meta( $order_id, '_reservation_created_at', current_time( 'mysql' ) );
         update_post_meta( $order_id, '_fajntabory_incomplete_order', 'yes' );
+        update_post_meta( $order_id, '_reservation_security_verified_at', current_time( 'mysql' ) );
+        update_post_meta( $order_id, '_reservation_client_ip_hash', hash_hmac( 'sha256', fajntabory_get_client_ip(), wp_salt( 'auth' ) ) );
         $new_order->add_order_note( 'Objednávka byla vytvořena jako nedokončená rezervace. Na stav Čeká na platbu se přepne až po doplnění přihlášky.' );
 
 
@@ -3500,6 +3708,26 @@
 			exit;
 		}
 
+		if ( ! fajntabory_reservation_email_allowed( $reservation_order ) ) {
+			wc_add_notice( 'Odkaz se nepodařilo odeslat, protože rezervace neprošla kontrolou proti spamu. Zkuste prosím vytvořit objednávku znovu.', 'error' );
+			wp_safe_redirect( fajntabory_get_checkout_url() );
+			exit;
+		}
+
+		$order_id = fajntabory_get_order_id( $reservation_order );
+		$last_sent_at = fajntabory_reservation_time_to_timestamp( $reservation_order->get_meta( '_reservation_email_last_sent_at' ) );
+
+		if (
+			(int) $reservation_order->get_meta( '_reservation_link_email_send_count' ) >= FAJNTABORY_RESERVATION_LINK_MAX_SENDS
+			|| ( $last_sent_at > 0 && time() < $last_sent_at + FAJNTABORY_RESERVATION_LINK_RESEND_COOLDOWN )
+			|| ! fajntabory_check_rate_limit( 'reservation_link_ip_hour', fajntabory_get_client_ip(), (int) apply_filters( 'fajntabory_reservation_link_ip_hour_limit', 10 ), HOUR_IN_SECONDS )
+			|| ! fajntabory_check_rate_limit( 'reservation_link_order_hour', $order_id, (int) apply_filters( 'fajntabory_reservation_link_order_hour_limit', 3 ), HOUR_IN_SECONDS )
+		) {
+			wc_add_notice( 'Odkaz byl odeslán nedávno. Zkontrolujte prosím e-mail, případně to zkuste později.', 'error' );
+			wp_safe_redirect( fajntabory_get_reservation_choice_url( $reservation_token ) );
+			exit;
+		}
+
 		if ( ! fajntabory_send_reservation_email( $reservation_order, $reservation_token, 'link' ) ) {
 			wc_add_notice( 'Odkaz se nepodařilo odeslat. Zkuste to prosím znovu.', 'error' );
 			wp_safe_redirect( fajntabory_get_reservation_choice_url( $reservation_token ) );
@@ -3511,7 +3739,7 @@
 		wp_safe_redirect( add_query_arg(
 			array(
 				'reservation' => 'sent',
-				'oid'         => fajntabory_get_order_id( $reservation_order ),
+				'oid'         => $order_id,
 			),
 			fajntabory_get_checkout_url()
 		) );
@@ -3527,16 +3755,29 @@
 
 		global $woocommerce;
 
-		$reservation_token = ! empty( $_POST['reservation_token'] ) ? sanitize_text_field( wp_unslash( $_POST['reservation_token'] ) ) : '';
+		$_POST = fajntabory_sanitize_order_post( $_POST );
+
+		$reservation_token = ! empty( $_POST['reservation_token'] ) ? $_POST['reservation_token'] : '';
 		$reservation_order = ! empty( $reservation_token ) ? fajntabory_get_reservation_order( $reservation_token ) : false;
 		$bank_account_number = get_option('bank_account');
 
 
 
-		if( ! $reservation_order && WC()->cart->get_cart_contents_count() < 1 ) {
+		if ( empty( $reservation_token ) || ! $reservation_order ) {
 
-			wp_redirect( wc_get_cart_url() );
+			fajntabory_abort_checkout( 'Přihlášku se nepodařilo ověřit. Začněte prosím znovu od košíku.', wc_get_cart_url() );
+			exit;
 
+		}
+
+
+
+		if (
+			empty( $_POST['reservation_complete_nonce'] )
+			|| ! wp_verify_nonce( $_POST['reservation_complete_nonce'], 'fajntabory_complete_reservation' )
+		) {
+
+			fajntabory_abort_checkout( 'Objednávkový formulář se nepodařilo ověřit. Zkuste to prosím znovu.', fajntabory_get_reservation_complete_url( $reservation_token ) );
 			exit;
 
 		}
@@ -3547,6 +3788,42 @@
 
 			wc_add_notice( 'Tato přihláška už byla dokončena.', 'notice' );
 			wp_safe_redirect( fajntabory_get_reservation_complete_url( $reservation_token ) );
+			exit;
+
+		}
+
+
+
+		if ( empty( $_POST['objednavka'] ) || ! in_array( $_POST['objednavka'], array( 'a', 'b', 'c', 'd' ), true ) ) {
+
+			fajntabory_abort_checkout( 'Nepodařilo se ověřit typ přihlášky. Zkuste to prosím znovu.', fajntabory_get_reservation_complete_url( $reservation_token ) );
+			exit;
+
+		}
+
+
+
+		if ( empty( $_POST['email'] ) || ! is_email( $_POST['email'] ) ) {
+
+			fajntabory_abort_checkout( 'Zadejte prosím platný e-mail.', fajntabory_get_reservation_complete_url( $reservation_token ) );
+			exit;
+
+		}
+
+
+
+		if ( ! empty( $_POST['email-check'] ) && $_POST['email-check'] !== $_POST['email'] ) {
+
+			fajntabory_abort_checkout( 'Kontrolní e-mail se neshoduje.', fajntabory_get_reservation_complete_url( $reservation_token ) );
+			exit;
+
+		}
+
+
+
+		if ( empty( $_POST['toc'] ) ) {
+
+			fajntabory_abort_checkout( 'Pro pokračování je nutné souhlasit se všeobecnými podmínkami.', fajntabory_get_reservation_complete_url( $reservation_token ) );
 			exit;
 
 		}
@@ -4080,7 +4357,13 @@
 			WC()->cart->empty_cart( true );
 		}
 
-        wp_redirect( home_url() . '?oid=' . $newid . '&email=' . $_POST['email']  );
+		wp_safe_redirect( add_query_arg(
+			array(
+				'oid'   => $newid,
+				'email' => $_POST['email'],
+			),
+			home_url( '/' )
+		) );
 
 		exit;
 
@@ -4619,11 +4902,22 @@
 
 		$response = array();
 
-		$id = $_POST['id'];
+		if (
+			empty( $_POST['nonce'] )
+			|| ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'fajntabory_product_choice' )
+		) {
+			wp_send_json( array( 'error' => 'invalid_nonce' ) );
+		}
 
-		$p_attributes = $_POST['post'];
+		$id = ! empty( $_POST['id'] ) ? absint( $_POST['id'] ) : 0;
 
-		$p_attributes = $p_attributes[0];
+		$p_attributes = ! empty( $_POST['post'] ) && is_array( $_POST['post'] ) ? wp_unslash( $_POST['post'] ) : array();
+
+		$p_attributes = ! empty( $p_attributes[0] ) && is_array( $p_attributes[0] ) ? array_map( 'sanitize_text_field', $p_attributes[0] ) : array();
+
+		if ( $id < 1 || empty( $p_attributes ) ) {
+			wp_send_json( array( 'error' => 'invalid_request' ) );
+		}
 
 		ksort($p_attributes);
 
@@ -4661,11 +4955,7 @@
 
 		 		
 
-		 		$response = json_encode( $response );
-
-				echo $response;
-
-				exit;
+				wp_send_json( $response );
 
 
 
@@ -4673,7 +4963,7 @@
 
 		}
 
-		exit;
+		wp_send_json( array( 'error' => 'not_found' ) );
 
 
 
@@ -4689,6 +4979,29 @@
 
 
 
+	if ( ! function_exists( 'fajntabory_decode_choice_ids' ) ) {
+		function fajntabory_decode_choice_ids( $value ) {
+			if ( is_array( $value ) ) {
+				$decoded = $value;
+			} else {
+				$raw = is_scalar( $value ) ? trim( wp_unslash( $value ) ) : '';
+				$decoded = json_decode( $raw, true );
+
+				if ( ! is_array( $decoded ) && defined( 'PHP_VERSION_ID' ) && PHP_VERSION_ID >= 70000 ) {
+					$decoded = @unserialize( $raw, array( 'allowed_classes' => false ) );
+				}
+			}
+
+			if ( ! is_array( $decoded ) ) {
+				return array();
+			}
+
+			return array_values( array_filter( array_map( 'absint', $decoded ) ) );
+		}
+	}
+
+
+
 	function dchose() {
 
 
@@ -4697,13 +5010,25 @@
 
 
 
-		$n_chose = unserialize($_POST['n_chose']);
+		if (
+			empty( $_POST['nonce'] )
+			|| ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'fajntabory_product_choice' )
+		) {
+			wp_send_json( array( 'error' => 'invalid_nonce' ) );
+		}
 
-		$v_chose = unserialize($_POST['v_chose']);
 
-		$t_chose = unserialize($_POST['t_chose']);
+		$n_chose = ! empty( $_POST['n_chose'] ) ? fajntabory_decode_choice_ids( $_POST['n_chose'] ) : array();
 
-		$z_chose = unserialize($_POST['z_chose']);
+		$v_chose = ! empty( $_POST['v_chose'] ) ? fajntabory_decode_choice_ids( $_POST['v_chose'] ) : array();
+
+		$t_chose = ! empty( $_POST['t_chose'] ) ? fajntabory_decode_choice_ids( $_POST['t_chose'] ) : array();
+
+		$z_chose = ! empty( $_POST['z_chose'] ) ? fajntabory_decode_choice_ids( $_POST['z_chose'] ) : array();
+
+		if ( empty( $n_chose ) || empty( $v_chose ) || empty( $t_chose ) || empty( $z_chose ) ) {
+			wp_send_json( array( 'error' => 'invalid_request' ) );
+		}
 
 
 
@@ -4743,11 +5068,7 @@
 
 
 
-		$response = json_encode( $response );
-
-		echo $response;
-
-		exit;
+		wp_send_json( $response );
 
 	}
 

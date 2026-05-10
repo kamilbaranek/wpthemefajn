@@ -30,11 +30,11 @@ jQuery(document).ready(function($) {
 
 			$('.heywait').fadeIn( 'slow' );
 			post.push(item);
-			var data = { 'action' : 'pchose', 'id' : id, 'post' : post };
+			var data = { 'action' : 'pchose', 'id' : id, 'post' : post, 'nonce' : ajax_object.product_choice_nonce };
 
 			jQuery.post(ajax_object.ajax_url, data, function(response) {
 				console.log(response);
-				var t = JSON.parse(response);
+				var t = typeof response === 'string' ? JSON.parse(response) : response;
 				if( t.variation_price != 0 && t.variation_qty != 0 ) {
 					
 					if( t.variation_discount < t.variation_price ) {
@@ -78,6 +78,7 @@ jQuery(document).ready(function($) {
 			var tr = $(this).closest('tr');
 			var data = {
 				'action': 'dchose',
+				'nonce': ajax_object.product_choice_nonce,
 				'n_chose': tr.find('.n_chose').val(),
 				'v_chose': tr.find('.v_chose').val(),
 				't_chose': tr.find('.t_chose').val(),
@@ -85,7 +86,7 @@ jQuery(document).ready(function($) {
 			};
 
 			jQuery.post(ajax_object.ajax_url, data, function(response) {
-				var t = JSON.parse(response);
+				var t = typeof response === 'string' ? JSON.parse(response) : response;
 				// console.log( t );
 				if( t.price != 0 && t.capacity != 0 ) {
 					if( t.sale_bool == true ) {

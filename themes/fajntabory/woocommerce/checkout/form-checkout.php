@@ -112,6 +112,7 @@
 	<?php if ( $reservation_order ) : ?>
 		<input type="hidden" name="reservation_step" value="complete">
 		<input type="hidden" name="reservation_token" value="<?php echo esc_attr( $reservation_token ); ?>">
+		<?php wp_nonce_field( 'fajntabory_complete_reservation', 'reservation_complete_nonce' ); ?>
 		<?php get_template_part( 'woocommerce/checkout/formular', $form ); ?>
 	<?php else : ?>
 		<?php set_query_var( 'fajntabory_checkout_form', $form ); ?>

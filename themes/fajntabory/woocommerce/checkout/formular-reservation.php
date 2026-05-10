@@ -3,6 +3,12 @@
 <input type="hidden" name="objednavka" value="<?php echo esc_attr( $form_type ); ?>">
 <input type="hidden" name="reservation_step" value="reserve">
 <input type="hidden" name="_wpcf7_recaptcha_response" value="">
+<?php wp_nonce_field( 'fajntabory_create_reservation', 'reservation_create_nonce' ); ?>
+
+<div class="reservation-company-field" aria-hidden="true" style="position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden;">
+	<label for="reservation-company">Společnost</label>
+	<input id="reservation-company" type="text" name="reservation_company" value="" tabindex="-1" autocomplete="off">
+</div>
 
 <div class="form-validation-error">Objednávkový formulář se nepodařilo odeslat, zkontrolujte prosím zvýrazněné části :)</div>
 
