@@ -20,12 +20,23 @@ MODE="${MODE:-plan}"
 FTP_HOST="${FTP_HOST:-160272.w72.wedos.net}"
 FTP_USER="${FTP_USER:-w160272_new2026}"
 OLD_UPLOADS="${OLD_UPLOADS:-/domains/fajntabory.cz/wp-content/uploads}"
-NEW_UPLOADS="${NEW_UPLOADS:-/domains/new.fajntabory.cz/wp-content/uploads}"
+NEW_ROOT="${NEW_ROOT:-/domains/new.fajntabory.cz}"
+NEW_UPLOADS_REL="${NEW_UPLOADS_REL:-wp-content/uploads}"
+NEW_UPLOADS="${NEW_UPLOADS:-$NEW_ROOT/$NEW_UPLOADS_REL}"
 LOCAL_STAGE="${LOCAL_STAGE:-/private/tmp/fajntabory-safe-uploads}"
 ALLOW_SVG="${ALLOW_SVG:-0}"
 
 require_password() {
-  : "${FTP_PASS:?Set FTP_PASS. Do not store it in this script.}"
+  if [[ -z "${FTP_PASS:-}" ]]; then
+    printf 'FTP password for %s@%s: ' "$FTP_USER" "$FTP_HOST" >&2
+    read -r -s FTP_PASS
+    printf '\n' >&2
+  fi
+
+  if [[ -z "$FTP_PASS" ]]; then
+    printf 'FTP password is empty; aborting.\n' >&2
+    exit 2
+  fi
 }
 
 print_plan() {
@@ -34,15 +45,16 @@ FTP host:      $FTP_HOST
 FTP user:      $FTP_USER
 Old uploads:   $OLD_UPLOADS
 New uploads:   $NEW_UPLOADS
+New root:      $NEW_ROOT
+New rel path:  $NEW_UPLOADS_REL
 Local stage:   $LOCAL_STAGE
 Mode:          $MODE
 SVG allowed:   $ALLOW_SVG
 
 Recommended run:
-  read -s FTP_PASS
-  export FTP_PASS
   MODE=sync scripts/lftp-copy-safe-uploads.sh
 
+The script will ask for the FTP password if FTP_PASS is not already set.
 This copies image files only, preserves directory structure, filters the local
 stage again, and uploads to the new uploads directory without deleting remote
 files that are already there.
@@ -52,6 +64,7 @@ PLAN
 download_images() {
   require_password
   mkdir -p "$LOCAL_STAGE"
+  printf 'Downloading image uploads from %s to %s\n' "$OLD_UPLOADS" "$LOCAL_STAGE" >&2
 
   lftp -u "$FTP_USER","$FTP_PASS" "$FTP_HOST" <<LFTP
 set cmd:fail-exit yes
@@ -82,6 +95,7 @@ bye
 LFTP
 
   filter_local_stage
+  printf 'Download/filter finished. Local stage: %s\n' "$LOCAL_STAGE" >&2
 }
 
 filter_local_stage() {
@@ -124,16 +138,20 @@ upload_images() {
   fi
 
   filter_local_stage
+  printf 'Uploading filtered images from %s to %s\n' "$LOCAL_STAGE" "$NEW_UPLOADS" >&2
 
   lftp -u "$FTP_USER","$FTP_PASS" "$FTP_HOST" <<LFTP
 set cmd:fail-exit yes
 set net:max-retries 2
 set net:timeout 30
 set ftp:ssl-allow true
-mkdir -p "$NEW_UPLOADS"
-mirror -R --verbose --parallel=4 --continue "$LOCAL_STAGE" "$NEW_UPLOADS"
+cd "$NEW_ROOT"
+mkdir -fp wp-content
+mkdir -fp "$NEW_UPLOADS_REL"
+mirror -R --verbose --parallel=4 --continue "$LOCAL_STAGE" "$NEW_UPLOADS_REL"
 bye
 LFTP
+  printf 'Upload finished.\n' >&2
 }
 
 case "$MODE" in

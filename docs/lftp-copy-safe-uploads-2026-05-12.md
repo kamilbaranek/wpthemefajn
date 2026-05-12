@@ -28,17 +28,21 @@ Nejdriv zkontrolovat plan:
 MODE=plan scripts/lftp-copy-safe-uploads.sh
 ```
 
-Pak zadat heslo bez ulozeni do historie prikazu:
-
-```bash
-read -s FTP_PASS
-export FTP_PASS
-```
-
 Spustit kompletni synchronizaci pres lokalni staging:
 
 ```bash
 MODE=sync scripts/lftp-copy-safe-uploads.sh
+```
+
+Skript se sam zepta na FTP heslo. Pri psani hesla se na obrazovce nic nezobrazuje; je to zamerne. Po zadani hesla stisknout Enter a skript bude pokracovat.
+
+Pokud chces heslo zadat predem pres promennou prostredi:
+
+```bash
+read -s FTP_PASS
+export FTP_PASS
+MODE=sync scripts/lftp-copy-safe-uploads.sh
+unset FTP_PASS
 ```
 
 Vychozi hodnoty ve skriptu:
@@ -48,6 +52,8 @@ FTP_HOST='160272.w72.wedos.net'
 FTP_USER='w160272_new2026'
 OLD_UPLOADS='/domains/fajntabory.cz/wp-content/uploads'
 NEW_UPLOADS='/domains/new.fajntabory.cz/wp-content/uploads'
+NEW_ROOT='/domains/new.fajntabory.cz'
+NEW_UPLOADS_REL='wp-content/uploads'
 LOCAL_STAGE='/private/tmp/fajntabory-safe-uploads'
 ```
 
@@ -56,8 +62,6 @@ LOCAL_STAGE='/private/tmp/fajntabory-safe-uploads'
 Stahnout ze stareho webu jen obrazky:
 
 ```bash
-read -s FTP_PASS
-export FTP_PASS
 MODE=download scripts/lftp-copy-safe-uploads.sh
 ```
 
@@ -71,6 +75,12 @@ find /private/tmp/fajntabory-safe-uploads -type f | wc -l
 Prvni prikaz musi vratit prazdny vystup.
 
 Nahrat do noveho webu:
+
+```bash
+MODE=upload scripts/lftp-copy-safe-uploads.sh
+```
+
+Pokud uz probehlo stazeni a chyba nastala az pri uploadu, neni nutne znovu stahovat. Staci opravit cilovou cestu nebo skript a pustit jen:
 
 ```bash
 MODE=upload scripts/lftp-copy-safe-uploads.sh
