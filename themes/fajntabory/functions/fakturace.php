@@ -22,6 +22,18 @@
 		return $slova[2];
 	}
 
+	function fajntabory_sanitize_invoice_post( $data ) {
+		$skip = array( 'fajntabory_invoice_nonce', '_wp_http_referer', '_wpnonce' );
+		$clean = array();
+		foreach ( (array) $data as $key => $value ) {
+			if ( in_array( $key, $skip, true ) || strpos( (string) $key, '_' ) === 0 ) {
+				continue;
+			}
+			$clean[ sanitize_key( $key ) ] = map_deep( wp_unslash( $value ), 'sanitize_text_field' );
+		}
+		return $clean;
+	}
+
 
 	$args = array(
 		'public' => false,
@@ -76,7 +88,7 @@
 
 		if( empty( $_GET['action'] ) ) {
 
-			$paged = $_GET['paged'] ? $_GET['paged'] : 1;
+			$paged = ! empty( $_GET['paged'] ) ? absint( $_GET['paged'] ) : 1;
 			$meta_query = array();
 			$search_string = null;
 			$search_filter = null;
@@ -98,18 +110,21 @@
 			);
 
 			if( !empty( $_GET['search']) ) {
-				$search_string = $_GET['search'];
+				$search_string = sanitize_text_field( wp_unslash( $_GET['search'] ) );
 			}
 
 			if( !empty( $_GET['filter'] ) ) {
-				$search_filter = $_GET['filter'];
+				$filter_candidate = sanitize_key( wp_unslash( $_GET['filter'] ) );
+				if( isset( $filtry[ $filter_candidate ] ) ) {
+					$search_filter = $filter_candidate;
+				}
 			}
 
 			if( !empty( $_GET['dodavatel'] ) ) {
-				$search_dodavatel = $_GET['dodavatel'];
+				$search_dodavatel = absint( $_GET['dodavatel'] );
 			}
 
-			if( !empty($search_string) ) {
+			if( !empty($search_string) && !empty($search_filter) ) {
 				$meta_query[] = array(
 					'key' => $search_filter,
 					'value' => $search_string,
@@ -151,7 +166,7 @@
 			echo '<form method="get">';
 			echo '<input type="hidden" name="page" value="fakturace" />';
 			echo '<label class="screen-reader-text" for="post-search-input">Hledat produkty:</label>';
-			echo '<input autocomplete="off" type="search" placeholder="Vyhledávání..." id="post-search-input" name="search" value="'.$search_string.'"> ';
+			echo '<input autocomplete="off" type="search" placeholder="Vyhledávání..." id="post-search-input" name="search" value="'.esc_attr( $search_string ).'"> ';
 			echo '<select name="filter" id="postform">';
 			echo '<option value="-1">Vyberte filtr</option>';
 			foreach( $filtry as $key => $value ) {
@@ -209,16 +224,16 @@
 			echo '<div class="tablenav-pages">';
 			
 			if( $paged > 1 ) {
-				echo '<a class="first-page" href="'.admin_url('admin.php' . get_paged_link( 1 ) ).'"><span class="screen-reader-text">První stránka</span><span aria-hidden="true">«</span></a> ';
-				echo '<a class="prev-page" href="'.admin_url('admin.php' . get_paged_link( ($paged - 1 ) ) ).'"><span class="screen-reader-text">Předchozí stránka</span><span aria-hidden="true">‹</span></a> ';
+				echo '<a class="first-page" href="'.esc_url( admin_url('admin.php' . get_paged_link( 1 ) ) ).'"><span class="screen-reader-text">První stránka</span><span aria-hidden="true">«</span></a> ';
+				echo '<a class="prev-page" href="'.esc_url( admin_url('admin.php' . get_paged_link( ($paged - 1 ) ) ) ).'"><span class="screen-reader-text">Předchozí stránka</span><span aria-hidden="true">‹</span></a> ';
 			} else {
 				echo '<span class="tablenav-pages-navspan" aria-hidden="true">«</span> ';
 				echo '<span class="tablenav-pages-navspan" aria-hidden="true">‹</span> ';
 			}
 			echo '<span class="displaying-num">Stránka '.$paged.' z celkem '.$max_num_pages.'</span>';
 			if( $paged < $max_num_pages ) {
-				echo '<a class="next-page" href="'.admin_url('admin.php' . get_paged_link( ( $paged + 1 ) ) ).'"><span class="screen-reader-text">Následující stránka</span><span aria-hidden="true">›</span></a> ';
-				echo '<a class="last-page" href="'.admin_url('admin.php' . get_paged_link( $max_num_pages ) ).'"><span class="screen-reader-text">Poslední stránka</span><span aria-hidden="true">»</span></a> ';
+				echo '<a class="next-page" href="'.esc_url( admin_url('admin.php' . get_paged_link( ( $paged + 1 ) ) ) ).'"><span class="screen-reader-text">Následující stránka</span><span aria-hidden="true">›</span></a> ';
+				echo '<a class="last-page" href="'.esc_url( admin_url('admin.php' . get_paged_link( $max_num_pages ) ) ).'"><span class="screen-reader-text">Poslední stránka</span><span aria-hidden="true">»</span></a> ';
 			} else {
 				echo '<span class="tablenav-pages-navspan" aria-hidden="true">›</span> ';
 				echo '<span class="tablenav-pages-navspan" aria-hidden="true">»</span> ';
@@ -273,7 +288,7 @@
 						echo '<td>' . $j . ' kč</td>';
 						echo '<td class="iactions"><a class="button wc-action-button dashicons dashicons-edit" href="'.admin_url('admin.php?page=fakturace&action=update&id=').$post_id.'"></a> ';
 						echo '<a class="button wc-action-button dashicons dashicons-download" target="_blank" href="'.admin_url('admin.php?invoice=' . $post_id) .'"></a> ';
-						echo '<a class="button wc-action-button dashicons dashicons-trash" onclick="return confirm(\'Opravdu chcete fakturu smazat?\')" href="'.admin_url('admin.php?page=fakturace&action=delete&id=' . $post_id) .'"></a></td>';
+						echo '<a class="button wc-action-button dashicons dashicons-trash" onclick="return confirm(\'Opravdu chcete fakturu smazat?\')" href="'.esc_url( wp_nonce_url( admin_url('admin.php?page=fakturace&action=delete&id=' . $post_id), 'fajntabory_delete_invoice_' . $post_id ) ) .'"></a></td>';
 
 						echo '</tr>';
 
@@ -327,7 +342,15 @@
 
 		} else if( !empty( $_GET['action'] ) && !empty( $_GET['id'] ) && $_GET['action'] == 'delete' ) {
 
-			wp_delete_post($_GET['id']);
+			$delete_id = absint( $_GET['id'] );
+
+			if( ! current_user_can( 'manage_options' )
+				|| ! isset( $_GET['_wpnonce'] )
+				|| ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'fajntabory_delete_invoice_' . $delete_id ) ) {
+				wp_die( 'Neplatný bezpečnostní token. Zkuste akci provést znovu.' );
+			}
+
+			wp_delete_post( $delete_id );
 			wp_redirect( admin_url('admin.php?page=fakturace&message=deleted') );
 			wp_die();
 
@@ -338,6 +361,11 @@
 
 
 			if(!empty($_POST)) {
+
+				if( ! current_user_can( 'manage_options' )
+					|| ! check_admin_referer( 'fajntabory_save_invoice', 'fajntabory_invoice_nonce' ) ) {
+					wp_die( 'Neplatný bezpečnostní token. Zkuste akci provést znovu.' );
+				}
 
 				// Najdeme spolecnost, poslední použité číslo, zvýšíme ho a propíšeme
 				$zvolena_spolecnost = $_POST['fakturace_dodavatel'];
@@ -359,13 +387,8 @@
 				) );
 
 				if ( !empty( $post_id ) ) {
-					foreach ($_POST as $key => $value) {
-						if( $value != array() ) {
-							update_post_meta( $post_id, $key, $value );
-						} else {
-							$value = serialize( $value );
-							update_post_meta( $post_id, $key, $value );
-						}
+					foreach ( fajntabory_sanitize_invoice_post( $_POST ) as $key => $value ) {
+						update_post_meta( $post_id, $key, $value );
 					}
 					wp_redirect( admin_url('admin.php?page=fakturace&message=created&action=update&id=' . $post_id) );
 				}
@@ -458,6 +481,7 @@
 				echo '<br>';
 
 				echo '<form method="POST" class="validate invoice">';
+				wp_nonce_field( 'fajntabory_save_invoice', 'fajntabory_invoice_nonce' );
 				echo '<div id="col-container" class="wp-clearfix">';
 				echo '<div id="col-left">';
 				echo '<div class="col-wrap">';
@@ -616,6 +640,7 @@
 				echo '<br>';
 
 				echo '<form method="POST" class="validate invoice">';
+				wp_nonce_field( 'fajntabory_save_invoice', 'fajntabory_invoice_nonce' );
 				echo '<div id="col-container" class="wp-clearfix">';
 				echo '<div id="col-left">';
 				echo '<div class="col-wrap">';
@@ -765,20 +790,18 @@
 
 		} else if( !empty( $_GET['action']) && $_GET['action'] == 'update' ) {
 
-			$post_id = $_GET['id'];
+			$post_id = absint( $_GET['id'] );
 
 			if(!empty($_POST)) {
+
+				if( ! current_user_can( 'manage_options' )
+					|| ! check_admin_referer( 'fajntabory_save_invoice', 'fajntabory_invoice_nonce' ) ) {
+					wp_die( 'Neplatný bezpečnostní token. Zkuste akci provést znovu.' );
+				}
+
 				if ( !empty( $post_id ) ) {
-
-					foreach ($_POST as $key => $value) {
-
-						if( $value != array() ) {
-							update_post_meta( $post_id, $key, $value );
-						} else {
-							$value = serialize( $value );
-							update_post_meta( $post_id, $key, $value );
-						}
-
+					foreach ( fajntabory_sanitize_invoice_post( $_POST ) as $key => $value ) {
+						update_post_meta( $post_id, $key, $value );
 					}
 					wp_redirect( admin_url('admin.php?page=fakturace&message=updated&action=update&id=' . $post_id) );
 				}
@@ -799,6 +822,7 @@
 			echo '<br>';
 
 			echo '<form method="POST" class="validate invoice">';
+			wp_nonce_field( 'fajntabory_save_invoice', 'fajntabory_invoice_nonce' );
 			echo '<div id="col-container" class="wp-clearfix">';
 			echo '<div id="col-left">';
 			echo '<div class="col-wrap">';

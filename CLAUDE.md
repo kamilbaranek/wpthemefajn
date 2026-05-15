@@ -39,6 +39,7 @@ extending the allowlist. Follow the same pattern.
 - `docs/db-cleanup-stage3-wm144-wedos-2026-05-12.sql` — DB stage 3 (1226 fake spam posts cascade delete)
 - `docs/db-cleanup-stage4-migration-prep-2026-05-12.sql` — DB stage 4 (fresh-install migration prep)
 - `docs/db-import-into-fresh-install-2026-05-12.md` — fresh-install import runbook (CLI + phpMyAdmin)
+- `docs/theme-security-audit-2026-05-15.md` — theme security audit & hardening (CSRF, XSS, CSV upload, WooCommerce template refresh)
 - `scripts/db-cleanup-local-restore.sh` — ephemeral MariaDB cleanup pipeline
 - `scripts/db-split-migration-by-table.sh` — per-table split for tight phpMyAdmin upload limits
 

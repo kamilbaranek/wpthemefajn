@@ -10,15 +10,12 @@
  * happen. When this occurs the version of the template file will be bumped and
  * the readme will list any important changes.
  *
- * @see 	    https://docs.woocommerce.com/document/template-structure/
- * @author 		WooThemes
- * @package 	WooCommerce/Templates
- * @version     3.0.0
+ * @see https://woocommerce.com/document/template-structure/
+ * @package WooCommerce\Templates
+ * @version 9.6.0
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
 if ( $cross_sells ) : ?>
 
@@ -31,18 +28,19 @@ if ( $cross_sells ) : ?>
 			<?php foreach ( $cross_sells as $cross_sell ) : ?>
 
 				<?php
-				 	$post_object = get_post( $cross_sell->get_id() );
+					$post_object = get_post( $cross_sell->get_id() );
 
-					setup_postdata( $GLOBALS['post'] =& $post_object );
+					setup_postdata( $GLOBALS['post'] = $post_object ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited, Squiz.PHP.DisallowMultipleAssignments.Found
 
-					wc_get_template_part( 'content', 'crossell' ); ?>
+					wc_get_template_part( 'content', 'crossell' );
+				?>
 
 			<?php endforeach; ?>
 
 		<?php woocommerce_product_loop_end(); ?>
 
 	</div>
-
-<?php endif;
+	<?php
+endif;
 
 wp_reset_postdata();

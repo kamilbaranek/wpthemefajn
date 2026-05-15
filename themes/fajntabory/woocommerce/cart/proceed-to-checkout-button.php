@@ -12,15 +12,12 @@
  * happen. When this occurs the version of the template file will be bumped and
  * the readme will list any important changes.
  *
- * @see     https://docs.woocommerce.com/document/template-structure/
- * @author  WooThemes
- * @package WooCommerce/Templates
- * @version 2.4.0
+ * @see     https://woocommerce.com/document/template-structure/
+ * @package WooCommerce\Templates
+ * @version 7.0.1
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
-}
+defined( 'ABSPATH' ) || exit;
 ?>
 
 <?php if ( wc_coupons_enabled() ) { ?>
@@ -40,6 +37,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 </form>
 <?php } ?>
 
-<a href="<?php echo esc_url( fajntabory_get_checkout_url() );?>" class="checkout-button button alt wc-forward">
+<a href="<?php echo esc_url( fajntabory_get_checkout_url() ); ?>" class="checkout-button button alt wc-forward">
 	OBJEDNAT
 </a>

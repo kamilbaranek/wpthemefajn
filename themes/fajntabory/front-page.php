@@ -56,12 +56,12 @@ if( empty( $email ) ) { $email = 'svém e-mailu'; }
 		while ( $query->have_posts() ) {
 			$query->the_post();
 			echo '<div class="news-post">';
-			echo '<div class="news-type '.get_post_format().'"></div>';
-			echo '<div class="news-date">' . get_the_date('j.n.Y') . '</div>';
+			echo '<div class="news-type '.esc_attr( get_post_format() ).'"></div>';
+			echo '<div class="news-date">' . esc_html( get_the_date('j.n.Y') ) . '</div>';
 			if( get_post_format() != 'status' ) {
-				echo '<div class="news-title"><a href="'.get_the_permalink().'">' . get_the_title() . '</a></div>';
+				echo '<div class="news-title"><a href="'.esc_url( get_the_permalink() ).'">' . esc_html( get_the_title() ) . '</a></div>';
 			} else {
-				echo '<div class="news-title">' . get_the_title() . '</div>';
+				echo '<div class="news-title">' . esc_html( get_the_title() ) . '</div>';
 			}
 			echo '<div class="news-excerpt">' . get_the_excerpt() . '</div>';
 			echo '</div>';
@@ -261,17 +261,17 @@ if( empty( $_GET['typ_tabory']) ) { $_GET['typ_tabory'] = -1; }
 				// asort( $out_terminy );
 
 				echo '<li>';
-				echo '<a href="'.get_the_permalink().'">';
+				echo '<a href="'.esc_url( get_the_permalink() ).'">';
 				
 				$title = get_field('upraveny_titulek');
 				if( empty($title) ) {
 					$title = get_the_title();
 				}
 
-				echo '<h2 class="entry-title" style="background: '.$barva.';">' .$title. '</h2>';
+				echo '<h2 class="entry-title" style="background: '.esc_attr( $barva ).';">' .esc_html( $title ). '</h2>';
 				
 
-				echo '<div class="typy_taboru" style="background: '.$barva.';">';
+				echo '<div class="typy_taboru" style="background: '.esc_attr( $barva ).';">';
 
 				echo '<div class="lokalita">';
 				echo '<ul>';
@@ -279,7 +279,7 @@ if( empty( $_GET['typ_tabory']) ) { $_GET['typ_tabory'] = -1; }
 
 				foreach ( $out_lokalita as $lokalita ) {
 					if( !empty( $lokalita ) ) {
-						echo '<li><i class="fa fa-map-marker" aria-hidden="true"></i>'.$lokalita.'</li>';
+						echo '<li><i class="fa fa-map-marker" aria-hidden="true"></i>'.esc_html( $lokalita ).'</li>';
 					}
 				}
 				echo '</ul>';
@@ -291,14 +291,14 @@ if( empty( $_GET['typ_tabory']) ) { $_GET['typ_tabory'] = -1; }
 				echo '<ul class="f_typ">';
 				foreach ( $out_typ_tabora as $typ_tabora ) {
 					if( !empty( $typ_tabora ) ) {
-						echo '<li>'.$typ_tabora.'</li>';
+						echo '<li>'.esc_html( $typ_tabora ).'</li>';
 					}
 				}
 				echo '</ul>';
 				echo '<br class="clear">';
 				echo '</div>';
 
-				echo '<div class="terminy" style="background: '.$barva.';">';
+				echo '<div class="terminy" style="background: '.esc_attr( $barva ).';">';
 				echo '<ul>';
 
 				$count = count($out_terminy);
@@ -307,7 +307,7 @@ if( empty( $_GET['typ_tabory']) ) { $_GET['typ_tabory'] = -1; }
 				}
 				foreach ( $out_terminy as $termin ) {
 					if( !empty( $termin ) ) {
-						echo '<li>'.$termin.'</li>';
+						echo '<li>'.esc_html( $termin ).'</li>';
 					}
 				}
 				if( $count ) {
@@ -367,16 +367,16 @@ if( empty( $_GET['typ_tabory']) ) { $_GET['typ_tabory'] = -1; }
 				}
 
 				echo '<li>';
-				echo '<a href="'.get_the_permalink().'">';
+				echo '<a href="'.esc_url( get_the_permalink() ).'">';
 				// the_post_thumbnail( 'listing' );
 				$image = get_the_post_thumbnail_url( get_the_id(), 'listing' );
-				echo '<img width="320" height="320" src="'.$image.'" style="border-color: '.$barva.'">';
+				echo '<img width="320" height="320" src="'.esc_url( $image ).'" style="border-color: '.esc_attr( $barva ).'">';
 				the_title( '<h2 class="entry-title">', '</h2>', true );
 				echo '</a>';
 				echo '</li>';
 			}
 				echo '<li class="ostatni">';
-				echo '<a href="'.get_field( "hp_vedouci_odkaz", $pid ).'">';
+				echo '<a href="'.esc_url( get_field( "hp_vedouci_odkaz", $pid ) ).'">';
 				echo '<img width="320" height="320" src="'.get_stylesheet_directory_uri().'/assets/images/arrow.png">';
 				echo '<h2 class="entry-title">Náš kompletní tým</h2>';
 				echo '</a>';
@@ -391,22 +391,22 @@ if( empty( $_GET['typ_tabory']) ) { $_GET['typ_tabory'] = -1; }
 <h2 class="hp-section-title"><span><?php echo get_field( "hp_bannery_titulek", $pid ); ?></span></h2>
 	<div>
 		<?php $barva = get_field( 'barva_zeleneho_banneru', $pid ); ?>
-		<div class="banner" style="background-color: <?php echo $barva; ?>;">
+		<div class="banner" style="background-color: <?php echo esc_attr( $barva ); ?>;">
 			<span><?php echo get_field( "hp_bannery_titulek_zeleny", $pid ); ?></span>
 			<p><?php echo get_field( "hp_bannery_popisek_zeleny", $pid ); ?></p>
 		</div>
 		<?php $barva = get_field( 'barva_ruzoveho_banneru', $pid ); ?>
-		<div class="banner" style="background-color: <?php echo $barva; ?>;">
+		<div class="banner" style="background-color: <?php echo esc_attr( $barva ); ?>;">
 			<span><?php echo get_field( "hp_bannery_titulek_ruzovy", $pid ); ?></span>
 			<p><?php echo get_field( "hp_bannery_popisek_ruzovy", $pid ); ?></p>
 		</div>
 		<?php $barva = get_field( 'barva_modreho_banneru', $pid ); ?>
-		<div class="banner" style="background-color: <?php echo $barva; ?>;">
+		<div class="banner" style="background-color: <?php echo esc_attr( $barva ); ?>;">
 			<span><?php echo get_field( "hp_bannery_titulek_modry", $pid ); ?></span>
 			<p><?php echo get_field( "hp_bannery_popisek_modry", $pid ); ?></p>
 		</div>
 		<?php $barva = get_field( 'barva_zluteho_banneru', $pid ); ?>
-		<div class="banner" style="background-color: <?php echo $barva; ?>;">
+		<div class="banner" style="background-color: <?php echo esc_attr( $barva ); ?>;">
 			<span><?php echo get_field( "hp_bannery_titulek_zluty", $pid ); ?></span>
 			<p><?php echo get_field( "hp_bannery_popisek_zluty", $pid ); ?></p>
 		</div>
@@ -439,7 +439,7 @@ if( empty( $_GET['typ_tabory']) ) { $_GET['typ_tabory'] = -1; }
 				$term = $term[0];
 				$barva = get_field( 'barva', 'typ-tabora_'.$term->term_id );
 				echo '<li>';
-				echo '<a href="'.get_the_permalink().'">';
+				echo '<a href="'.esc_url( get_the_permalink() ).'">';
 				echo '<div>';
 				if( $i == 999 ) {
 					the_post_thumbnail( 'double-listing' );
@@ -454,7 +454,7 @@ if( empty( $_GET['typ_tabory']) ) { $_GET['typ_tabory'] = -1; }
 			}
 
 			echo '<li class="ostatni">';
-			echo '<a href="'.get_field( "hp_galerie_odkaz", $pid ).'">';
+			echo '<a href="'.esc_url( get_field( "hp_galerie_odkaz", $pid ) ).'">';
 			echo '<img src="'.get_stylesheet_directory_uri().'/assets/images/arrow.png">';
 			echo '<h2 class="entry-title title-dark">Ostatní</h2>';
 			echo '</a>';

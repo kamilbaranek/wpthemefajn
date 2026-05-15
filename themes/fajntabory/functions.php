@@ -1474,7 +1474,7 @@
 		echo '<p>';
 
 
-		echo '<a href="'.admin_url( 'themes.php?page=theme-options&https://www.fajntabory.cz/wp-admin/themes.php?page=theme-options&export-transport=true' ).'" target="_blank" class="button">Exportovat společnou dopravu</a>';
+		echo '<a href="'.admin_url( 'themes.php?page=theme-options&export-transport=true' ).'" target="_blank" class="button">Exportovat společnou dopravu</a>';
 
 		echo '</p>';
 
@@ -1491,6 +1491,7 @@
 		echo '<p>';
 
 		echo '<input type="hidden" name="csv" value="true">';
+		wp_nonce_field( 'fajntabory_import_csv', 'fajntabory_csv_nonce' );
 
 		echo '<input type="file" name="importcsv" accept=".csv">';
 
@@ -1513,6 +1514,7 @@
 		echo '<p>';
 
 		echo '<input type="hidden" name="tcsv" value="true">';
+		wp_nonce_field( 'fajntabory_import_tcsv', 'fajntabory_tcsv_nonce' );
 
 		echo '<input type="file" name="importcsv" accept=".csv">';
 
@@ -1548,7 +1550,7 @@
 
 				echo '<a href="#" class="logopicker">';
 
-				echo '<img id="image-preview" src="'.wp_get_attachment_image_src( get_option( 'website_logo' ), 'logo' )[0].'">';
+				echo '<img id="image-preview" src="'.esc_url( wp_get_attachment_image_src( get_option( 'website_logo' ), 'logo' )[0] ).'">';
 
 				echo '</a>';
 
@@ -1558,7 +1560,7 @@
 
 			}
 
-			echo '<input type="hidden" id="website_logo" name="website_logo" value="'.get_option('website_logo').'">';
+			echo '<input type="hidden" id="website_logo" name="website_logo" value="'.esc_attr( get_option('website_logo') ).'">';
 
 			echo '</p>';
 
@@ -1576,7 +1578,7 @@
 
 			echo '<label for="bank_account">Číslo bankovního účtu</label>';
 
-			echo '<input type="text" id="bank_account" name="bank_account" value="'.get_option('bank_account').'">';
+			echo '<input type="text" id="bank_account" name="bank_account" value="'.esc_attr( get_option('bank_account') ).'">';
 
 			echo '</p>';
 
@@ -1584,7 +1586,7 @@
 
 			echo '<label for="bank_iban">Mezinárodní číslo bankovního účtu (IBAN)</label>';
 
-			echo '<input type="text" id="bank_iban" name="bank_iban" value="'.get_option('bank_iban').'">';
+			echo '<input type="text" id="bank_iban" name="bank_iban" value="'.esc_attr( get_option('bank_iban') ).'">';
 
 			echo '</p>';
 
@@ -1592,7 +1594,7 @@
 
 			echo '<label for="bank_swift">SWIFT / BIC kód banky</label>';
 
-			echo '<input type="text" id="bank_swift" name="bank_swift" value="'.get_option('bank_swift').'">';
+			echo '<input type="text" id="bank_swift" name="bank_swift" value="'.esc_attr( get_option('bank_swift') ).'">';
 
 			echo '</p>';
 
@@ -1616,7 +1618,7 @@
 
 			echo '<label for="facebook_uri">Odkaz na Facebook profil</label>';
 
-			echo '<input type="text" id="facebook_uri" name="facebook_uri" value="'.get_option('facebook_uri').'">';
+			echo '<input type="text" id="facebook_uri" name="facebook_uri" value="'.esc_url( get_option('facebook_uri') ).'">';
 
 			echo '</p>';
 
@@ -1626,7 +1628,7 @@
 
 			echo '<label for="youtube_uri">Odkaz na YouTube profil</label>';
 
-			echo '<input type="text" id="youtube_uri" name="youtube_uri" value="'.get_option('youtube_uri').'">';
+			echo '<input type="text" id="youtube_uri" name="youtube_uri" value="'.esc_url( get_option('youtube_uri') ).'">';
 
 			echo '</p>';
 
@@ -1636,7 +1638,7 @@
 
 			echo '<label for="twitter_uri">Odkaz na Twitter profil</label>';
 
-			echo '<input type="text" id="twitter_uri" name="twitter_uri" value="'.get_option('twitter_uri').'">';
+			echo '<input type="text" id="twitter_uri" name="twitter_uri" value="'.esc_url( get_option('twitter_uri') ).'">';
 
 			echo '</p>';
 
@@ -1646,7 +1648,7 @@
 
 			echo '<label for="instagram_uri">Odkaz na Instagram profil</label>';
 
-			echo '<input type="text" id="instagram_uri" name="instagram_uri" value="'.get_option('instagram_uri').'">';
+			echo '<input type="text" id="instagram_uri" name="instagram_uri" value="'.esc_url( get_option('instagram_uri') ).'">';
 
 			echo '</p>';
 
@@ -1888,6 +1890,18 @@
 
 
 
+	function fajntabory_is_valid_csv_upload( $field ) {
+		if ( empty( $_FILES[ $field ] ) || ! isset( $_FILES[ $field ]['tmp_name'], $_FILES[ $field ]['error'] ) ) {
+			return false;
+		}
+		$file = $_FILES[ $field ];
+		if ( UPLOAD_ERR_OK !== (int) $file['error'] || ! is_uploaded_file( $file['tmp_name'] ) ) {
+			return false;
+		}
+		$filetype = wp_check_filetype( $file['name'] );
+		return 'csv' === $filetype['ext'];
+	}
+
 	if( !empty( $_POST['tcsv'] ) ) {
 
 		add_action( 'admin_init', function() {
@@ -1899,6 +1913,16 @@
 				exit;
 
 			} else {
+
+				if( ! isset( $_POST['fajntabory_tcsv_nonce'] )
+					|| ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['fajntabory_tcsv_nonce'] ) ), 'fajntabory_import_tcsv' ) ) {
+					wp_die( 'Neplatný bezpečnostní token. Zkuste import provést znovu.' );
+				}
+
+				if( ! fajntabory_is_valid_csv_upload( 'importcsv' ) ) {
+					wp_redirect( admin_url('themes.php?page=theme-options&uploaded=false') );
+					exit;
+				}
 
 				$target = get_template_directory() . '/CSV/doprava.csv';
 
@@ -1969,6 +1993,16 @@
 				exit;
 
 			} else {
+
+				if( ! isset( $_POST['fajntabory_csv_nonce'] )
+					|| ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['fajntabory_csv_nonce'] ) ), 'fajntabory_import_csv' ) ) {
+					wp_die( 'Neplatný bezpečnostní token. Zkuste import provést znovu.' );
+				}
+
+				if( ! fajntabory_is_valid_csv_upload( 'importcsv' ) ) {
+					wp_redirect( admin_url('themes.php?page=theme-options&uploaded=false') );
+					exit;
+				}
 
 				$target = get_template_directory() . '/CSV/tabory.csv';
 
@@ -2247,29 +2281,29 @@
 
 		 		echo '<tr>';
 
-				echo '<td>'.$metas['jmeno'][0].'</td>';
+				echo '<td>'.esc_html( $metas['jmeno'][0] ).'</td>';
 
-				echo '<td>'.$metas['prijmeni'][0].'</td>';
+				echo '<td>'.esc_html( $metas['prijmeni'][0] ).'</td>';
 
-				echo '<td>'.$metas['datum_narozeni'][0].'</td>';
+				echo '<td>'.esc_html( $metas['datum_narozeni'][0] ).'</td>';
 
-				echo '<td>'.$metas['ulice'][0].', '.$metas['mesto'][0].' '.$metas['psc'][0].'</td>';
+				echo '<td>'.esc_html( $metas['ulice'][0] ).', '.esc_html( $metas['mesto'][0] ).' '.esc_html( $metas['psc'][0] ).'</td>';
 
-				echo '<td>'.$metas['narodnost'][0].'</td>';
+				echo '<td>'.esc_html( $metas['narodnost'][0] ).'</td>';
 
-				echo '<td>'.$metas['skola'][0].'</td>';
+				echo '<td>'.esc_html( $metas['skola'][0] ).'</td>';
 
-				echo '<td>'.$metas['triko'][0].'</td>';
+				echo '<td>'.esc_html( $metas['triko'][0] ).'</td>';
 
 
 
-				echo '<td>'.$tabor['typ'].'</td>';
+				echo '<td>'.esc_html( $tabor['typ'] ).'</td>';
 
-				echo '<td>'.$tabor['lokalita'].'</td>';
+				echo '<td>'.esc_html( $tabor['lokalita'] ).'</td>';
 
-				echo '<td>'.$tabor['name'].'</td>';
+				echo '<td>'.esc_html( $tabor['name'] ).'</td>';
 
-				echo '<td>'.$tabor['termin'].'</td>';
+				echo '<td>'.esc_html( $tabor['termin'] ).'</td>';
 
 
 
@@ -2307,21 +2341,21 @@
 					$zamestnavatel .= ', Poznámky k proplacení: ' . $metas['zamestnavatel'][0];
 				}
 
-				echo '<td>'.$zamestnavatel.'</td>';
+				echo '<td>'.esc_html( $zamestnavatel ).'</td>';
 
-				echo '<td>'.get_post_meta( $id, 'coupon_code', true ).'</td>';
+				echo '<td>'.esc_html( get_post_meta( $id, 'coupon_code', true ) ).'</td>';
 
 
 
-				echo '<td>'.$metas['zpusobilost'][0].'</td>';
+				echo '<td>'.esc_html( $metas['zpusobilost'][0] ).'</td>';
 
-				echo '<td>'.$metas['Z_prijmeni'][0].' '.$metas['Z_jmeno'][0].'</td>';
+				echo '<td>'.esc_html( $metas['Z_prijmeni'][0] ).' '.esc_html( $metas['Z_jmeno'][0] ).'</td>';
 
-				echo '<td>'.$metas['telefon'][0].'</td>';
+				echo '<td>'.esc_html( $metas['telefon'][0] ).'</td>';
 
-				echo '<td>'.$metas['email'][0].'</td>';
+				echo '<td>'.esc_html( $metas['email'][0] ).'</td>';
 
-				echo '<td>'.$propagace.'</td>';
+				echo '<td>'.esc_html( $propagace ).'</td>';
 
 				echo '<td></td>';
 
@@ -2521,7 +2555,7 @@
 
 								echo '<td>#'.$variation['variation_id'].'</td>'; // A
 
-								echo '<td>'.get_the_title( $variation['variation_id'] ).'</td>'; // B
+								echo '<td>'.esc_html( get_the_title( $variation['variation_id'] ) ).'</td>'; // B
 
 								echo '<td>'.$doprava.'</td>'; // C
 
@@ -2723,9 +2757,9 @@
 
 								echo '<td>#'.$variation['variation_id'].'</td>';
 
-								echo '<td>'.get_the_title( $variation['variation_id'] ).'</td>';
+								echo '<td>'.esc_html( get_the_title( $variation['variation_id'] ) ).'</td>';
 
-								echo '<td>'.$lokalita.'</td>';
+								echo '<td>'.esc_html( $lokalita ).'</td>';
 
 								echo '<td>'.$typ_tabora.'</td>';
 
@@ -4723,7 +4757,7 @@
 
     	echo '<label for="variable_first_sale_price'.$loop.'">Počáteční cena po slevě (Kč)</label>';
 
-    	echo '<input type="text" class="short wc_input_price" style="" name="variable_first_sale_price['.$loop.']" id="variable_first_sale_price_'.$loop.'" value="'.get_post_meta( $variation->ID, 'variable_first_sale_price', true ).'" placeholder="Počáteční cena po slevě">';
+    	echo '<input type="text" class="short wc_input_price" style="" name="variable_first_sale_price['.esc_attr( $loop ).']" id="variable_first_sale_price_'.esc_attr( $loop ).'" value="'.esc_attr( get_post_meta( $variation->ID, 'variable_first_sale_price', true ) ).'" placeholder="Počáteční cena po slevě">';
 
     	echo '</p>';
 
@@ -4731,7 +4765,7 @@
 
     	echo '<label for="variable_raising_sale_price'.$loop.'">Částka pro týdenní navyšování (Kč)</label>';
 
-    	echo '<input type="text" class="short wc_input_price" style="" name="variable_raising_sale_price['.$loop.']" id="variable_raising_sale_price_'.$loop.'" value="'.get_post_meta( $variation->ID, 'variable_raising_sale_price', true ).'" placeholder="Navyšovací cena">';
+    	echo '<input type="text" class="short wc_input_price" style="" name="variable_raising_sale_price['.esc_attr( $loop ).']" id="variable_raising_sale_price_'.esc_attr( $loop ).'" value="'.esc_attr( get_post_meta( $variation->ID, 'variable_raising_sale_price', true ) ).'" placeholder="Navyšovací cena">';
 
     	echo '</p>';
 
