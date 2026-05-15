@@ -3481,6 +3481,7 @@
 		$email = ! empty( $_POST['email'] ) ? sanitize_email( wp_unslash( $_POST['email'] ) ) : '';
 		$phone = ! empty( $_POST['telefon'] ) ? sanitize_text_field( wp_unslash( $_POST['telefon'] ) ) : '';
 		$form_type = ! empty( $_POST['objednavka'] ) ? sanitize_text_field( wp_unslash( $_POST['objednavka'] ) ) : fajntabory_get_checkout_form_type();
+		$form_type = strtolower( (string) $form_type );
 		$coupon_code = ! empty( $_POST['coupon_code'] ) ? sanitize_text_field( wp_unslash( $_POST['coupon_code'] ) ) : '';
 		$recaptcha_token = ! empty( $_POST['_wpcf7_recaptcha_response'] ) ? sanitize_text_field( wp_unslash( $_POST['_wpcf7_recaptcha_response'] ) ) : '';
 		$honeypot = ! empty( $_POST['reservation_company'] ) ? sanitize_text_field( wp_unslash( $_POST['reservation_company'] ) ) : '';

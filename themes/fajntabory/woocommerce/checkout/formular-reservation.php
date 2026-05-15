@@ -1,6 +1,6 @@
 <?php $form_type = get_query_var( 'fajntabory_checkout_form' ); ?>
 
-<input type="hidden" name="objednavka" value="<?php echo esc_attr( $form_type ); ?>">
+<input type="hidden" name="objednavka" value="<?php echo esc_attr( strtolower( (string) $form_type ) ); ?>">
 <input type="hidden" name="reservation_step" value="reserve">
 <input type="hidden" name="_wpcf7_recaptcha_response" value="">
 <?php wp_nonce_field( 'fajntabory_create_reservation', 'reservation_create_nonce' ); ?>
