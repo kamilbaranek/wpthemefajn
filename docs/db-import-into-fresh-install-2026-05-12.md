@@ -216,35 +216,81 @@ Stejny proces jako Krok B4, ale soubor `wm144_wedos_net.migration-design.sql.gz`
 
 ---
 
-## Import varianta C — phpMyAdmin s pristnym upload limitem (< 8 MB)
+## Import varianta C — phpMyAdmin po tabulkach (per-table chunks)
 
-Pokud i 7.8 MB gzip je moc, pouzite per-table split:
+Pouzijte kdyz import 136 MB / 7.8 MB gzip najednou nedobehne (phpMyAdmin
+timeout) — typicky se projevi tim, ze nizsi-ID obsah (stranky) je videt,
+ale vyssi-ID obsah (attachmenty/media, novejsi produkty/objednavky) chybi.
+
+Vygenerovani chunku:
 
 ```bash
 scripts/db-split-migration-by-table.sh \
   /Users/kamilbaranek/dev/fajntabory/DB/wm144_wedos_net.migration.sql
 ```
 
+Skript naimportuje migration.sql do efemerni MariaDB, kazdou tabulku znovu
+vyexportuje samostatnym `mariadb-dump` (garantovane validni SQL) a na konci
+chunky overi re-importem do ciste DB.
+
 Vystup v `DB/migration-chunks/`:
 
+| Soubor | Gzip | Obsah |
+|---|---|---|
+| `01-wp_posts.sql.gz` | ~2.3 MB | wp_posts — vsech 38 225 postu vcetne 35 253 attachmentu |
+| `02-wp_postmeta.sql.gz` | ~5.2 MB | wp_postmeta — 147 798 radku metadata |
+| `03-rest.sql.gz` | ~0.2 MB | 16 ostatnich tabulek (komentare, terms, WC order_items, zony, dane) |
+
+Kazdy chunk je kompletni `mariadb-dump` jedne/vice tabulek (`DROP TABLE IF
+EXISTS` + `CREATE TABLE` + `INSERT`), tedy samostatne a opakovane
+importovatelny. Poradi nezalezi (WordPress nepouziva FK constraints).
+
+phpMyAdmin import — kazdy soubor zvlast pres tab **Import**:
+
+1. `01-wp_posts.sql.gz`
+2. `02-wp_postmeta.sql.gz`
+3. `03-rest.sql.gz`
+4. `wm144_wedos_net.migration-design.sql.gz` — design overlay az nakonec
+
+Postup pro kazdy soubor shodny s Krokem B4 (Partial import zaskrtnout, Go).
+
+---
+
+## Reseni: media (attachmenty) nejsou videt v menu Media
+
+**Priznak**: stranky funguji, ale WP admin → Media je prazdne, i kdyz jsou
+soubory fyzicky na disku v `wp-content/uploads/`.
+
+**Pricina**: WordPress Media Library zobrazuje jen attachmenty, ktere maji
+zaznam v `wp_posts` (`post_type = 'attachment'`). Soubory na disku bez DB
+zaznamu se nezobrazi — WordPress filesystem neskenuje. Pri importu 136 MB
+souboru najednou phpMyAdmin casto narazi na timeout uprostred `wp_posts`;
+mysqldump radi radky podle ID, takze nizko-ID obsah (stranky) projde a
+vysoko-ID obsah (attachmenty, novejsi produkty/objednavky) uz ne.
+
+**Diagnostika** — phpMyAdmin → cilova DB → tab **SQL**:
+
+```sql
+SELECT post_type, post_status, COUNT(*) AS cnt
+FROM wp_posts GROUP BY post_type, post_status ORDER BY cnt DESC;
 ```
-01-schema.sql.gz                  ~30 KB    -- CREATE TABLE pro vsechny tabulky
-02-data-wp_posts.sql.gz           ~3 MB     -- INSERT INTO wp_posts
-03-data-wp_postmeta.sql.gz        ~3 MB     -- INSERT INTO wp_postmeta
-04-data-other.sql.gz              ~1 MB     -- ostatni tabulky
-05-triggers-routines.sql.gz       ~1 KB     -- (pokud nejake)
+
+Ocekavany kompletni stav: `attachment / inherit / 35253`, celkem ~38 225
+radku. Pokud je attachmentu vyrazne min nebo 0 → import wp_posts nedobehl.
+
+**Oprava**: pouzijte variantu C (per-table chunks). `01-wp_posts.sql.gz`
+udela `DROP TABLE IF EXISTS wp_posts` + cisty re-import vsech 38 225 postu
+vcetne attachmentu. Staci importovat chunky `01`, `02`, `03` (design
+overlay uz mate). Po importu:
+
+```sql
+-- overeni
+SELECT COUNT(*) FROM wp_posts WHERE post_type='attachment';   -- 35253
+SELECT COUNT(*) FROM wp_postmeta WHERE meta_key='_wp_attached_file'; -- 35253
 ```
 
-Kazdy chunk je samostatne importovatelny. Doporucene poradi:
-
-1. `01-schema.sql.gz` — vytvori prazdne tabulky (DROP IF EXISTS + CREATE TABLE)
-2. `02-data-wp_posts.sql.gz` — naplni posty
-3. `03-data-wp_postmeta.sql.gz` — postmeta
-4. `04-data-other.sql.gz` — komentare, kategorie, WC order_items atd.
-5. `05-triggers-routines.sql.gz` — pokud existuje (default neexistuji)
-6. `wm144_wedos_net.migration-design.sql.gz` — design overlay
-
-Krok pro phpMyAdmin shodny s variantou B, jen postupne pro kazdy chunk.
+Pak WP admin → Media uz attachmenty ukaze. Nahledy se nactou, pokud jsou
+fyzicke soubory v `wp-content/uploads/` (cesty drzi meta `_wp_attached_file`).
 
 ---
 

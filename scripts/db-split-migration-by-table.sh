@@ -1,150 +1,151 @@
 #!/usr/bin/env bash
-# Fallback: rozdeli `wm144_wedos_net.migration.sql` na samostatne soubory
-# per-tabulka pro hostingy s velmi pristnym phpMyAdmin upload limitem
-# (treba 2 MB), kde i 7.8 MB gzipped dump je moc velky.
+# Rozdeli `wm144_wedos_net.migration.sql` na samostatne per-tabulka soubory
+# pro phpMyAdmin import po castech (kdyz 136 MB / 7.8 MB gzip najednou
+# nedobehne kvuli timeoutu).
 #
-# Vystup je v adresari `DB/migration-chunks/`:
-#   01-schema.sql            -- SET / CREATE TABLE bloky vsech tabulek
-#   02-data-wp_posts.sql     -- data wp_posts (nejvetsi)
-#   03-data-wp_postmeta.sql  -- data wp_postmeta (druhe nejvetsi)
-#   04-data-<small>.sql      -- data ostatnich tabulek (komentare, terms, …)
-#   05-triggers-routines.sql -- triggers/routines/events
+# Postup: naimportuje migration.sql do efemerni MariaDB a kazdou tabulku
+# znovu vyexportuje samostatnym `mariadb-dump` volanim. Kazdy vystupni
+# soubor je tim padem GARANTOVANE validni SQL (DROP TABLE IF EXISTS +
+# CREATE TABLE + INSERT), na rozdil od textoveho sekani jednoho velkeho
+# dumpu.
 #
-# Kazdy chunk je sam o sobe konzistentni a lze ho importovat zvlast.
-# Doporucene poradi: 01, 02, 03, 04..., 05.
+# Vystup v `DB/migration-chunks/`:
+#   01-wp_posts.sql(.gz)      -- vsechny posty vcetne 35k attachmentu
+#   02-wp_postmeta.sql(.gz)   -- vsechna postmeta (nejvetsi tabulka)
+#   03-rest.sql(.gz)          -- komentare, terms, WC order_items, zony, dane
 #
-# Pripadne se da kazdy chunk dale gzipnout pro dalsi uspory:
-#   gzip *.sql
+# Kazdy soubor je samostatne importovatelny v libovolnem poradi
+# (WordPress nepouziva FK constraints). Doporucene poradi 01 → 02 → 03.
+#
+# Requirements: brew install mariadb@10.11
+#
+# Pouziti:
+#   scripts/db-split-migration-by-table.sh [migration.sql] [outdir]
 
 set -euo pipefail
 
-INPUT="${1:-${REPO_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}/DB/wm144_wedos_net.migration.sql}"
+REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+INPUT="${1:-${REPO_ROOT}/DB/wm144_wedos_net.migration.sql}"
 OUTDIR="${2:-$(dirname "$INPUT")/migration-chunks}"
+DB_NAME="ftsplit"
+
+red()   { printf '\033[31m%s\033[0m\n' "$*"; }
+green() { printf '\033[32m%s\033[0m\n' "$*"; }
+blue()  { printf '\033[34m%s\033[0m\n' "$*"; }
 
 if [[ ! -f "$INPUT" ]]; then
-  echo "ERR: Migration file not found: $INPUT" >&2
+  red "MISSING input: $INPUT"
   exit 1
 fi
+if ! brew --prefix mariadb@10.11 >/dev/null 2>&1; then
+  red "mariadb@10.11 not installed. Run: brew install mariadb@10.11"
+  exit 1
+fi
+
+BREW_PREFIX="$(brew --prefix mariadb@10.11)"
+MARIADB_INSTALL_DB="${BREW_PREFIX}/bin/mariadb-install-db"
+MARIADBD="${BREW_PREFIX}/bin/mariadbd"
+MARIADB="${BREW_PREFIX}/bin/mariadb"
+MARIADB_DUMP="${BREW_PREFIX}/bin/mariadb-dump"
+
+TMPDIR_BASE="$(mktemp -d -t fajntabory-db-split-XXXXXX)"
+DATA_DIR="${TMPDIR_BASE}/data"
+SOCKET="${TMPDIR_BASE}/mariadb.sock"
+PID_FILE="${TMPDIR_BASE}/mariadb.pid"
+LOG_FILE="${TMPDIR_BASE}/mariadb.log"
+
+cleanup() {
+  local rc=$?
+  if [[ -f "$PID_FILE" ]]; then
+    local pid; pid="$(cat "$PID_FILE" 2>/dev/null || true)"
+    if [[ -n "$pid" ]] && kill -0 "$pid" 2>/dev/null; then
+      kill "$pid" 2>/dev/null || true
+      for _ in $(seq 1 10); do kill -0 "$pid" 2>/dev/null || break; sleep 1; done
+      kill -9 "$pid" 2>/dev/null || true
+    fi
+  fi
+  rm -rf "$TMPDIR_BASE"
+  exit "$rc"
+}
+trap cleanup EXIT INT TERM
 
 mkdir -p "$OUTDIR"
 rm -f "$OUTDIR"/*.sql "$OUTDIR"/*.gz 2>/dev/null || true
 
-echo "==> splitting $INPUT into chunks in $OUTDIR"
+blue "==> initialising ephemeral MariaDB"
+"$MARIADB_INSTALL_DB" --datadir="$DATA_DIR" --auth-root-authentication-method=socket >/dev/null
+"$MARIADBD" --no-defaults --datadir="$DATA_DIR" --socket="$SOCKET" \
+  --pid-file="$PID_FILE" --log-error="$LOG_FILE" \
+  --skip-networking --skip-grant-tables \
+  --innodb-buffer-pool-size=512M --max-allowed-packet=512M \
+  >/dev/null 2>&1 &
 
-awk -v outdir="$OUTDIR" '
-BEGIN {
-  schema_file = outdir "/01-schema.sql"
-  triggers_file = outdir "/05-triggers-routines.sql"
-  in_table = ""
-  state = "header"  # header → schema → data → triggers
-  schema_buf = ""
-  data_file = ""
-}
-
-# Identify section transitions
-/^DROP TABLE IF EXISTS `[^`]+`/ {
-  match($0, /`[^`]+`/)
-  in_table = substr($0, RSTART+1, RLENGTH-2)
-  state = "schema"
-  next_data_target = ""
-}
-
-# Schema lines: DROP TABLE, CREATE TABLE, set blocks etc.
-state == "schema" {
-  print >> schema_file
-  if ($0 ~ /\) ENGINE=.*;$/) {
-    # End of CREATE TABLE, schema for this table done
-  }
-}
-
-# Detect INSERT INTO blocks
-/^(LOCK TABLES|INSERT INTO|\/\*![0-9]+ ALTER TABLE|UNLOCK TABLES)/ {
-  if (state == "schema" || state == "data") {
-    # Find which table the INSERT is for
-    if ($0 ~ /^INSERT INTO `([^`]+)`/) {
-      match($0, /`[^`]+`/)
-      table = substr($0, RSTART+1, RLENGTH-2)
-      # Sort big tables to dedicated files; everything else into 04-data-other.sql
-      if (table == "wp_posts") {
-        data_file = outdir "/02-data-wp_posts.sql"
-      } else if (table == "wp_postmeta") {
-        data_file = outdir "/03-data-wp_postmeta.sql"
-      } else {
-        data_file = outdir "/04-data-other.sql"
-      }
-    } else if ($0 ~ /^LOCK TABLES `([^`]+)`/) {
-      match($0, /`[^`]+`/)
-      table = substr($0, RSTART+1, RLENGTH-2)
-      if (table == "wp_posts") {
-        data_file = outdir "/02-data-wp_posts.sql"
-      } else if (table == "wp_postmeta") {
-        data_file = outdir "/03-data-wp_postmeta.sql"
-      } else {
-        data_file = outdir "/04-data-other.sql"
-      }
-    }
-    if (data_file != "") {
-      print >> data_file
-    }
-    state = "data"
-    next
-  }
-}
-
-# Trigger/routine/event section heuristic
-/^DELIMITER/ {
-  state = "triggers"
-  print >> triggers_file
-  next
-}
-
-# Data section continuation
-state == "data" {
-  if (data_file != "") print >> data_file
-  next
-}
-
-# Header / footer / SET sections
-state == "header" || state == "triggers" {
-  if (state == "header") {
-    print >> schema_file
-  } else {
-    print >> triggers_file
-  }
-}
-' "$INPUT"
-
-# Prepend SET / charset block to every data chunk so each file imports independently
-HEADER_TMP="$(mktemp)"
-cat > "$HEADER_TMP" <<'EOF'
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
-SET FOREIGN_KEY_CHECKS = 0;
-/*!40101 SET NAMES utf8 */;
-
-EOF
-
-for f in "$OUTDIR"/02-data-wp_posts.sql "$OUTDIR"/03-data-wp_postmeta.sql "$OUTDIR"/04-data-other.sql; do
-  [[ -f "$f" ]] || continue
-  cat "$HEADER_TMP" "$f" > "$f.tmp" && mv "$f.tmp" "$f"
+for i in $(seq 1 30); do
+  if "$MARIADB" --socket="$SOCKET" -uroot -e "SELECT 1" >/dev/null 2>&1; then break; fi
+  sleep 1
 done
-rm "$HEADER_TMP"
+if ! "$MARIADB" --socket="$SOCKET" -uroot -e "SELECT 1" >/dev/null 2>&1; then
+  red "MariaDB failed to start"; cat "$LOG_FILE" >&2 || true; exit 1
+fi
 
-# Compress each chunk
-echo "==> gzipping chunks"
-for f in "$OUTDIR"/*.sql; do
-  gzip -k "$f"
+MQ() { "$MARIADB" --socket="$SOCKET" -uroot "$@"; }
+DUMP() { "$MARIADB_DUMP" --socket="$SOCKET" -uroot --default-character-set=utf8 \
+           --single-transaction --skip-lock-tables "$@"; }
+
+blue "==> importing $INPUT ($(du -h "$INPUT" | awk '{print $1}'))"
+MQ -e "CREATE DATABASE \`$DB_NAME\` DEFAULT CHARACTER SET utf8"
+MQ "$DB_NAME" < "$INPUT"
+
+# All tables present after import (bash 3.2 compatible — no mapfile)
+ALL_TABLES=()
+while IFS= read -r t; do
+  [[ -n "$t" ]] && ALL_TABLES+=("$t")
+done < <(MQ "$DB_NAME" -N -e "SHOW TABLES" | sort)
+blue "==> tables in migration dump: ${#ALL_TABLES[@]}"
+
+# Other tables = everything except the two big ones
+OTHER_TABLES=()
+for t in "${ALL_TABLES[@]}"; do
+  [[ "$t" == "wp_posts" || "$t" == "wp_postmeta" ]] && continue
+  OTHER_TABLES+=("$t")
 done
 
-echo ""
-echo "Output files (uncompressed | gzipped):"
-ls -lh "$OUTDIR" | awk 'NR>1 {printf "  %s  %s\n", $5, $9}'
+blue "==> exporting 01-wp_posts.sql"
+DUMP "$DB_NAME" wp_posts > "$OUTDIR/01-wp_posts.sql"
+
+blue "==> exporting 02-wp_postmeta.sql"
+DUMP "$DB_NAME" wp_postmeta > "$OUTDIR/02-wp_postmeta.sql"
+
+blue "==> exporting 03-rest.sql (${#OTHER_TABLES[@]} tables)"
+DUMP "$DB_NAME" "${OTHER_TABLES[@]}" > "$OUTDIR/03-rest.sql"
+
+blue "==> gzipping chunks"
+for f in "$OUTDIR"/*.sql; do gzip -kf "$f"; done
+
+# Verification: re-import each chunk into a clean DB and count
+blue "==> verifying chunks (re-import into clean DB)"
+MQ -e "DROP DATABASE IF EXISTS ftverify; CREATE DATABASE ftverify DEFAULT CHARACTER SET utf8"
+MQ ftverify < "$OUTDIR/01-wp_posts.sql"
+MQ ftverify < "$OUTDIR/02-wp_postmeta.sql"
+MQ ftverify < "$OUTDIR/03-rest.sql"
+
+POSTS=$(MQ ftverify -N -e "SELECT COUNT(*) FROM wp_posts")
+ATTACH=$(MQ ftverify -N -e "SELECT COUNT(*) FROM wp_posts WHERE post_type='attachment'")
+PMETA=$(MQ ftverify -N -e "SELECT COUNT(*) FROM wp_postmeta")
+AFILE=$(MQ ftverify -N -e "SELECT COUNT(*) FROM wp_postmeta WHERE meta_key='_wp_attached_file'")
 
 echo ""
-echo "Recommended phpMyAdmin import order:"
-echo "  1) 01-schema.sql.gz       -- creates empty tables"
-echo "  2) 02-data-wp_posts.sql.gz"
-echo "  3) 03-data-wp_postmeta.sql.gz"
-echo "  4) 04-data-other.sql.gz"
-echo "  5) 05-triggers-routines.sql.gz (if present)"
-echo "  6) wm144_wedos_net.migration-design.sql.gz (design overlay)"
+green "=== CHUNK VERIFICATION (re-imported into clean DB) ==="
+printf '  wp_posts rows         : %s\n' "$POSTS"
+printf '  attachment posts      : %s\n' "$ATTACH"
+printf '  wp_postmeta rows      : %s\n' "$PMETA"
+printf '  _wp_attached_file meta: %s\n' "$AFILE"
+echo ""
+green "Output files (uncompressed | gzipped):"
+ls -lh "$OUTDIR" | awk 'NR>1 {printf "  %-8s %s\n", $5, $9}'
+echo ""
+green "phpMyAdmin import order (kazdy soubor zvlast, tab Import):"
+green "  1) 01-wp_posts.sql.gz"
+green "  2) 02-wp_postmeta.sql.gz"
+green "  3) 03-rest.sql.gz"
+green "  4) wm144_wedos_net.migration-design.sql.gz  (design overlay, az nakonec)"
